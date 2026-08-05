@@ -17,6 +17,10 @@ cd "$(dirname "$0")/.." || exit 1
 
 interactive() { [ -t 0 ]; }
 
+# The project that hosts this site's media. Public value — the secret half is
+# the service role key, which is only ever typed in below and kept locally.
+DEFAULT_SUPABASE_URL="https://gzlwrvhwtepoomrwwpng.supabase.co"
+
 printf "\n%sSCRM Media — setup%s\n" "$BOLD" "$OFF"
 printf "%s  Getting this machine ready to publish photos and videos.%s\n" "$DIM" "$OFF"
 
@@ -72,10 +76,11 @@ step "4. Supabase keys"
 if [ -f .env.local ] && grep -q "^SUPABASE_SERVICE_ROLE_KEY=." .env.local 2>/dev/null; then
   ok ".env.local already has a service role key"
 elif interactive; then
-  echo "  From Supabase → Project Settings → API. Leave blank to skip for now."
-  printf "  Project URL (https://xxxxx.supabase.co): "
+  echo "  From Supabase → Project Settings → API of the scrm-real-estate-web project."
+  printf "  Project URL [%s]: " "$DEFAULT_SUPABASE_URL"
   supabase_url=""; read -r supabase_url || true
-  printf "  Service role key: "
+  [ -z "$supabase_url" ] && supabase_url="$DEFAULT_SUPABASE_URL"
+  printf "  Service role key (starts with eyJ…): "
   service_key=""; read -r service_key || true
 
   if [ -n "$supabase_url" ] && [ -n "$service_key" ]; then
