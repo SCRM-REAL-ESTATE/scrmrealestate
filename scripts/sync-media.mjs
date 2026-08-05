@@ -429,6 +429,11 @@ function credentialProblem() {
   if (!/^https:\/\/[^/]+\.supabase\.co\/?$/.test(url.trim())) {
     return `SUPABASE_URL doesn't look right ("${url}") — it should be https://<project>.supabase.co`;
   }
+  // Documentation stand-ins get pasted verbatim more often than you'd think,
+  // and the resulting DNS failure says nothing about the real cause.
+  if (/your|example|xxxx|projectref/i.test(new URL(url.trim()).hostname)) {
+    return `SUPABASE_URL is still an example ("${url}") — replace it with your project's own address`;
+  }
   if (!key) return "SUPABASE_SERVICE_ROLE_KEY is missing from .env.local";
   if (/your-/i.test(key)) return "SUPABASE_SERVICE_ROLE_KEY is still the example placeholder";
   if (!/^(sb_secret_|eyJ)/.test(key)) {
