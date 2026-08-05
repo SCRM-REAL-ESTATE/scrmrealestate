@@ -1,10 +1,18 @@
+import manifest from "@/data/media.json";
+
 /**
- * Base URL for video media. Set NEXT_PUBLIC_MEDIA_BASE_URL in .env.local / Vercel
- * to a Supabase Storage public URL (e.g. https://xxx.supabase.co/storage/v1/object/public/media)
- * for production. Falls back to /media (local dev) if unset.
+ * Where photos and videos are served from.
+ *
+ * `npm run media` records the bucket it uploaded to in src/data/media.json, so
+ * the files and the address they live at travel together in git — pushing the
+ * repo is enough to move the site to a different bucket, no hosting dashboard
+ * required. NEXT_PUBLIC_MEDIA_BASE_URL still covers the case where nothing has
+ * been uploaded yet, and /media is the local-dev fallback.
  */
 export const MEDIA_BASE_URL =
-  process.env.NEXT_PUBLIC_MEDIA_BASE_URL || "/media";
+  ("baseUrl" in manifest ? (manifest.baseUrl as string) : "") ||
+  process.env.NEXT_PUBLIC_MEDIA_BASE_URL ||
+  "/media";
 
 export const SITE = {
   name: "SCRM Media Real Estate",

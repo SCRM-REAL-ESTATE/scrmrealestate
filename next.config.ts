@@ -1,11 +1,20 @@
+import { readFileSync } from "node:fs";
 import type { NextConfig } from "next";
 
 /**
- * Photos served from Supabase Storage still go through next/image, so the
- * bucket host has to be allow-listed. Derived from the env you already set.
+ * Photos served from the media bucket still go through next/image, so its host
+ * has to be allow-listed. The bucket the last `npm run media` uploaded to is
+ * recorded in the manifest; env covers the case where nothing is uploaded yet.
  */
 const mediaHost = (() => {
-  const url = process.env.NEXT_PUBLIC_MEDIA_BASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  let manifestBase = "";
+  try {
+    manifestBase = JSON.parse(readFileSync("./src/data/media.json", "utf8")).baseUrl ?? "";
+  } catch {
+    /* no manifest yet */
+  }
+
+  const url = manifestBase || process.env.NEXT_PUBLIC_MEDIA_BASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (!url) return null;
   try {
     return new URL(url).hostname;

@@ -127,11 +127,13 @@ Adding is additive — a run only ever adds or updates what you supplied, so you
 
 Other flags: `--dry-run` (preview, changes nothing), `--force` (re-compress and re-upload everything), `--no-upload` (work offline), `--only=vertical` (limit to one folder).
 
-Finally, the site needs to know where the bucket lives. Set this in Vercel once:
+### Where the files are served from
 
-```
-NEXT_PUBLIC_MEDIA_BASE_URL=https://xxxxx.supabase.co/storage/v1/object/public/media
-```
+`npm run media` records the bucket it uploaded to in `src/data/media.json`, next to the file list itself. The site reads it from there, so **committing the manifest is all it takes** — no Vercel environment variable, no hosting dashboard, no access to anyone else's account. Point the script at a different Supabase project and the site follows on the next deploy.
+
+Changing buckets drops manifest entries that lived in the old one (they'd 404 otherwise) and says so. Files served from the repo, like `public/media/listings/`, are unaffected. So when you move, everything you want to keep needs to be in `media-src/` for that run.
+
+`NEXT_PUBLIC_MEDIA_BASE_URL` still works and is used when the manifest has no bucket recorded yet.
 
 ---
 

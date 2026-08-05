@@ -433,13 +433,31 @@ function readManifest() {
  * With --replace, the folders that had source files this run are rebuilt from
  * scratch instead, which is how you remove something from the site.
  */
-function mergeManifest(previous, built, touchedFolders) {
+function mergeManifest(previous, built, touchedFolders, baseUrl) {
   const order = Object.values(FOLDERS).map((f) => f.category);
   const touched = new Set(touchedFolders.map((f) => FOLDERS[f].category));
 
-  const kept = (previous.items ?? []).filter((item) =>
-    REPLACE ? !touched.has(item.category) : true
-  );
+  // Moving to a different bucket invalidates every entry that lived in the old
+  // one. Repo-hosted files (src starting with "/") are unaffected.
+  const movedBucket = Boolean(baseUrl) && previous.baseUrl !== baseUrl;
+
+  const kept = (previous.items ?? []).filter((item) => {
+    if (REPLACE && touched.has(item.category)) return false;
+    if (movedBucket && !item.src.startsWith("/")) return false;
+    return true;
+  });
+
+  if (movedBucket) {
+    const dropped = (previous.items ?? []).length - kept.length;
+    if (dropped > 0) {
+      console.log(
+        c.yellow(
+          `\n  Storage moved to a new bucket — dropped ${dropped} entr${dropped === 1 ? "y" : "ies"} that lived in the old one.\n` +
+            "  Anything you want to keep needs to be in media-src/ for this run."
+        )
+      );
+    }
+  }
 
   const merged = new Map(kept.map((item) => [item.src, item]));
   for (const item of built) merged.set(item.src, item);
@@ -477,6 +495,7 @@ async function main() {
   const built = [];
   const uploads = [];
   const touched = [];
+  let bucketUrl = null;
 
   for (const folder of folders) {
     console.log(`\n${c.bold(folder)}`);
@@ -510,6 +529,7 @@ async function main() {
     );
   } else if (uploads.length > 0) {
     console.log(`\n${c.bold("uploading")} ${c.dim(`${uploads.length} files → ${BUCKET}`)}`);
+    bucketUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}`;
     const supabase = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
     try {
       await ensureBucket(supabase);
@@ -527,13 +547,23 @@ async function main() {
     const { ok, fail } = await uploadAll(supabase, uploads, touched);
     console.log(`  ${ok} uploaded, ${fail} failed`);
     if (fail > 0) process.exitCode = 1;
-    console.log(c.dim(`\n  NEXT_PUBLIC_MEDIA_BASE_URL=${SUPABASE_URL}/storage/v1/object/public/${BUCKET}`));
   }
 
   // ── manifest
-  const items = mergeManifest(readManifest(), built, touched);
+  //
+  // The bucket URL is recorded here, alongside the files that went into it, so
+  // the site knows where its media lives without anyone editing a hosting
+  // dashboard. Committing the manifest is all it takes to point the site at a
+  // new bucket.
+  const previous = readManifest();
+  const baseUrl = bucketUrl ?? previous.baseUrl;
+  const items = mergeManifest(previous, built, touched, bucketUrl);
   mkdirSync("src/data", { recursive: true });
-  writeFileSync(MANIFEST, `${JSON.stringify({ items }, null, 2)}\n`);
+  writeFileSync(MANIFEST, `${JSON.stringify(baseUrl ? { baseUrl, items } : { items }, null, 2)}\n`);
+
+  if (bucketUrl && bucketUrl !== previous.baseUrl) {
+    console.log(`\n${c.green("✓")} media now served from ${bucketUrl}`);
+  }
 
   const counts = items.reduce((acc, i) => ({ ...acc, [i.category]: (acc[i.category] ?? 0) + 1 }), {});
   console.log(`\n${c.green("✓")} ${MANIFEST} — ${items.length} items ${c.dim(JSON.stringify(counts))}`);
