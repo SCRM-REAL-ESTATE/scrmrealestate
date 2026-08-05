@@ -1,0 +1,172 @@
+{
+  "items": [
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-01.png",
+      "width": 1600,
+      "height": 1060
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-02.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-03.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-04.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-05.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-06.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-07.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-08.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-09.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-10.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-11.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-12.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-13.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-14.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-15.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "/media/listings/listing-16.png",
+      "width": 2220,
+      "height": 1480
+    },
+    {
+      "type": "video",
+      "category": "vertical",
+      "src": "vertical/vertical-2-bed-first.mp4",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "type": "video",
+      "category": "vertical",
+      "src": "vertical/vertical-2-bed-second.mp4",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "type": "video",
+      "category": "vertical",
+      "src": "vertical/vertical-3-bed.mp4",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "type": "video",
+      "category": "vertical",
+      "src": "vertical/vertical-4-bed-ad.mp4",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "type": "video",
+      "category": "landscape",
+      "src": "landscape/landscape-2-bed.mp4",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "type": "video",
+      "category": "landscape",
+      "src": "landscape/landscape-3-bed.mp4",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "type": "video",
+      "category": "agency",
+      "src": "agency/peter-strata-informative.mp4",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "type": "video",
+      "category": "agency",
+      "src": "agency/favourite-person-mgm-martin.mp4",
+      "width": 1080,
+      "height": 1920
+    }
+  ]
+}

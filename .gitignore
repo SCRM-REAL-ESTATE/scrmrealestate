@@ -46,3 +46,7 @@ public/media/vertical/
 # supabase cli scratch
 supabase/.temp/
 supabase/.branches/
+
+# raw media drop folder + compressed output (uploaded to Supabase Storage)
+/media-src/
+/public/media-web/

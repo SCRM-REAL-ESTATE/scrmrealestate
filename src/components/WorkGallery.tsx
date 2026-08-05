@@ -1,14 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MEDIA_BASE_URL } from "@/lib/site";
+import { MEDIA_ITEMS, aspectRatio, mediaUrl, type MediaCategory, type MediaItem } from "@/lib/media";
 import Lightbox, { type LightboxItem } from "./VideoLightbox";
 
-type Category = "all" | "listing" | "vertical" | "landscape" | "agency";
+type Filter = "all" | MediaCategory;
 
-const categories: { id: Category; label: string }[] = [
+const categories: { id: Filter; label: string }[] = [
   { id: "all", label: "All" },
   { id: "listing", label: "Listing Photography" },
   { id: "vertical", label: "Vertical Video" },
@@ -16,87 +16,68 @@ const categories: { id: Category; label: string }[] = [
   { id: "agency", label: "Brand & Team" },
 ];
 
-type Item =
-  | { type: "image"; src: string; category: Exclude<Category, "all">; aspect: string }
-  | { type: "video"; src: string; category: Exclude<Category, "all">; aspect: string; verticalRatio?: boolean };
+/** Tiles rendered before the "Load more" button appears. */
+const PAGE_SIZE = 24;
 
-const items: Item[] = [
-  ...Array.from({ length: 16 }).map<Item>((_, i) => ({
-    type: "image",
-    src: `/media/listings/listing-${String(i + 1).padStart(2, "0")}.png`,
-    category: "listing" as const,
-    aspect: i % 5 === 0 ? "aspect-[3/4]" : i % 3 === 0 ? "aspect-[4/3]" : "aspect-[4/5]",
-  })),
-  {
-    type: "video",
-    src: `${MEDIA_BASE_URL}/vertical/vertical-2-bed-first.mp4`,
-    category: "vertical",
-    aspect: "aspect-[9/16]",
-    verticalRatio: true,
-  },
-  {
-    type: "video",
-    src: `${MEDIA_BASE_URL}/vertical/vertical-2-bed-second.mp4`,
-    category: "vertical",
-    aspect: "aspect-[9/16]",
-    verticalRatio: true,
-  },
-  {
-    type: "video",
-    src: `${MEDIA_BASE_URL}/vertical/vertical-3-bed.mp4`,
-    category: "vertical",
-    aspect: "aspect-[9/16]",
-    verticalRatio: true,
-  },
-  {
-    type: "video",
-    src: `${MEDIA_BASE_URL}/vertical/vertical-4-bed-ad.mp4`,
-    category: "vertical",
-    aspect: "aspect-[9/16]",
-    verticalRatio: true,
-  },
-  {
-    type: "video",
-    src: `${MEDIA_BASE_URL}/landscape/landscape-2-bed.mp4`,
-    category: "landscape",
-    aspect: "aspect-video",
-  },
-  {
-    type: "video",
-    src: `${MEDIA_BASE_URL}/landscape/landscape-3-bed.mp4`,
-    category: "landscape",
-    aspect: "aspect-video",
-  },
-  {
-    type: "video",
-    src: `${MEDIA_BASE_URL}/agency/peter-strata-informative.mp4`,
-    category: "agency",
-    aspect: "aspect-[9/16]",
-    verticalRatio: true,
-  },
-  {
-    type: "video",
-    src: `${MEDIA_BASE_URL}/agency/favourite-person-mgm-martin.mp4`,
-    category: "agency",
-    aspect: "aspect-[9/16]",
-    verticalRatio: true,
-  },
-];
+/**
+ * Grid videos play only while on screen — a large library would otherwise
+ * download every clip at once the moment the page loads.
+ */
+function GalleryVideo({ item }: { item: MediaItem }) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) video.play().catch(() => {});
+        else video.pause();
+      },
+      { rootMargin: "200px 0px", threshold: 0.1 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      src={mediaUrl(item.src)}
+      poster={item.poster ? mediaUrl(item.poster) : undefined}
+      className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+      muted
+      loop
+      playsInline
+      preload="none"
+    />
+  );
+}
 
 export default function WorkGallery() {
-  const [active, setActive] = useState<Category>("all");
+  const [active, setActive] = useState<Filter>("all");
+  const [visible, setVisible] = useState(PAGE_SIZE);
   const [lightbox, setLightbox] = useState<LightboxItem | null>(null);
 
   const filtered = useMemo(() => {
-    if (active === "all") return items;
-    return items.filter((i) => i.category === active);
+    if (active === "all") return MEDIA_ITEMS;
+    return MEDIA_ITEMS.filter((i) => i.category === active);
   }, [active]);
 
-  const openItem = (item: Item) => {
+  const shown = filtered.slice(0, visible);
+
+  const selectCategory = (id: Filter) => {
+    setActive(id);
+    setVisible(PAGE_SIZE);
+  };
+
+  const openItem = (item: MediaItem) => {
     setLightbox(
       item.type === "video"
-        ? { type: "video", src: item.src, aspect: item.verticalRatio ? "9/16" : "16/9" }
-        : { type: "image", src: item.src }
+        ? { type: "video", src: mediaUrl(item.src), aspect: aspectRatio(item) < 1 ? "9/16" : "16/9" }
+        : { type: "image", src: mediaUrl(item.src), alt: item.alt }
     );
   };
 
@@ -111,7 +92,7 @@ export default function WorkGallery() {
               return (
                 <button
                   key={c.id}
-                  onClick={() => setActive(c.id)}
+                  onClick={() => selectCategory(c.id)}
                   className={`shrink-0 px-4 md:px-5 py-2.5 text-xs tracking-[0.16em] uppercase border transition-colors min-h-[40px] ${
                     isActive
                       ? "bg-re-blue text-white border-re-blue"
@@ -131,7 +112,7 @@ export default function WorkGallery() {
         <div className="mx-auto max-w-7xl px-5 md:px-8">
           <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4 [column-fill:_balance]">
             <AnimatePresence mode="popLayout">
-              {filtered.map((item, idx) => (
+              {shown.map((item, idx) => (
                 <motion.button
                   type="button"
                   key={`${item.src}-${idx}`}
@@ -140,28 +121,21 @@ export default function WorkGallery() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: Math.min(idx * 0.03, 0.4) }}
-                  className={`group mb-3 md:mb-4 break-inside-avoid relative overflow-hidden bg-re-stone-light w-full ${item.aspect} cursor-pointer block`}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: Math.min((idx % PAGE_SIZE) * 0.03, 0.4) }}
+                  style={{ aspectRatio: aspectRatio(item) }}
+                  className="group mb-3 md:mb-4 break-inside-avoid relative overflow-hidden bg-re-stone-light w-full cursor-pointer block"
                   aria-label={`Open ${item.type === "video" ? "video" : "image"} preview`}
                 >
                   {item.type === "image" ? (
                     <Image
-                      src={item.src}
-                      alt="Real estate work"
+                      src={mediaUrl(item.src)}
+                      alt={item.alt ?? "Real estate work"}
                       fill
                       sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                       className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
                     />
                   ) : (
-                    <video
-                      src={item.src}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
-                      muted
-                      loop
-                      playsInline
-                      autoPlay
-                      preload="metadata"
-                    />
+                    <GalleryVideo item={item} />
                   )}
 
                   {/* Hover overlay */}
@@ -184,6 +158,18 @@ export default function WorkGallery() {
               ))}
             </AnimatePresence>
           </div>
+
+          {visible < filtered.length && (
+            <div className="mt-10 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setVisible((v) => v + PAGE_SIZE)}
+                className="px-8 py-4 text-xs tracking-[0.2em] uppercase border border-re-stone-light text-re-ink hover:border-re-blue hover:text-re-blue transition-colors"
+              >
+                Load more ({filtered.length - visible})
+              </button>
+            </div>
+          )}
 
           {filtered.length === 0 && (
             <p className="text-center text-re-stone py-20">No work in this category yet.</p>

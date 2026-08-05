@@ -33,10 +33,10 @@ public/
   og.jpg                    ← 1200x630 OG image for social shares
   media/
     listings/               ← listing photography (PNG)
-    landscape/              ← horizontal listing videos (MP4)
-    vertical/               ← vertical reels (MP4)
-    agency/                 ← agency / team videos (MOV)
+media-src/                  ← drop new photos/videos here, then `npm run media`
 src/
+  data/
+    media.json              ← generated gallery list — never edit by hand
   app/
     layout.tsx              ← root shell, metadata, JSON-LD
     page.tsx                ← Home
@@ -58,9 +58,61 @@ src/
     ui.tsx                  ← Container, Section, CTAButton, Eyebrow, H2
   lib/
     site.ts                 ← brand constants (phone, email, URLs)
+    media.ts                ← reads media.json, resolves CDN URLs
     supabase.ts             ← Supabase client (no-op when env missing)
+scripts/
+  sync-media.mjs            ← `npm run media` — compress, upload, regenerate
 supabase/
   schema.sql                ← run once in the Supabase SQL editor
+```
+
+---
+
+## Adding photos and videos
+
+Everything in the Work gallery comes from `src/data/media.json`, which is generated — you never edit it by hand. One command compresses your files, uploads them to Supabase Storage, and rewrites that list.
+
+**Setup, once:**
+
+1. Install ffmpeg — macOS `brew install ffmpeg`, Windows `winget install Gyan.FFmpeg`.
+2. Add your Supabase service role key to `.env.local` (**Project Settings → API**):
+
+   ```
+   SUPABASE_URL=https://xxxxx.supabase.co
+   SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...
+   ```
+
+   This key bypasses every security rule — it lives in `.env.local` only. Never in Vercel, never committed.
+
+**Every time you have new work:**
+
+1. Drop the files into `media-src/`, using the folder that matches where they should appear:
+
+   | Folder | Holds | Gallery filter |
+   | ------ | ----- | -------------- |
+   | `media-src/listings/` | photos | Listing Photography |
+   | `media-src/vertical/` | 9:16 video | Vertical Video |
+   | `media-src/landscape/` | 16:9 video | Listing Video |
+   | `media-src/agency/` | brand / team video | Brand & Team |
+
+   Raw camera exports are fine — files are compressed before upload. Filenames are tidied automatically (`My Reel 01.MOV` → `my-reel-01.mp4`), so name them however you like. iPhone `.HEIC` photos are the one exception: export them as JPG first.
+
+2. Run it:
+
+   ```bash
+   npm run media
+   ```
+
+3. Commit the regenerated `src/data/media.json`. The new work is live on the next deploy.
+
+Adding is additive — a run only ever adds or updates what you supplied, so you can empty `media-src/` between batches without losing anything already published. To **remove** work, delete the file from Supabase Storage and re-run with `--replace`, which rebuilds the folders you supplied files for.
+
+Other flags: `--dry-run` (preview, changes nothing), `--force` (re-compress and re-upload everything), `--no-upload` (work offline), `--only=vertical` (limit to one folder).
+
+Finally, the site needs to know where the bucket lives. Set this in Vercel once:
+
+```
+NEXT_PUBLIC_MEDIA_BASE_URL=https://xxxxx.supabase.co/storage/v1/object/public/media
 ```
 
 ---
@@ -162,4 +214,5 @@ npm run dev      # local dev server
 npm run build    # production build (also runs type-check + lint)
 npm run start    # serve the built output
 npm run lint     # lint only
+npm run media    # compress + publish every photo and video (see below)
 ```
