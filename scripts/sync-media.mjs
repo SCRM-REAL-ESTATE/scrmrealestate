@@ -414,6 +414,29 @@ async function uploadAll(supabase, uploads, folders) {
   return { ok, fail };
 }
 
+/* ── credentials ─────────────────────────────────────────────────────────── */
+
+/**
+ * Compression is the expensive part, so credentials get checked before it
+ * rather than after — a bad URL used to surface as a stack trace once every
+ * file had already been through ffmpeg.
+ */
+function credentialProblem() {
+  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+
+  if (!url) return "SUPABASE_URL is missing from .env.local";
+  if (!/^https:\/\/[^/]+\.supabase\.co\/?$/.test(url.trim())) {
+    return `SUPABASE_URL doesn't look right ("${url}") — it should be https://<project>.supabase.co`;
+  }
+  if (!key) return "SUPABASE_SERVICE_ROLE_KEY is missing from .env.local";
+  if (/your-/i.test(key)) return "SUPABASE_SERVICE_ROLE_KEY is still the example placeholder";
+  if (!/^(sb_secret_|eyJ)/.test(key)) {
+    return `SUPABASE_SERVICE_ROLE_KEY doesn't look like a key ("${key.slice(0, 20)}…") — it should start with sb_secret_`;
+  }
+  return null;
+}
+
 /* ── manifest ────────────────────────────────────────────────────────────── */
 
 function readManifest() {
@@ -496,6 +519,14 @@ async function main() {
   }
   if (DRY_RUN) console.log(c.yellow("  dry run — nothing will be written or uploaded"));
 
+  const credentials = NO_UPLOAD || DRY_RUN ? null : credentialProblem();
+  if (credentials) {
+    console.log(c.red(`\n  Can't upload: ${credentials}`));
+    console.log(c.yellow("  Fix it with:  npm run setup"));
+    console.log(c.dim("  Or compress without uploading:  npm run media -- --no-upload\n"));
+    process.exit(1);
+  }
+
   const built = [];
   const uploads = [];
   const touched = [];
@@ -524,22 +555,8 @@ async function main() {
 
   if (NO_UPLOAD) {
     console.log(c.dim("\n--no-upload set, skipping Supabase."));
-  } else if (!SUPABASE_URL || !SERVICE_KEY) {
-    console.log(
-      c.yellow(
-        "\nSkipping upload — SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set.\n" +
-          "Run `npm run setup` to add them, then run this again."
-      )
-    );
-  } else if (!/^(sb_secret_|eyJ)/.test(SERVICE_KEY) || /your-/i.test(SERVICE_KEY)) {
-    // Catch the .env.example placeholder before it becomes an opaque 401.
-    console.log(
-      c.yellow(
-        `\nSkipping upload — SUPABASE_SERVICE_ROLE_KEY doesn't look like a key ("${SERVICE_KEY.slice(0, 24)}").\n` +
-          "It should start with sb_secret_ (Settings → API Keys → Secret keys).\n" +
-          "Run `npm run setup` to set it, then run this again — nothing you've compressed is lost."
-      )
-    );
+  } else if (credentialProblem()) {
+    console.log(c.yellow(`\nSkipping upload — ${credentialProblem()}. Run \`npm run setup\`.`));
   } else if (uploads.length > 0) {
     console.log(`\n${c.bold("uploading")} ${c.dim(`${uploads.length} files → ${BUCKET}`)}`);
     bucketUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}`;
