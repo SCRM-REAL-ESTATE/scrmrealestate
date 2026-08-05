@@ -84,14 +84,14 @@ Checks Node, installs dependencies, offers to install ffmpeg via Homebrew, asks 
 Doing it by hand instead:
 
 1. Install ffmpeg — macOS `brew install ffmpeg`, Windows `winget install Gyan.FFmpeg`.
-2. Add your Supabase service role key to `.env.local` (**Project Settings → API**):
+2. Add your Supabase secret key to `.env.local` (**Settings → API Keys → Secret keys**, `sb_secret_…`; the older `service_role` JWT under the legacy tab also works):
 
    ```
    SUPABASE_URL=https://xxxxx.supabase.co
-   SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...
+   SUPABASE_SERVICE_ROLE_KEY=sb_secret_...
    ```
 
-   This key bypasses every security rule — it lives in `.env.local` only. Never in Vercel, never committed.
+   The publishable key can't upload — it only reads. The secret key bypasses every security rule, so it lives in `.env.local` only. Never in Vercel, never committed.
 
 **Every time you have new work:**
 

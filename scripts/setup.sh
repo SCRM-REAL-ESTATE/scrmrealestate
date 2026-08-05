@@ -76,12 +76,23 @@ step "4. Supabase keys"
 if [ -f .env.local ] && grep -q "^SUPABASE_SERVICE_ROLE_KEY=." .env.local 2>/dev/null; then
   ok ".env.local already has a service role key"
 elif interactive; then
-  echo "  From Supabase → Project Settings → API of the scrm-real-estate-web project."
+  echo "  Supabase → scrm-real-estate-web → Settings → API Keys."
+  echo "  You want the SECRET key (sb_secret_…), not the publishable one."
   printf "  Project URL [%s]: " "$DEFAULT_SUPABASE_URL"
   supabase_url=""; read -r supabase_url || true
   [ -z "$supabase_url" ] && supabase_url="$DEFAULT_SUPABASE_URL"
-  printf "  Service role key (starts with eyJ…): "
+  printf "  Secret key (sb_secret_… or legacy service_role eyJ…): "
   service_key=""; read -r service_key || true
+
+  # Publishable keys can read but never write — catch the mix-up here rather
+  # than as a permissions error halfway through an upload.
+  case "$service_key" in
+    sb_publishable_*|sb_publishable*)
+      fail "That's the publishable key — it can't upload."
+      echo "     Copy the one under \"Secret keys\" instead and re-run: npm run setup"
+      service_key=""
+      ;;
+  esac
 
   if [ -n "$supabase_url" ] && [ -n "$service_key" ]; then
     [ -f .env.local ] || { [ -f .env.example ] && cp .env.example .env.local; }
