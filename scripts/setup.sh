@@ -73,10 +73,21 @@ fi
 
 # ── 4. Supabase keys ───────────────────────────────────────────────────────
 step "4. Supabase keys"
-have_key=false
-if [ -f .env.local ] && grep -q "^SUPABASE_SERVICE_ROLE_KEY=." .env.local 2>/dev/null; then
-  have_key=true
+# A real key is sb_secret_… (current) or eyJ… (legacy service_role JWT).
+# Anything else — most often the placeholder copied out of .env.example —
+# would sail past a "is this line non-empty" check and only fail at upload.
+saved_key=""
+if [ -f .env.local ]; then
+  saved_key=$(grep "^SUPABASE_SERVICE_ROLE_KEY=" .env.local 2>/dev/null | tail -1 | cut -d= -f2- | tr -d '"'"' " )
 fi
+
+have_key=false
+case "$saved_key" in
+  *your-*|*YOUR-*|*xxxxx*) warn "that's the example placeholder in .env.local, not a key — let's set a real one" ;;
+  sb_secret_*|eyJ*) have_key=true ;;
+  "") ;;
+  *) warn "the key saved in .env.local isn't a real one (\"$saved_key\") — let's replace it" ;;
+esac
 
 # A saved key can be stale — revoked, rotated, or from another project — and
 # there's no way to tell from here. Always offer to replace it rather than

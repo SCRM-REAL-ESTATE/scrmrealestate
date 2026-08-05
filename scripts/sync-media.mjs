@@ -528,7 +528,16 @@ async function main() {
     console.log(
       c.yellow(
         "\nSkipping upload — SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set.\n" +
-          "Add them to .env.local (Supabase → Project Settings → API) and re-run."
+          "Run `npm run setup` to add them, then run this again."
+      )
+    );
+  } else if (!/^(sb_secret_|eyJ)/.test(SERVICE_KEY) || /your-/i.test(SERVICE_KEY)) {
+    // Catch the .env.example placeholder before it becomes an opaque 401.
+    console.log(
+      c.yellow(
+        `\nSkipping upload — SUPABASE_SERVICE_ROLE_KEY doesn't look like a key ("${SERVICE_KEY.slice(0, 24)}").\n` +
+          "It should start with sb_secret_ (Settings → API Keys → Secret keys).\n" +
+          "Run `npm run setup` to set it, then run this again — nothing you've compressed is lost."
       )
     );
   } else if (uploads.length > 0) {
