@@ -1,4 +1,5 @@
 {
+  "baseUrl": "https://gzlwrvhwtepoomrwwpng.supabase.co/storage/v1/object/public/media",
   "items": [
     {
       "type": "image",
@@ -113,60 +114,239 @@
       "height": 1480
     },
     {
-      "type": "video",
-      "category": "vertical",
-      "src": "vertical/vertical-2-bed-first.mp4",
-      "width": 1080,
-      "height": 1920
+      "type": "image",
+      "category": "listing",
+      "src": "property/envesta-2.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "property/envesta-13.jpg",
+      "width": 2048,
+      "height": 1638
+    },
+    {
+      "type": "image",
+      "category": "listing",
+      "src": "property/envesta.jpg",
+      "width": 1365,
+      "height": 2048
     },
     {
       "type": "video",
       "category": "vertical",
-      "src": "vertical/vertical-2-bed-second.mp4",
+      "src": "vertical/mickleham-2.mp4",
+      "width": 1080,
+      "height": 1920,
+      "poster": "vertical/mickleham-2.jpg"
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/envesta-01-text.jpg",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/envesta-02-spreada.jpg",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/envesta-03-spreadb.jpg",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/envesta-04-text.jpg",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/envesta-05-text.jpg",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/envesta-06-text.jpg",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/envesta-07-photo.jpg",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/envesta-08-closer.jpg",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/slide1.jpg",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/slide2.jpg",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/slide3.jpg",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/slide4.jpg",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "type": "image",
+      "category": "carousel",
+      "src": "carousels/slide5.jpg",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-3.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-4.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-5.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-6.jpg",
+      "width": 1152,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-8.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-9.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-10.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-11.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-12.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "testimonial",
+      "src": "testimonials/chris-van-zyl-peter.jpg",
       "width": 1080,
       "height": 1920
     },
     {
-      "type": "video",
-      "category": "vertical",
-      "src": "vertical/vertical-3-bed.mp4",
+      "type": "image",
+      "category": "testimonial",
+      "src": "testimonials/jigyasa-rathour-simon.jpg",
       "width": 1080,
       "height": 1920
     },
     {
-      "type": "video",
-      "category": "vertical",
-      "src": "vertical/vertical-4-bed-ad.mp4",
+      "type": "image",
+      "category": "testimonial",
+      "src": "testimonials/khalen-hussein.jpg",
       "width": 1080,
       "height": 1920
     },
     {
-      "type": "video",
-      "category": "landscape",
-      "src": "landscape/landscape-2-bed.mp4",
-      "width": 1920,
-      "height": 1080
-    },
-    {
-      "type": "video",
-      "category": "landscape",
-      "src": "landscape/landscape-3-bed.mp4",
-      "width": 1920,
-      "height": 1080
+      "type": "image",
+      "category": "testimonial",
+      "src": "testimonials/majdolen-d.jpg",
+      "width": 1080,
+      "height": 1920
     },
     {
       "type": "video",
       "category": "agency",
-      "src": "agency/peter-strata-informative.mp4",
+      "src": "agency/carlo-v2.mp4",
       "width": 1080,
-      "height": 1920
+      "height": 1920,
+      "poster": "agency/carlo-v2.jpg"
     },
     {
       "type": "video",
       "category": "agency",
-      "src": "agency/favourite-person-mgm-martin.mp4",
+      "src": "agency/jessica-v2.mp4",
       "width": 1080,
-      "height": 1920
+      "height": 1920,
+      "poster": "agency/jessica-v2.jpg"
+    },
+    {
+      "type": "video",
+      "category": "agency",
+      "src": "agency/tony-updated-1.mp4",
+      "width": 1080,
+      "height": 1920,
+      "poster": "agency/tony-updated-1.jpg"
     }
   ]
 }
