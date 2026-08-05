@@ -1,25 +1,51 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export type LightboxItem =
-  | { type: "video"; src: string; aspect?: "9/16" | "16/9" | string }
+  | { type: "video"; src: string; poster?: string; aspect?: "9/16" | "16/9" | string }
   | { type: "image"; src: string; alt?: string };
 
+/**
+ * Opens a set of items at a given index — used both by the gallery and by the
+ * "see examples" links on Services. Single-item callers pass a one-item array;
+ * the arrows and counter hide themselves.
+ */
+export type LightboxState = { items: LightboxItem[]; index: number } | null;
+
 export default function Lightbox({
-  item,
+  state,
   onClose,
 }: {
-  item: LightboxItem | null;
+  state: LightboxState;
   onClose: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [index, setIndex] = useState(0);
+
+  const items = state?.items ?? [];
+  const item = items[index];
+  const many = items.length > 1;
 
   useEffect(() => {
-    if (!item) return;
+    if (state) setIndex(state.index);
+  }, [state]);
+
+  const step = useCallback(
+    (delta: number) => {
+      if (items.length === 0) return;
+      setIndex((i) => (i + delta + items.length) % items.length);
+    },
+    [items.length]
+  );
+
+  useEffect(() => {
+    if (!state) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight") step(1);
+      if (e.key === "ArrowLeft") step(-1);
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -27,9 +53,9 @@ export default function Lightbox({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [item, onClose]);
+  }, [state, onClose, step]);
 
-  // Auto-play with audio when video opens
+  // Auto-play with audio when a video opens
   useEffect(() => {
     if (item?.type === "video" && videoRef.current) {
       videoRef.current.muted = false;
@@ -43,6 +69,9 @@ export default function Lightbox({
       });
     }
   }, [item]);
+
+  const arrowClass =
+    "absolute top-1/2 -translate-y-1/2 z-10 inline-flex items-center justify-center h-12 w-12 md:h-14 md:w-14 border border-white/30 text-white hover:border-white hover:bg-white/10 transition-colors";
 
   return (
     <AnimatePresence>
@@ -71,7 +100,43 @@ export default function Lightbox({
             </svg>
           </button>
 
+          {many && (
+            <>
+              <button
+                type="button"
+                aria-label="Previous"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  step(-1);
+                }}
+                className={`${arrowClass} left-3 md:left-6`}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <polyline points="15 5 8 12 15 19" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                aria-label="Next"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  step(1);
+                }}
+                className={`${arrowClass} right-3 md:right-6`}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <polyline points="9 5 16 12 9 19" />
+                </svg>
+              </button>
+
+              <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-xs tracking-[0.2em] uppercase">
+                {index + 1} / {items.length}
+              </span>
+            </>
+          )}
+
           <motion.div
+            key={item.src}
             className="relative max-h-[90vh] max-w-[95vw] flex items-center justify-center"
             initial={{ scale: 0.96, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -83,6 +148,7 @@ export default function Lightbox({
               <video
                 ref={videoRef}
                 src={item.src}
+                poster={item.poster}
                 controls
                 playsInline
                 className={`max-h-[90vh] max-w-[95vw] bg-black ${

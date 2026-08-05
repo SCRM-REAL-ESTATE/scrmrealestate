@@ -3,28 +3,45 @@ import Image from "next/image";
 import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import FAQAccordion from "@/components/FAQAccordion";
+import ServiceIncludes, { type IncludeItem } from "@/components/ServiceIncludes";
 
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Monthly social media management, listing photography, listing video, vertical content, and drone — all built specifically for real estate agencies.",
+    "Monthly social media management from $1,800, listing photography and video from $600, vertical listing video, and drone — built specifically for real estate agencies.",
 };
 
-const services = [
+type Service = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  price: string;
+  priceSub: string;
+  body: string;
+  includes: IncludeItem[];
+  ideal: string;
+  image: string;
+  reverse: boolean;
+};
+
+const services: Service[] = [
   {
     id: "social",
     eyebrow: "Service 01",
     title: "Monthly Social Media Management",
+    price: "From $1,800",
+    priceSub: "per month",
     body:
       "A consistent monthly content system built around your business goals — brand awareness, listings, team, social proof, and local authority. Strategy and execution under one roof.",
     includes: [
-      "8 social media videos per month",
-      "6 social media posts per month",
-      "6 stories per month",
-      "Monthly planning, direction & content coordination",
-      "Editing, captions & scheduling",
+      { label: "8 social media videos per month", examples: ["vertical", "testimonial"] },
+      { label: "6 social media posts per month", examples: ["carousel"] },
+      { label: "6 stories per month", examples: ["detail"] },
+      { label: "Monthly planning, direction & content coordination" },
+      { label: "Editing, captions & scheduling" },
     ],
-    ideal: "Agencies who want to look more premium, build trust before the call, and stop posting reactively.",
+    ideal:
+      "Agencies who want to look more premium, build trust before the call, and stop posting reactively.",
     image: "/media/listings/listing-03.png",
     reverse: false,
   },
@@ -32,14 +49,15 @@ const services = [
     id: "photography",
     eyebrow: "Service 02",
     title: "Listing Photography & Video",
+    price: "$600 – $1,000",
+    priceSub: "per listing",
     body:
-      "Editorial-grade listing photography paired with a horizontal listing video that makes properties look the part on portals, brochures, and social.",
+      "Editorial-grade listing photography paired with a horizontal listing video that makes properties look the part on portals, brochures, and social. Priced per listing, no monthly commitment required.",
     includes: [
-      "10 / 15 / 20 photo packages",
-      "Professional listing video included",
-      "Same-day on-site production",
-      "Premium colour grade and editing",
-      "Optimised for portals + social",
+      { label: "Professional listing video included in every package", examples: ["landscape"] },
+      { label: "Editorial photography, premium colour grade", examples: ["listing"] },
+      { label: "Same-day on-site production" },
+      { label: "Optimised for portals + social" },
     ],
     ideal: "Boutique agencies and agents who want every listing to look like a flagship listing.",
     image: "/media/listings/listing-06.png",
@@ -49,14 +67,16 @@ const services = [
     id: "vertical",
     eyebrow: "Service 03",
     title: "Vertical Social Media Listing Video",
+    price: "$300 – $450",
+    priceSub: "per listing",
     body:
       "Reels-first short-form video that turns one listing into a week of distribution. Built to perform on Instagram, TikTok, and Facebook Reels.",
     includes: [
-      "Punchy edit, hook-driven structure",
-      "Captions and platform-ready exports",
-      "$300 add-on for monthly clients",
-      "$450 standalone (or non-social media clients)",
-      "Pairs with listing photography",
+      { label: "Punchy edit, hook-driven structure", examples: ["vertical"] },
+      { label: "Captions and platform-ready exports" },
+      { label: "$300 for monthly management clients" },
+      { label: "$450 standalone" },
+      { label: "Pairs with listing photography" },
     ],
     ideal: "Agents who already get good results but want their listings to travel further online.",
     image: "/media/listings/listing-09.png",
@@ -64,26 +84,62 @@ const services = [
   },
 ];
 
+const listingTiers = [
+  { name: "Listing Essentials", price: "$600", details: "10 photos + listing video" },
+  { name: "Listing Standard", price: "$800", details: "15 photos + listing video" },
+  { name: "Listing Premium", price: "$1,000", details: "20 photos + listing video" },
+];
+
+const addOns = [
+  {
+    name: "Vertical Social Video",
+    price: "$300 – $450",
+    details: "$300 for monthly management clients · $450 standalone",
+  },
+  {
+    name: "Drone — Small Add-On",
+    price: "$100",
+    details: "1–3 drone photos. Front of property, exterior, or context shot.",
+  },
+  {
+    name: "Drone — Larger Add-On",
+    price: "$200",
+    details: "~3 extra drone shots: wide area, top of building, front, location/context.",
+  },
+];
+
 const faqs = [
   {
-    q: "Do you only work with luxury agencies?",
-    a: "We specialise in premium and boutique real estate, but we work with any agency that takes its brand seriously and wants a long-term partner — not a freelancer.",
+    q: "What does the $1,800 actually cover?",
+    a: "Monthly management starts at $1,800 and covers the content system — filming, editing, captions, scheduling, and the monthly planning behind it. Where an agency needs more volume, more channels, or paid distribution on top, we quote that against what you're actually trying to hit rather than pushing you into a bigger tier.",
   },
   {
-    q: "Where are you based and how far do you travel?",
-    a: "We're Australia-based and service Australia-wide. Most production happens in Sydney metro; for regional or interstate work we plan filming in batches to keep it efficient.",
+    q: "Is the monthly management locked in?",
+    a: "No long-term lock-ins. We work to a quarterly cadence so the system has time to compound, but you're not locked into multi-year contracts.",
   },
   {
-    q: "Can I just buy listing photos without the monthly package?",
-    a: "Yes. Listing photography and video are sold per-job. The monthly package is separate and optional, but the two work very well together.",
+    q: "Can I just buy listing photos without monthly management?",
+    a: "Yes. Listing photography and video are sold per listing at $600, $800, or $1,000. Monthly management is separate and optional — the two work very well together, but neither requires the other.",
   },
   {
     q: "How do drone shots work?",
     a: "We add drone to listing media for $100 (1–3 shots) or $200 for a wider package — front of property, location/context, top-of-building, etc. Adjusted to suit the property.",
   },
   {
+    q: "How does invoicing work?",
+    a: "Monthly management is invoiced at the start of each cycle. Listing media is invoiced once the property is shot and delivered.",
+  },
+  {
+    q: "Do you film in person each month?",
+    a: "Yes. We film monthly content batches in person — typically a half-day at your office or out on a listing — to capture team, agent, and listing-based content together.",
+  },
+  {
+    q: "Where are you based and how far do you travel?",
+    a: "We're Australia-based and service Australia-wide. Most production happens in Sydney metro; for regional or interstate work we plan filming in batches to keep it efficient.",
+  },
+  {
     q: "Can you handle paid social as well?",
-    a: "Yes — paid social is part of our Growth Management offering. We typically wait until your organic system is producing strong creative before scaling spend.",
+    a: "Yes. We typically wait until your organic system is producing strong creative before scaling spend, then quote distribution on top of management.",
   },
 ];
 
@@ -106,13 +162,13 @@ export default function ServicesPage() {
         <Container className="relative w-full pb-16 md:pb-24">
           <Reveal>
             <Eyebrow>
-              <span className="!text-white/85">Services</span>
+              <span className="!text-white/85">Services & pricing</span>
             </Eyebrow>
             <h1 className="mt-3 h-display text-5xl md:text-6xl text-white max-w-3xl">
               One studio. Every layer of your real estate brand.
             </h1>
             <p className="mt-5 text-white/80 max-w-2xl text-lg">
-              From your monthly content rhythm to the photography on your next listing — designed and produced by a single team.
+              From your monthly content rhythm to the photography on your next listing — designed and produced by a single team, priced so you know where you stand before the call.
             </p>
           </Reveal>
         </Container>
@@ -131,18 +187,17 @@ export default function ServicesPage() {
               <Reveal direction={s.reverse ? "left" : "right"} className="md:col-span-5 [direction:ltr]">
                 <Eyebrow>{s.eyebrow}</Eyebrow>
                 <h2 className="mt-3 h-display text-3xl md:text-4xl text-re-ink">{s.title}</h2>
+
+                <p className="mt-4 font-serif text-4xl text-re-blue">
+                  {s.price}
+                  <span className="ml-2 text-sm font-sans text-re-stone">{s.priceSub}</span>
+                </p>
+
                 <p className="mt-5 text-re-stone leading-relaxed">{s.body}</p>
 
                 <div className="mt-8">
                   <p className="label-eyebrow">Includes</p>
-                  <ul className="mt-3 space-y-2 text-sm text-re-ink">
-                    {s.includes.map((i) => (
-                      <li key={i} className="flex gap-3">
-                        <span className="mt-2 h-1 w-3 bg-re-blue-accent shrink-0" />
-                        {i}
-                      </li>
-                    ))}
-                  </ul>
+                  <ServiceIncludes items={s.includes} />
                 </div>
 
                 <div className="mt-6 bg-re-blue-light p-5 border-l-2 border-re-blue-accent">
@@ -152,7 +207,7 @@ export default function ServicesPage() {
 
                 <div className="mt-7">
                   <CTAButton href="/contact" variant="outline">
-                    Talk to us about this
+                    Enquire about this
                   </CTAButton>
                 </div>
               </Reveal>
@@ -160,6 +215,102 @@ export default function ServicesPage() {
           </Container>
         </Section>
       ))}
+
+      {/* LISTING TIERS */}
+      <Section className="bg-white border-y border-re-stone-light">
+        <Container>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+            <Reveal direction="left" className="md:col-span-5">
+              <Eyebrow>Listing media</Eyebrow>
+              <H2 className="mt-3">Per-listing pricing.</H2>
+              <p className="mt-5 text-re-stone leading-relaxed">
+                Editorial-grade photography paired with a horizontal listing video — every package, every time. Add vertical, drone, or both below.
+              </p>
+              <div className="relative mt-8 aspect-[4/5] overflow-hidden bg-re-stone-light group">
+                <Image
+                  src="/media/listings/listing-12.png"
+                  alt="Listing photography"
+                  fill
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                  className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+                />
+              </div>
+            </Reveal>
+            <Stagger className="md:col-span-7 grid grid-cols-1 gap-4" staggerChildren={0.08}>
+              {listingTiers.map((p) => (
+                <StaggerChild
+                  key={p.name}
+                  className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 p-6 md:p-7 border border-re-stone-light bg-re-ivory hover:border-re-blue/40 hover:bg-white transition-all duration-500"
+                >
+                  <div>
+                    <p className="label-eyebrow">{p.name}</p>
+                    <p className="mt-2 font-serif text-2xl text-re-ink">{p.details}</p>
+                  </div>
+                  <p className="font-serif text-3xl text-re-blue">{p.price}</p>
+                </StaggerChild>
+              ))}
+            </Stagger>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ADD-ONS */}
+      <Section>
+        <Container>
+          <Reveal>
+            <div className="max-w-2xl mb-12">
+              <Eyebrow>Add-ons</Eyebrow>
+              <H2 className="mt-3">Add depth to any listing.</H2>
+              <p className="mt-5 text-re-stone leading-relaxed">
+                Vertical and drone are priced individually so you can scale presentation to the property — not the other way around.
+              </p>
+            </div>
+          </Reveal>
+          <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-4" staggerChildren={0.08}>
+            {addOns.map((a) => (
+              <StaggerChild
+                key={a.name}
+                className="p-7 border border-re-stone-light bg-re-ivory hover:border-re-blue/40 hover:bg-white transition-all duration-500"
+              >
+                <p className="label-eyebrow">{a.name}</p>
+                <p className="mt-2 font-serif text-3xl text-re-blue">{a.price}</p>
+                <p className="mt-3 text-sm text-re-stone leading-relaxed">{a.details}</p>
+              </StaggerChild>
+            ))}
+          </Stagger>
+        </Container>
+      </Section>
+
+      {/* SCALING BEYOND */}
+      <Section className="bg-re-blue text-white">
+        <Container>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
+            <Reveal className="md:col-span-7">
+              <Eyebrow light>Beyond the monthly system</Eyebrow>
+              <H2 light className="mt-3">
+                More volume, more channels, paid distribution.
+              </H2>
+              <p className="mt-5 text-white/75 leading-relaxed text-lg">
+                Once the foundation is producing, the next move is different for every agency — higher content velocity, paid social behind the creative that's working, or the full solution with listing media rolled in. We scope it against your listing volume and goals rather than sell you a bigger tier.
+              </p>
+            </Reveal>
+            <Reveal className="md:col-span-5" delay={0.12}>
+              <div className="border border-white/20 p-8">
+                <p className="label-eyebrow !text-white/70">Tailored</p>
+                <p className="mt-3 font-serif text-4xl text-white">On request</p>
+                <p className="mt-4 text-white/75 text-sm leading-relaxed">
+                  Tell us your listing volume, current content, and where you want to be in 90 days — we&apos;ll come back with a scope and a number.
+                </p>
+                <div className="mt-7">
+                  <CTAButton href="/contact" variant="outline-light">
+                    Enquire now
+                  </CTAButton>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </Container>
+      </Section>
 
       {/* FAQ */}
       <Section dark>
@@ -171,7 +322,7 @@ export default function ServicesPage() {
                 Common questions, answered.
               </H2>
               <p className="mt-5 text-white/70 leading-relaxed">
-                Still unsure if we're a fit? A 30-minute call is the fastest way to find out.
+                Still unsure if we&apos;re a fit? A 30-minute call is the fastest way to find out.
               </p>
             </Reveal>
             <Reveal direction="up" className="md:col-span-8" delay={0.15}>
@@ -189,12 +340,12 @@ export default function ServicesPage() {
               <Eyebrow>Next step</Eyebrow>
               <H2 className="mt-3">Find the right service for your agency.</H2>
               <p className="mt-5 text-re-stone text-lg">
-                We'll review your current content, your goals, and where the highest-leverage move is right now — before you commit to anything.
+                We&apos;ll review your current content, your goals, and where the highest-leverage move is right now — before you commit to anything.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <CTAButton href="/contact">Book a strategy call</CTAButton>
-                <CTAButton href="/packages" variant="outline">
-                  See packages
+                <CTAButton href="/work" variant="outline">
+                  See the work
                 </CTAButton>
               </div>
             </div>

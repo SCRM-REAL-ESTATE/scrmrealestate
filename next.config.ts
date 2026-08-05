@@ -15,6 +15,10 @@ const mediaHost = (() => {
 })();
 
 const nextConfig: NextConfig = {
+  // Packages folded into Services — keep old links and search results working.
+  async redirects() {
+    return [{ source: "/packages", destination: "/services", permanent: true }];
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [

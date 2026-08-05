@@ -40,8 +40,7 @@ src/
   app/
     layout.tsx              ← root shell, metadata, JSON-LD
     page.tsx                ← Home
-    services/page.tsx
-    packages/page.tsx
+    services/page.tsx       ← services + pricing (packages folded in)
     work/page.tsx
     about/page.tsx
     contact/page.tsx
@@ -53,7 +52,8 @@ src/
     GlitchTransition.tsx    ← CRT glitch animation when Automotive clicked
     Logo.tsx                ← text-based logo placeholder
     ContactForm.tsx         ← Supabase-wired enquiry form
-    WorkGallery.tsx         ← filterable masonry gallery
+    WorkGallery.tsx         ← filterable gallery, video-first
+    ServiceIncludes.tsx     ← deliverables that open their own examples
     FAQAccordion.tsx
     ui.tsx                  ← Container, Section, CTAButton, Eyebrow, H2
   lib/
@@ -90,10 +90,17 @@ Everything in the Work gallery comes from `src/data/media.json`, which is genera
 
    | Folder | Holds | Gallery filter |
    | ------ | ----- | -------------- |
-   | `media-src/listings/` | photos | Listing Photography |
+   | `media-src/property/` | photos | Listing Photography |
    | `media-src/vertical/` | 9:16 video | Vertical Video |
    | `media-src/landscape/` | 16:9 video | Listing Video |
-   | `media-src/agency/` | brand / team video | Brand & Team |
+   | `media-src/carousels/` | photos | Carousel Posts |
+   | `media-src/detail/` | photos or video | Stories & Detail |
+   | `media-src/testimonials/` | photos or video | Testimonials |
+   | `media-src/agency/` | photos or video | Brand & Team |
+
+   The last four accept photos and video together, so a folder of mixed story
+   content can go in as-is. (`media-src/listings/` still works as an alias for
+   `property/`.)
 
    Raw camera exports are fine — files are compressed before upload. Filenames are tidied automatically (`My Reel 01.MOV` → `my-reel-01.mp4`), so name them however you like. iPhone `.HEIC` photos are the one exception: export them as JPG first.
 
@@ -104,6 +111,8 @@ Everything in the Work gallery comes from `src/data/media.json`, which is genera
    ```
 
 3. Commit the regenerated `src/data/media.json`. The new work is live on the next deploy.
+
+Two things happen automatically as categories fill up: the Work gallery grows a filter button for each category that has work in it, and the "see examples" links on the Services page start working — `8 social media videos per month` opens the vertical reels, `6 posts` opens the carousels, `6 stories` opens the detail shots. A category with nothing in it stays hidden rather than showing an empty state.
 
 Adding is additive — a run only ever adds or updates what you supplied, so you can empty `media-src/` between batches without losing anything already published. To **remove** work, delete the file from Supabase Storage and re-run with `--replace`, which rebuilds the folders you supplied files for.
 

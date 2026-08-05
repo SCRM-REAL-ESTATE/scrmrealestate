@@ -111,17 +111,17 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* PACKAGES PREVIEW */}
+      {/* PRICING PREVIEW */}
       <Section className="bg-white border-y border-re-stone-light">
         <Container>
           <Reveal>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
               <div className="max-w-xl">
-                <Eyebrow>Packages</Eyebrow>
+                <Eyebrow>Services & pricing</Eyebrow>
                 <H2 className="mt-3">Built for the way agencies actually grow.</H2>
               </div>
-              <Link href="/packages" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
-                View all packages
+              <Link href="/services" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
+                See services & pricing
                 <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
               </Link>
             </div>
@@ -130,26 +130,26 @@ export default function HomePage() {
           <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerChildren={0.1}>
             {[
               {
-                t: "Minimum Management",
-                p: "$1,500",
+                t: "Social Media Management",
+                p: "From $1,800",
                 pSub: "/ month",
                 d: "Brand awareness, listing showcase, and social proof handled monthly.",
                 feat: ["8 videos", "6 posts", "6 stories", "Strategy & planning"],
-              },
-              {
-                t: "Growth Management",
-                p: "On request",
-                pSub: "tailored",
-                d: "Scale content velocity with paid distribution and stronger creative output.",
-                feat: ["Everything in Minimum", "Paid social", "More volume", "Quarterly review"],
-              },
-              {
-                t: "Full Solution",
-                p: "Most complete",
-                pSub: "all-in-one",
-                d: "Content, listings, photography, video and ongoing partnership.",
-                feat: ["All content", "Listing media included", "Vertical add-ons", "Priority production"],
                 featured: true,
+              },
+              {
+                t: "Listing Photography & Video",
+                p: "$600 – $1,000",
+                pSub: "per listing",
+                d: "Editorial photography and a horizontal listing video, every time.",
+                feat: ["10 / 15 / 20 photos", "Listing video included", "Same-day production", "Portal + social ready"],
+              },
+              {
+                t: "Vertical Listing Video",
+                p: "$300 – $450",
+                pSub: "per listing",
+                d: "Reels-first short-form that turns one listing into a week of distribution.",
+                feat: ["Hook-driven edit", "Captions included", "$300 for monthly clients", "Drone from $100"],
               },
             ].map((pkg) => (
               <StaggerChild
@@ -162,7 +162,7 @@ export default function HomePage() {
               >
                 {pkg.featured && (
                   <span className="absolute -top-3 left-8 bg-re-gold-thin text-re-ink text-[10px] tracking-[0.22em] uppercase px-3 py-1">
-                    Most Complete
+                    Most Popular
                   </span>
                 )}
                 <p className={`label-eyebrow ${pkg.featured ? "!text-white/70" : ""}`}>{pkg.t}</p>
@@ -301,8 +301,8 @@ export default function HomePage() {
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <CTAButton href="/contact">Book a call</CTAButton>
-                <CTAButton href="/packages" variant="outline-light">
-                  View packages
+                <CTAButton href="/services" variant="outline-light">
+                  See services & pricing
                 </CTAButton>
               </div>
             </div>

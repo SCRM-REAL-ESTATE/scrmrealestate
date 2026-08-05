@@ -16,10 +16,15 @@
  * media.json and the new items appear on the site at the next deploy.
  *
  * ── Folders ────────────────────────────────────────────────────────────────
- *   media-src/listings/    photos          → "Listing Photography" filter
- *   media-src/vertical/    9:16 video      → "Vertical Video" filter
- *   media-src/landscape/   16:9 video      → "Listing Video" filter
- *   media-src/agency/      brand/team video→ "Brand & Team" filter
+ *   media-src/property/      photos            → "Listing Photography"
+ *   media-src/vertical/      9:16 video        → "Vertical Video"
+ *   media-src/landscape/     16:9 video        → "Listing Video"
+ *   media-src/carousels/     photos            → "Carousel Posts"
+ *   media-src/detail/        photos or video   → "Stories & Detail"
+ *   media-src/testimonials/  photos or video   → "Testimonials"
+ *   media-src/agency/        photos or video   → "Brand & Team"
+ *
+ *   (media-src/listings/ still works as an alias for property/.)
  *
  * ── Setup (once) ───────────────────────────────────────────────────────────
  *   ffmpeg:   macOS  brew install ffmpeg
@@ -54,12 +59,19 @@ const OUT_ROOT = "public/media-web";
 const MANIFEST = "src/data/media.json";
 const BUCKET = "media";
 
-/** Per-folder rules. `category` is what the gallery filter buttons match on. */
+/**
+ * Per-folder rules. `category` is what the gallery filter buttons match on;
+ * `kind` is what the folder accepts — "mixed" takes photos and video together.
+ */
 const FOLDERS = {
   listings: { kind: "image", category: "listing" },
+  property: { kind: "image", category: "listing" }, // alias — "Property Shots"
   vertical: { kind: "video", category: "vertical" },
   landscape: { kind: "video", category: "landscape" },
-  agency: { kind: "video", category: "agency" },
+  carousels: { kind: "image", category: "carousel" },
+  detail: { kind: "mixed", category: "detail" }, // detail / vertical shots → stories
+  testimonials: { kind: "mixed", category: "testimonial" },
+  agency: { kind: "mixed", category: "agency" }, // brand and team
 };
 
 const VIDEO_EXT = new Set([".mp4", ".mov", ".m4v", ".avi", ".mkv", ".webm"]);
@@ -229,19 +241,25 @@ async function buildFolder(root, folder, ffmpeg) {
 
   const entries = [];
   const uploads = [];
+  const usedNames = new Set();
 
   for (const src of files) {
     const ext = extname(src).toLowerCase();
-    const actualKind = VIDEO_EXT.has(ext) ? "video" : "image";
-    if (actualKind !== kind) {
+    const itemKind = VIDEO_EXT.has(ext) ? "video" : "image";
+    if (kind !== "mixed" && itemKind !== kind) {
       console.log(
-        `  ${c.yellow("skip")} ${basename(src)} ${c.dim(`— ${folder}/ holds ${kind}s, this is ${actualKind === "video" ? "a video" : "a photo"}`)}`
+        `  ${c.yellow("skip")} ${basename(src)} ${c.dim(`— ${folder}/ holds ${kind}s, this is ${itemKind === "video" ? "a video" : "a photo"}`)}`
       );
       continue;
     }
 
-    const stem = slugify(basename(src, extname(src)));
-    const outName = kind === "video" ? `${stem}.mp4` : `${stem}.jpg`;
+    // A mixed folder can hold reel.mp4 (poster reel.jpg) and a photo also
+    // called reel.jpg — de-duplicate so neither silently overwrites the other.
+    let stem = slugify(basename(src, extname(src)));
+    for (let n = 2; usedNames.has(stem); n++) stem = `${slugify(basename(src, extname(src)))}-${n}`;
+    usedNames.add(stem);
+
+    const outName = itemKind === "video" ? `${stem}.mp4` : `${stem}.jpg`;
     const out = join(outDir, outName);
     const posterName = `${stem}.jpg`;
     const poster = join(outDir, posterName);
@@ -264,7 +282,7 @@ async function buildFolder(root, folder, ffmpeg) {
     } else if (needsBuild) {
       process.stdout.write(`  ${c.dim("compressing")} ${label} … `);
       try {
-        if (kind === "video") {
+        if (itemKind === "video") {
           await compressVideo(src, out);
           await makePoster(src, poster);
         } else {
@@ -280,7 +298,7 @@ async function buildFolder(root, folder, ffmpeg) {
       console.log(c.green(`${mb(before)} → ${mb(after)}`));
     } else {
       console.log(`  ${c.dim("cached")} ${label}`);
-      if (kind === "video" && !existsSync(poster)) await makePoster(src, poster).catch(() => {});
+      if (itemKind === "video" && !existsSync(poster)) await makePoster(src, poster).catch(() => {});
     }
 
     const size = statSync(out).size;
@@ -292,13 +310,13 @@ async function buildFolder(root, folder, ffmpeg) {
     // ── record for the manifest
     const dims = (await probeSize(out)) ?? { width: 0, height: 0 };
     const entry = {
-      type: kind,
+      type: itemKind,
       category,
       src: `${folder}/${outName}`,
       width: dims.width,
       height: dims.height,
     };
-    const hasPoster = kind === "video" && existsSync(poster);
+    const hasPoster = itemKind === "video" && existsSync(poster);
     if (hasPoster) entry.poster = `${folder}/${posterName}`;
     entries.push(entry);
 

@@ -34,6 +34,7 @@ export default function Header() {
   }, []);
 
   return (
+    <>
     <header
       className={`fixed top-[var(--topbar-h)] inset-x-0 z-40 transition-[background-color,box-shadow,backdrop-filter] duration-300 ${
         scrolled
@@ -92,9 +93,17 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile drawer */}
+    </header>
+
+      {/*
+        Mobile drawer — deliberately a sibling of <header>, not a child. The
+        scrolled header carries backdrop-blur, and a backdrop-filter makes its
+        element the containing block for fixed descendants: nested here, the
+        drawer was being clipped to the header bar and rendered under the
+        top bar's z-50. Outside it, `fixed inset-0` means the viewport again.
+      */}
       <div
-        className={`lg:hidden fixed inset-0 z-50 transition ${open ? "pointer-events-auto" : "pointer-events-none"}`}
+        className={`lg:hidden fixed inset-0 z-[60] transition ${open ? "pointer-events-auto" : "pointer-events-none"}`}
         aria-hidden={!open}
       >
         <button
@@ -160,6 +169,6 @@ export default function Header() {
           </div>
         </aside>
       </div>
-    </header>
+    </>
   );
 }

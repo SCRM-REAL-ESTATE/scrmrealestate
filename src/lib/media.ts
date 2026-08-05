@@ -1,3 +1,4 @@
+import type { LightboxItem } from "@/components/VideoLightbox";
 import manifest from "@/data/media.json";
 import { MEDIA_BASE_URL } from "./site";
 
@@ -7,7 +8,14 @@ import { MEDIA_BASE_URL } from "./site";
  * files into media-src/, run the command, commit the manifest.
  */
 
-export type MediaCategory = "listing" | "vertical" | "landscape" | "agency";
+export type MediaCategory =
+  | "listing" // property / listing photography
+  | "vertical" // 9:16 listing reels
+  | "landscape" // horizontal listing videos
+  | "carousel" // carousel post artwork
+  | "detail" // detail + vertical shots, used as stories
+  | "testimonial" // client testimonial clips
+  | "agency"; // brand and team
 
 export type MediaItem = {
   type: "image" | "video";
@@ -21,6 +29,27 @@ export type MediaItem = {
   alt?: string;
 };
 
+/** Display order and copy for the gallery filters and the service examples. */
+export const CATEGORY_LABELS: Record<MediaCategory, string> = {
+  listing: "Listing Photography",
+  vertical: "Vertical Video",
+  landscape: "Listing Video",
+  carousel: "Carousel Posts",
+  detail: "Stories & Detail",
+  testimonial: "Testimonials",
+  agency: "Brand & Team",
+};
+
+export const CATEGORY_ORDER: MediaCategory[] = [
+  "listing",
+  "vertical",
+  "landscape",
+  "carousel",
+  "detail",
+  "testimonial",
+  "agency",
+];
+
 /** Site-absolute paths and full URLs pass through; bucket keys get the CDN prefix. */
 export function mediaUrl(path: string): string {
   if (path.startsWith("/") || /^https?:\/\//.test(path)) return path;
@@ -32,6 +61,9 @@ const DEFAULT_RATIO: Record<MediaCategory, number> = {
   listing: 4 / 5,
   vertical: 9 / 16,
   landscape: 16 / 9,
+  carousel: 1,
+  detail: 9 / 16,
+  testimonial: 9 / 16,
   agency: 9 / 16,
 };
 
@@ -40,8 +72,27 @@ export function aspectRatio(item: MediaItem): number {
   return DEFAULT_RATIO[item.category];
 }
 
+export const isPortrait = (item: MediaItem) => aspectRatio(item) < 1;
+
 export const MEDIA_ITEMS: MediaItem[] = manifest.items as MediaItem[];
 
-export function mediaByCategory(category: MediaCategory): MediaItem[] {
-  return MEDIA_ITEMS.filter((item) => item.category === category);
+export function mediaByCategory(...categories: MediaCategory[]): MediaItem[] {
+  return MEDIA_ITEMS.filter((item) => categories.includes(item.category));
+}
+
+export function toLightboxItem(item: MediaItem): LightboxItem {
+  if (item.type === "video") {
+    return {
+      type: "video",
+      src: mediaUrl(item.src),
+      poster: item.poster ? mediaUrl(item.poster) : undefined,
+      aspect: isPortrait(item) ? "9/16" : "16/9",
+    };
+  }
+  return { type: "image", src: mediaUrl(item.src), alt: item.alt };
+}
+
+/** Categories that actually have work in them — empty filters are never shown. */
+export function populatedCategories(): MediaCategory[] {
+  return CATEGORY_ORDER.filter((category) => MEDIA_ITEMS.some((item) => item.category === category));
 }
