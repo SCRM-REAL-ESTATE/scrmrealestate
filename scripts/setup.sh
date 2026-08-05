@@ -73,8 +73,24 @@ fi
 
 # ── 4. Supabase keys ───────────────────────────────────────────────────────
 step "4. Supabase keys"
+have_key=false
 if [ -f .env.local ] && grep -q "^SUPABASE_SERVICE_ROLE_KEY=." .env.local 2>/dev/null; then
-  ok ".env.local already has a service role key"
+  have_key=true
+fi
+
+# A saved key can be stale — revoked, rotated, or from another project — and
+# there's no way to tell from here. Always offer to replace it rather than
+# silently reusing one that will fail at upload time.
+replace_key=false
+if [ "$have_key" = true ] && interactive; then
+  ok ".env.local already has a key ($(grep "^SUPABASE_SERVICE_ROLE_KEY=" .env.local | cut -d= -f2- | cut -c1-16)…)"
+  printf "  Replace it? [y/N] "
+  ans=""; read -r ans || true
+  case "$ans" in [yY]*) replace_key=true ;; esac
+fi
+
+if [ "$have_key" = true ] && [ "$replace_key" = false ]; then
+  ok "keeping the saved key"
 elif interactive; then
   echo "  Supabase → scrm-real-estate-web → Settings → API Keys."
   echo "  You want the SECRET key (sb_secret_…), not the publishable one."
