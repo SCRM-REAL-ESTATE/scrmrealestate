@@ -61,6 +61,7 @@ src/
     media.ts                ← reads media.json, resolves CDN URLs
     supabase.ts             ← Supabase client (no-op when env missing)
 scripts/
+  setup.sh                  ← `npm run setup` — one-time machine setup
   sync-media.mjs            ← `npm run media` — compress, upload, regenerate
 supabase/
   schema.sql                ← run once in the Supabase SQL editor
@@ -73,6 +74,14 @@ supabase/
 Everything in the Work gallery comes from `src/data/media.json`, which is generated — you never edit it by hand. One command compresses your files, uploads them to Supabase Storage, and rewrites that list.
 
 **Setup, once:**
+
+```bash
+npm run setup
+```
+
+Checks Node, installs dependencies, offers to install ffmpeg via Homebrew, asks for your Supabase keys, creates the drop folder and opens it in Finder. Safe to re-run — anything already done is skipped.
+
+Doing it by hand instead:
 
 1. Install ffmpeg — macOS `brew install ffmpeg`, Windows `winget install Gyan.FFmpeg`.
 2. Add your Supabase service role key to `.env.local` (**Project Settings → API**):
@@ -223,5 +232,6 @@ npm run dev      # local dev server
 npm run build    # production build (also runs type-check + lint)
 npm run start    # serve the built output
 npm run lint     # lint only
+npm run setup    # one-time: deps, ffmpeg, keys, drop folder
 npm run media    # compress + publish every photo and video (see below)
 ```

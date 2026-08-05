@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "media": "node scripts/sync-media.mjs"
+    "media": "node scripts/sync-media.mjs",
+    "setup": "bash scripts/setup.sh"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.47.0",
