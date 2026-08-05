@@ -47,14 +47,14 @@
 import { createClient } from "@supabase/supabase-js";
 import { execFile } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { basename, extname, join } from "node:path";
+import { basename, extname, join, resolve } from "node:path";
 import { promisify } from "node:util";
 
 const run = promisify(execFile);
 
 /* ── config ──────────────────────────────────────────────────────────────── */
 
-const SRC_ROOTS = ["media-src", "public/media"]; // first one that exists wins
+const SRC_ROOT = "media-src"; // the drop folder — created on first run
 const OUT_ROOT = "public/media-web";
 const MANIFEST = "src/data/media.json";
 const BUCKET = "media";
@@ -205,8 +205,26 @@ async function compressImage(src, out) {
 
 /* ── discovery ───────────────────────────────────────────────────────────── */
 
-function sourceRoot() {
-  return SRC_ROOTS.find((root) => existsSync(root)) ?? null;
+/**
+ * First run has nowhere to put files, so make the drop folder rather than
+ * fail at someone who hasn't been told where it lives.
+ */
+function ensureSourceRoot() {
+  if (existsSync(SRC_ROOT)) return true;
+
+  for (const folder of Object.keys(FOLDERS)) {
+    if (folder === "listings") continue; // legacy alias, no need to create it
+    mkdirSync(join(SRC_ROOT, folder), { recursive: true });
+  }
+
+  console.log(c.bold(`\nCreated ${SRC_ROOT}/ with a folder for each kind of work:\n`));
+  for (const [folder, { category }] of Object.entries(FOLDERS)) {
+    if (folder === "listings") continue;
+    console.log(`  ${SRC_ROOT}/${folder.padEnd(14)} ${c.dim(`→ ${category}`)}`);
+  }
+  console.log(c.dim(`\n  It's at: ${resolve(SRC_ROOT)}`));
+  console.log(c.yellow("\n  Drop your photos and videos into those folders, then run this again.\n"));
+  return false;
 }
 
 function findSources(root, folder) {
@@ -436,11 +454,8 @@ function mergeManifest(previous, built, touchedFolders) {
 async function main() {
   loadEnv();
 
-  const root = sourceRoot();
-  if (!root) {
-    console.error(c.red(`No source folder found. Create media-src/ with subfolders: ${Object.keys(FOLDERS).join(", ")}`));
-    process.exit(1);
-  }
+  if (!ensureSourceRoot()) return;
+  const root = SRC_ROOT;
 
   const folders = Object.keys(FOLDERS).filter((f) => (ONLY.length ? ONLY.includes(f) : true));
   if (folders.length === 0) {
