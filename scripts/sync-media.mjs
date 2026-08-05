@@ -441,9 +441,13 @@ function mergeManifest(previous, built, touchedFolders, baseUrl) {
   // one. Repo-hosted files (src starting with "/") are unaffected.
   const movedBucket = Boolean(baseUrl) && previous.baseUrl !== baseUrl;
 
+  // Repo-served ("/media/…") and fully-qualified ("https://…") entries stand on
+  // their own; only bucket-relative keys depend on which bucket is current.
+  const selfContained = (src) => src.startsWith("/") || /^https?:\/\//.test(src);
+
   const kept = (previous.items ?? []).filter((item) => {
     if (REPLACE && touched.has(item.category)) return false;
-    if (movedBucket && !item.src.startsWith("/")) return false;
+    if (movedBucket && !selfContained(item.src)) return false;
     return true;
   });
 
