@@ -217,11 +217,23 @@ async function compressImage(src, out) {
  * fail at someone who hasn't been told where it lives.
  */
 function ensureSourceRoot() {
-  if (existsSync(SRC_ROOT)) return true;
+  const firstRun = !existsSync(SRC_ROOT);
 
+  // Create whatever's missing — including folders added after first setup,
+  // so a new section (like ads/) appears for existing installs on git pull.
+  const created = [];
   for (const folder of Object.keys(FOLDERS)) {
     if (folder === "listings") continue; // legacy alias, no need to create it
-    mkdirSync(join(SRC_ROOT, folder), { recursive: true });
+    const dir = join(SRC_ROOT, folder);
+    if (!existsSync(dir)) {
+      mkdirSync(dir, { recursive: true });
+      created.push(folder);
+    }
+  }
+
+  if (!firstRun) {
+    for (const folder of created) console.log(c.dim(`  created new folder: ${SRC_ROOT}/${folder}/`));
+    return true;
   }
 
   console.log(c.bold(`\nCreated ${SRC_ROOT}/ with a folder for each kind of work:\n`));
