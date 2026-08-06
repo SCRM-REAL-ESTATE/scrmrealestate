@@ -33,13 +33,13 @@ export default function WorkPage() {
       <Section className="bg-re-ivory border-t border-re-stone-light">
         <Container>
           <Reveal>
-            <div className="max-w-3xl bg-white border border-re-stone-light p-8 md:p-12">
+            <div className="max-w-3xl mx-auto bg-white border border-re-stone-light p-8 md:p-12 text-center">
               <Eyebrow>A note on this gallery</Eyebrow>
               <H2 className="mt-3">More than fits on one page.</H2>
               <p className="mt-5 text-re-stone leading-relaxed text-lg">
                 The strongest examples of our work — full account dashboards, results, vertical reels, and live campaigns — are best shown on a call. We'll walk you through what worked, what didn't, and what we'd do for your agency.
               </p>
-              <div className="mt-8">
+              <div className="mt-8 flex justify-center">
                 <CTAButton href="/contact">Book a walk-through</CTAButton>
               </div>
             </div>
