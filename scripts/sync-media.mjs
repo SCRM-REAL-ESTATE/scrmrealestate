@@ -20,11 +20,17 @@
  *   media-src/vertical/      9:16 video        → "Vertical Video"
  *   media-src/landscape/     16:9 video        → "Listing Video"
  *   media-src/carousels/     photos            → "Carousel Posts"
+ *   media-src/ads/           photos or video   → "Ads"
  *   media-src/detail/        photos or video   → "Stories & Detail"
  *   media-src/testimonials/  photos or video   → "Testimonials"
  *   media-src/agency/        photos or video   → "Brand & Team"
  *
  *   (media-src/listings/ still works as an alias for property/.)
+ *
+ *   In carousels/ and ads/, one POST or AD can have many files. Give each its
+ *   own subfolder (ads/spring-campaign/v1.mp4, v2.mp4 …) — or name flat files
+ *   with a shared prefix + number (promo-1.jpg, promo-2.jpg). Either way the
+ *   site shows one tile you click through.
  *
  * ── Setup (once) ───────────────────────────────────────────────────────────
  *   ffmpeg:   macOS  brew install ffmpeg
@@ -68,7 +74,8 @@ const FOLDERS = {
   property: { kind: "image", category: "listing" }, // alias — "Property Shots"
   vertical: { kind: "video", category: "vertical" },
   landscape: { kind: "video", category: "landscape" },
-  carousels: { kind: "image", category: "carousel" },
+  carousels: { kind: "image", category: "carousel", sets: true },
+  ads: { kind: "mixed", category: "ad", sets: true }, // ad variations + carousel ads
   detail: { kind: "mixed", category: "detail" }, // detail / vertical shots → stories
   testimonials: { kind: "mixed", category: "testimonial" },
   agency: { kind: "mixed", category: "agency" }, // brand and team
@@ -233,22 +240,42 @@ function findSources(root, folder) {
 
   const files = [];
   const skipped = [];
-  for (const name of readdirSync(dir).sort(naturalSort)) {
-    const path = join(dir, name);
-    if (!statSync(path).isFile() || name.startsWith(".")) continue;
 
+  const collect = (path, name, set) => {
     const ext = extname(name).toLowerCase();
     if (UNSUPPORTED_EXT.has(ext)) skipped.push({ name, reason: `${ext} can't be read by ffmpeg — export as JPG or MP4 first` });
-    else if (VIDEO_EXT.has(ext) || IMAGE_EXT.has(ext)) files.push(path);
+    else if (VIDEO_EXT.has(ext) || IMAGE_EXT.has(ext)) files.push({ path, set });
     else skipped.push({ name, reason: `unrecognised file type (${ext || "no extension"})` });
+  };
+
+  for (const name of readdirSync(dir).sort(naturalSort)) {
+    if (name.startsWith(".")) continue;
+    const path = join(dir, name);
+    const stat = statSync(path);
+    if (stat.isFile()) {
+      collect(path, name, null);
+    } else if (stat.isDirectory()) {
+      // A subfolder is a named set — every file in it belongs to one post/ad.
+      for (const inner of readdirSync(path).sort(naturalSort)) {
+        if (inner.startsWith(".")) continue;
+        const innerPath = join(path, inner);
+        if (statSync(innerPath).isFile()) collect(innerPath, `${name}/${inner}`, slugify(name));
+      }
+    }
   }
   return { files, skipped };
+}
+
+/** "promo-1.jpg" and "promo-2.jpg" belong together — the shared stem is the set. */
+function deriveSet(stem) {
+  const match = stem.match(/^(.+?)[-_]?\d+(?:[-_].*)?$/);
+  return match ? match[1] : null;
 }
 
 /* ── build: compress + probe, one folder at a time ───────────────────────── */
 
 async function buildFolder(root, folder, ffmpeg) {
-  const { kind, category } = FOLDERS[folder];
+  const { kind, category, sets } = FOLDERS[folder];
   const { files, skipped } = findSources(root, folder);
 
   for (const s of skipped) console.log(`  ${c.yellow("skip")} ${s.name} ${c.dim(`— ${s.reason}`)}`);
@@ -261,7 +288,7 @@ async function buildFolder(root, folder, ffmpeg) {
   const uploads = [];
   const usedNames = new Set();
 
-  for (const src of files) {
+  for (const { path: src, set: folderSet } of files) {
     const ext = extname(src).toLowerCase();
     const itemKind = VIDEO_EXT.has(ext) ? "video" : "image";
     if (kind !== "mixed" && itemKind !== kind) {
@@ -273,9 +300,13 @@ async function buildFolder(root, folder, ffmpeg) {
 
     // A mixed folder can hold reel.mp4 (poster reel.jpg) and a photo also
     // called reel.jpg — de-duplicate so neither silently overwrites the other.
-    let stem = slugify(basename(src, extname(src)));
-    for (let n = 2; usedNames.has(stem); n++) stem = `${slugify(basename(src, extname(src)))}-${n}`;
+    const baseStem = slugify(`${folderSet ? `${folderSet}-` : ""}${basename(src, extname(src))}`);
+    let stem = baseStem;
+    for (let n = 2; usedNames.has(stem); n++) stem = `${baseStem}-${n}`;
     usedNames.add(stem);
+
+    // Which post/ad this file belongs to: its subfolder, or its shared stem.
+    const setKey = sets ? folderSet ?? deriveSet(stem) : null;
 
     const outName = itemKind === "video" ? `${stem}.mp4` : `${stem}.jpg`;
     const out = join(outDir, outName);
@@ -336,6 +367,7 @@ async function buildFolder(root, folder, ffmpeg) {
     };
     const hasPoster = itemKind === "video" && existsSync(poster);
     if (hasPoster) entry.poster = `${folder}/${posterName}`;
+    if (setKey) entry.set = setKey;
     entries.push(entry);
 
     uploads.push({ key: `${folder}/${outName}`, path: out });

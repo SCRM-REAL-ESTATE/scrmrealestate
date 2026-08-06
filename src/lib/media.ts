@@ -13,6 +13,7 @@ export type MediaCategory =
   | "vertical" // 9:16 listing reels
   | "landscape" // horizontal listing videos
   | "carousel" // carousel post artwork — grouped into sets, shown in their own tab
+  | "ad" // ad creative — variations and carousel ads, grouped into sets
   | "detail" // detail shots used as stories
   | "testimonial" // client testimonial story frames
   | "agency"; // brand and team
@@ -24,6 +25,8 @@ export type MediaItem = {
   src: string;
   /** Poster frame for videos, so the gallery renders before anything downloads. */
   poster?: string;
+  /** Files that belong to one post/ad share a set — shown as a single tile. */
+  set?: string;
   width: number;
   height: number;
   alt?: string;
@@ -41,6 +44,7 @@ const DEFAULT_RATIO: Record<MediaCategory, number> = {
   vertical: 9 / 16,
   landscape: 16 / 9,
   carousel: 4 / 5,
+  ad: 4 / 5,
   detail: 9 / 16,
   testimonial: 9 / 16,
   agency: 9 / 16,
@@ -76,16 +80,19 @@ export function toLightboxItem(item: MediaItem): LightboxItem {
  * detail shots and the testimonial frames together. */
 
 export type GalleryFilter = {
-  id: "listing" | "vertical" | "landscape" | "carousel" | "stories" | "agency";
+  id: "listing" | "vertical" | "landscape" | "carousel" | "ads" | "stories" | "agency";
   label: string;
   categories: MediaCategory[];
+  /** Grouped tabs render one tile per set; clicking steps through the set. */
+  grouped?: boolean;
 };
 
 export const GALLERY_FILTERS: GalleryFilter[] = [
   { id: "listing", label: "Listing Photography", categories: ["listing"] },
   { id: "vertical", label: "Vertical Video", categories: ["vertical"] },
   { id: "landscape", label: "Listing Video", categories: ["landscape"] },
-  { id: "carousel", label: "Carousel Posts", categories: ["carousel"] },
+  { id: "carousel", label: "Carousel Posts", categories: ["carousel"], grouped: true },
+  { id: "ads", label: "Ads", categories: ["ad"], grouped: true },
   { id: "stories", label: "Stories", categories: ["detail", "testimonial"] },
   { id: "agency", label: "Brand & Team", categories: ["agency"] },
 ];
@@ -101,7 +108,7 @@ export function populatedFilters(): GalleryFilter[] {
  * "All" is the property work — photography and video mixed into one montage.
  * Social artwork (carousels, stories) stays in its own tabs.
  */
-const ALL_EXCLUDES: MediaCategory[] = ["carousel", "detail", "testimonial"];
+const ALL_EXCLUDES: MediaCategory[] = ["carousel", "ad", "detail", "testimonial"];
 
 export function allMontageItems(): MediaItem[] {
   const included = MEDIA_ITEMS.filter((item) => !ALL_EXCLUDES.includes(item.category));
@@ -117,21 +124,26 @@ export function allMontageItems(): MediaItem[] {
   return keyed.sort((a, b) => a.k - b.k).map((e) => e.item);
 }
 
-/* ── carousel sets ─────────────────────────────────────────────────────────
- * One tile per carousel post. Slides share a filename prefix
- * ("envesta-01…", "slide1…"), so the prefix is the set and the number is the
- * slide order. Clicking the tile steps through the whole set in the lightbox. */
+/* ── sets ──────────────────────────────────────────────────────────────────
+ * One tile per post/ad; clicking steps through its files in the lightbox.
+ * Membership comes from the manifest's `set` field (written by npm run media
+ * from subfolders or shared filename stems). Older entries without the field
+ * fall back to the leading filename prefix. A file in no set is its own tile. */
 
-export type CarouselSet = { key: string; cover: MediaItem; items: MediaItem[] };
+export type MediaSet = { key: string; cover: MediaItem; items: MediaItem[] };
 
 const naturalSort = (a: string, b: string) =>
   a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
 
-export function carouselSets(): CarouselSet[] {
+function fallbackSet(item: MediaItem): string {
+  const name = item.src.split("/").pop() ?? item.src;
+  return (name.match(/^[^0-9]+/)?.[0] ?? name).replace(/[-_.]+$/, "") || name;
+}
+
+export function mediaSets(...categories: MediaCategory[]): MediaSet[] {
   const groups = new Map<string, MediaItem[]>();
-  for (const item of mediaByCategory("carousel")) {
-    const name = item.src.split("/").pop() ?? item.src;
-    const key = (name.match(/^[^0-9]+/)?.[0] ?? name).replace(/[-_.]+$/, "") || name;
+  for (const item of mediaByCategory(...categories)) {
+    const key = item.set ?? fallbackSet(item);
     groups.set(key, [...(groups.get(key) ?? []), item]);
   }
   return [...groups.entries()]

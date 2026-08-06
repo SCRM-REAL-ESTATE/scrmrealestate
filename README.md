@@ -103,16 +103,21 @@ Doing it by hand instead:
    | `media-src/vertical/` | 9:16 video | Vertical Video |
    | `media-src/landscape/` | 16:9 video | Listing Video |
    | `media-src/carousels/` | photos | Carousel Posts |
+   | `media-src/ads/` | photos or video | Ads |
    | `media-src/detail/` | photos or video | Stories |
    | `media-src/testimonials/` | photos or video | Stories |
    | `media-src/agency/` | photos or video | Brand & Team |
 
    The last four accept photos and video together, so a folder of mixed story
    content can go in as-is. (`media-src/listings/` still works as an alias for
-   `property/`.) Carousel slides that share a filename prefix ("envesta-01",
-   "envesta-02", …) display as one post — clicking it steps through the slides
-   in order. The "All" tab shows property work only (photography + video);
-   carousels and stories live in their own tabs.
+   `property/`.)
+
+   **Carousels and ads group into sets** — one tile on the site, click to flick
+   through. Give each post/ad its own subfolder (`ads/spring-campaign/v1.mp4`,
+   `v2.mp4`, …), or name flat files with a shared prefix + number
+   (`promo-1.jpg`, `promo-2.jpg`). A file that matches neither stands alone.
+   The "All" tab shows property work only (photography + video); carousels,
+   ads, and stories live in their own tabs.
 
    Raw camera exports are fine — files are compressed before upload. Filenames are tidied automatically (`My Reel 01.MOV` → `my-reel-01.mp4`), so name them however you like. iPhone `.HEIC` photos are the one exception: export them as JPG first.
 

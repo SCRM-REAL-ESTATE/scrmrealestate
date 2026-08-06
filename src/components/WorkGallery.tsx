@@ -7,8 +7,8 @@ import {
   GALLERY_FILTERS,
   allMontageItems,
   aspectRatio,
-  carouselSets,
   mediaByCategory,
+  mediaSets,
   mediaUrl,
   populatedFilters,
   toLightboxItem,
@@ -135,15 +135,20 @@ export default function WorkGallery() {
     []
   );
 
+  const activeFilter = active === "all" ? null : GALLERY_FILTERS.find((f) => f.id === active);
+  const isGrouped = Boolean(activeFilter?.grouped);
+
   /** Everything the current tab shows, in display order. */
   const items = useMemo(() => {
     if (active === "all") return allMontageItems();
-    if (active === "carousel") return []; // rendered as sets below
-    const filter = GALLERY_FILTERS.find((f) => f.id === active);
-    return filter ? mediaByCategory(...filter.categories) : [];
-  }, [active]);
+    if (!activeFilter || activeFilter.grouped) return []; // grouped tabs render sets below
+    return mediaByCategory(...activeFilter.categories);
+  }, [active, activeFilter]);
 
-  const sets = useMemo(() => (active === "carousel" ? carouselSets() : []), [active]);
+  const sets = useMemo(
+    () => (activeFilter?.grouped ? mediaSets(...activeFilter.categories) : []),
+    [activeFilter]
+  );
   const shown = items.slice(0, visible);
 
   const selectTab = (id: TabId) => {
@@ -184,8 +189,8 @@ export default function WorkGallery() {
 
       <section className="py-12 md:py-16">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
-          {active === "carousel" ? (
-            /* One tile per carousel — click steps through its slides in order */
+          {isGrouped ? (
+            /* One tile per post/ad — click steps through its files in order */
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 items-start">
               <AnimatePresence mode="popLayout">
                 {sets.map((set, idx) => (
@@ -193,7 +198,11 @@ export default function WorkGallery() {
                     key={set.key}
                     item={set.cover}
                     index={idx}
-                    badge={`${set.items.length} slides`}
+                    badge={
+                      set.items.length > 1
+                        ? `${set.items.length} ${active === "ads" ? "versions" : "slides"}`
+                        : undefined
+                    }
                     onOpen={() => setLightbox({ items: set.items.map(toLightboxItem), index: 0 })}
                   />
                 ))}
@@ -212,7 +221,7 @@ export default function WorkGallery() {
             </div>
           )}
 
-          {active !== "carousel" && visible < items.length && (
+          {!isGrouped && visible < items.length && (
             <div className="mt-10 flex justify-center">
               <button
                 type="button"
@@ -224,7 +233,7 @@ export default function WorkGallery() {
             </div>
           )}
 
-          {((active === "carousel" && sets.length === 0) || (active !== "carousel" && items.length === 0)) && (
+          {((isGrouped && sets.length === 0) || (!isGrouped && items.length === 0)) && (
             <p className="text-center text-re-stone py-20">No work in this category yet.</p>
           )}
         </div>
