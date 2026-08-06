@@ -113,15 +113,19 @@ const ALL_EXCLUDES: MediaCategory[] = ["carousel", "ad", "detail", "testimonial"
 export function allMontageItems(): MediaItem[] {
   const included = MEDIA_ITEMS.filter((item) => !ALL_EXCLUDES.includes(item.category));
   const photos = included.filter((item) => item.type === "image");
-  const videos = included.filter((item) => item.type === "video");
+  // Wide videos run full width in the gallery, so they get their own spacing:
+  // bunched together they'd leave the masonry columns half-empty between them.
+  const features = included.filter((item) => item.type === "video" && aspectRatio(item) >= 1);
+  const videos = included.filter((item) => item.type === "video" && aspectRatio(item) < 1);
 
-  // Spread the videos evenly through the photos so the grid reads as one
-  // montage instead of a block of videos followed by a block of photos.
-  const keyed = [
-    ...photos.map((item, i) => ({ item, k: (i + 0.5) / Math.max(photos.length, 1) })),
-    ...videos.map((item, i) => ({ item, k: (i + 0.5) / Math.max(videos.length, 1) })),
-  ];
-  return keyed.sort((a, b) => a.k - b.k).map((e) => e.item);
+  // Spread each kind evenly across the whole run so the grid reads as one
+  // montage rather than a block of video followed by a block of photos.
+  const spread = (list: MediaItem[]) =>
+    list.map((item, i) => ({ item, k: (i + 0.5) / Math.max(list.length, 1) }));
+
+  return [...spread(photos), ...spread(videos), ...spread(features)]
+    .sort((a, b) => a.k - b.k)
+    .map((e) => e.item);
 }
 
 /* ── sets ──────────────────────────────────────────────────────────────────

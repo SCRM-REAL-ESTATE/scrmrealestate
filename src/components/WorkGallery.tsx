@@ -7,6 +7,7 @@ import {
   GALLERY_FILTERS,
   allMontageItems,
   aspectRatio,
+  isPortrait,
   mediaByCategory,
   mediaSets,
   mediaUrl,
@@ -77,11 +78,14 @@ function Tile({
   index,
   onOpen,
   badge,
+  ratio,
 }: {
   item: MediaItem;
   index: number;
   onOpen: () => void;
   badge?: string;
+  /** Overrides the item's own shape — used for the wide feature band. */
+  ratio?: number;
 }) {
   return (
     <motion.button
@@ -92,7 +96,7 @@ function Tile({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: Math.min((index % PAGE_SIZE) * 0.03, 0.4) }}
-      style={{ aspectRatio: aspectRatio(item) }}
+      style={{ aspectRatio: ratio ?? aspectRatio(item) }}
       className="group relative overflow-hidden bg-re-stone-light w-full cursor-pointer block"
       aria-label={`Open ${item.type === "video" ? "video" : "image"} preview`}
     >
@@ -212,11 +216,24 @@ export default function WorkGallery() {
             /* Masonry montage — photos and videos share the same columns */
             <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4 [column-fill:_balance]">
               <AnimatePresence mode="popLayout">
-                {shown.map((item, idx) => (
-                  <div key={item.src} className="mb-3 md:mb-4 break-inside-avoid">
-                    <Tile item={item} index={idx} onOpen={() => openItem(item)} />
-                  </div>
-                ))}
+                {shown.map((item, idx) => {
+                  // Wide video is the strongest work here — a column-width tile
+                  // renders it postage-stamp small, so it spans the full grid.
+                  const feature = item.type === "video" && !isPortrait(item);
+                  return (
+                    <div
+                      key={item.src}
+                      className={`mb-3 md:mb-4 break-inside-avoid ${feature ? "[column-span:all]" : ""}`}
+                    >
+                      <Tile
+                        item={item}
+                        index={idx}
+                        onOpen={() => openItem(item)}
+                        ratio={feature ? 21 / 9 : undefined}
+                      />
+                    </div>
+                  );
+                })}
               </AnimatePresence>
             </div>
           )}
