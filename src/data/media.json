@@ -143,48 +143,6 @@
       "poster": "vertical/mickleham-2.jpg"
     },
     {
-      "type": "video",
-      "category": "vertical",
-      "src": "https://aqttiwniateghvemeebc.supabase.co/storage/v1/object/public/media/vertical/vertical-2-bed-first.mp4",
-      "width": 1080,
-      "height": 1920
-    },
-    {
-      "type": "video",
-      "category": "vertical",
-      "src": "https://aqttiwniateghvemeebc.supabase.co/storage/v1/object/public/media/vertical/vertical-2-bed-second.mp4",
-      "width": 1080,
-      "height": 1920
-    },
-    {
-      "type": "video",
-      "category": "vertical",
-      "src": "https://aqttiwniateghvemeebc.supabase.co/storage/v1/object/public/media/vertical/vertical-3-bed.mp4",
-      "width": 1080,
-      "height": 1920
-    },
-    {
-      "type": "video",
-      "category": "vertical",
-      "src": "https://aqttiwniateghvemeebc.supabase.co/storage/v1/object/public/media/vertical/vertical-4-bed-ad.mp4",
-      "width": 1080,
-      "height": 1920
-    },
-    {
-      "type": "video",
-      "category": "landscape",
-      "src": "https://aqttiwniateghvemeebc.supabase.co/storage/v1/object/public/media/landscape/landscape-2-bed.mp4",
-      "width": 1920,
-      "height": 1080
-    },
-    {
-      "type": "video",
-      "category": "landscape",
-      "src": "https://aqttiwniateghvemeebc.supabase.co/storage/v1/object/public/media/landscape/landscape-3-bed.mp4",
-      "width": 1920,
-      "height": 1080
-    },
-    {
       "type": "image",
       "category": "carousel",
       "src": "carousels/envesta-01-text.jpg",
@@ -333,20 +291,6 @@
       "width": 1080,
       "height": 1920,
       "poster": "agency/tony-updated-1.jpg"
-    },
-    {
-      "type": "video",
-      "category": "agency",
-      "src": "https://aqttiwniateghvemeebc.supabase.co/storage/v1/object/public/media/agency/peter-strata-informative.mp4",
-      "width": 1080,
-      "height": 1920
-    },
-    {
-      "type": "video",
-      "category": "agency",
-      "src": "https://aqttiwniateghvemeebc.supabase.co/storage/v1/object/public/media/agency/favourite-person-mgm-martin.mp4",
-      "width": 1080,
-      "height": 1920
     }
   ]
 }
