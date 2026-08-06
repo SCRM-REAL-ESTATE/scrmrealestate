@@ -1,0 +1,30 @@
+# Deploys the site when main changes.
+#
+# The project's GitHub→Vercel integration stopped firing (nothing auto-built
+# after May), so this triggers the deploy explicitly through a Vercel Deploy
+# Hook — a URL that tells Vercel "build the latest main now".
+#
+# Setup (once): create a Deploy Hook in Vercel → scrmrealestate →
+# Settings → Git → Deploy Hooks (branch: main), then save its URL as a
+# repository secret named DEPLOY_HOOK_URL. Until the secret exists this
+# workflow just logs a note and exits green.
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel deploy hook
+        env:
+          HOOK: ${{ secrets.DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "DEPLOY_HOOK_URL secret not set yet — skipping."
+            echo "Add it: repo Settings → Secrets and variables → Actions."
+            exit 0
+          fi
+          curl -sS -X POST "$HOOK" > /dev/null && echo "Deploy triggered on Vercel."
