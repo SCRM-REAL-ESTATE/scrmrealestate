@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { MEDIA_BASE_URL } from "@/lib/site";
+import { mediaByCategory, mediaUrl } from "@/lib/media";
 
-const VIDEO_SRC = `${MEDIA_BASE_URL}/landscape/landscape-3-bed.mp4`;
+// First listing video in the manifest — follows wherever the media lives.
+const hero = mediaByCategory("landscape").find((item) => item.type === "video");
+const VIDEO_SRC = hero ? mediaUrl(hero.src) : null;
 const POSTER_SRC = "/media/listings/listing-01.png";
 
 export default function HeroVideo() {
@@ -30,7 +32,7 @@ export default function HeroVideo() {
       />
 
       {/* Background video */}
-      {videoReady && (
+      {videoReady && VIDEO_SRC && (
         <video
           src={VIDEO_SRC}
           poster={POSTER_SRC}

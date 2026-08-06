@@ -56,6 +56,7 @@ const services: Service[] = [
     includes: [
       { label: "Professional listing video included in every package", examples: ["landscape"] },
       { label: "Editorial photography, premium colour grade", examples: ["listing"] },
+      { label: "Drone add-ons from $100" },
       { label: "Same-day on-site production" },
       { label: "Optimised for portals + social" },
     ],

@@ -4,22 +4,23 @@ import Image from "next/image";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  CATEGORY_LABELS,
-  MEDIA_ITEMS,
+  GALLERY_FILTERS,
+  allMontageItems,
   aspectRatio,
-  isPortrait,
+  carouselSets,
+  mediaByCategory,
   mediaUrl,
-  populatedCategories,
+  populatedFilters,
   toLightboxItem,
-  type MediaCategory,
+  type GalleryFilter,
   type MediaItem,
 } from "@/lib/media";
 import Lightbox, { type LightboxState } from "./VideoLightbox";
 
-type Filter = "all" | MediaCategory;
+type TabId = "all" | GalleryFilter["id"];
 
 /** Tiles rendered before the "Load more" button appears. */
-const PAGE_SIZE = 24;
+const PAGE_SIZE = 28;
 
 /**
  * Grid videos play only while on screen — a large library would otherwise
@@ -61,14 +62,11 @@ function GalleryVideo({ item }: { item: MediaItem }) {
 /** Always visible on video tiles — video should read as video at a glance. */
 function PlayBadge() {
   return (
-    <div className="absolute inset-0 flex items-end p-4 md:p-5 pointer-events-none">
-      <span className="inline-flex items-center gap-2.5 text-white text-xs tracking-[0.2em] uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-        <span className="inline-flex h-11 w-11 md:h-12 md:w-12 items-center justify-center border border-white/70 bg-black/35 backdrop-blur-sm transition-colors duration-300 group-hover:bg-white group-hover:text-re-ink">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M3 1.5l11 6.5-11 6.5z" />
-          </svg>
-        </span>
-        <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">Play</span>
+    <div className="absolute inset-0 flex items-end p-3 md:p-4 pointer-events-none">
+      <span className="inline-flex h-9 w-9 md:h-10 md:w-10 items-center justify-center border border-white/70 bg-black/35 text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-white group-hover:text-re-ink drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)]">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M3 1.5l11 6.5-11 6.5z" />
+        </svg>
       </span>
     </div>
   );
@@ -78,12 +76,12 @@ function Tile({
   item,
   index,
   onOpen,
-  className = "",
+  badge,
 }: {
   item: MediaItem;
   index: number;
   onOpen: () => void;
-  className?: string;
+  badge?: string;
 }) {
   return (
     <motion.button
@@ -95,7 +93,7 @@ function Tile({
       exit={{ opacity: 0, y: 8 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: Math.min((index % PAGE_SIZE) * 0.03, 0.4) }}
       style={{ aspectRatio: aspectRatio(item) }}
-      className={`group relative overflow-hidden bg-re-stone-light w-full cursor-pointer block ${className}`}
+      className="group relative overflow-hidden bg-re-stone-light w-full cursor-pointer block"
       aria-label={`Open ${item.type === "video" ? "video" : "image"} preview`}
     >
       {item.type === "image" ? (
@@ -113,44 +111,49 @@ function Tile({
       <div className="absolute inset-0 bg-gradient-to-t from-re-ink/55 via-re-ink/0 to-re-ink/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
       {item.type === "video" && <PlayBadge />}
+
+      {badge && (
+        <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 bg-black/45 text-white text-[10px] tracking-[0.18em] uppercase px-2.5 py-1.5 backdrop-blur-sm pointer-events-none">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
+            <rect x="1.5" y="4.5" width="10" height="10" />
+            <path d="M4.5 4.5v-3h10v10h-3" />
+          </svg>
+          {badge}
+        </span>
+      )}
     </motion.button>
   );
 }
 
 export default function WorkGallery() {
-  const [active, setActive] = useState<Filter>("all");
+  const [active, setActive] = useState<TabId>("all");
   const [visible, setVisible] = useState(PAGE_SIZE);
   const [lightbox, setLightbox] = useState<LightboxState>(null);
 
-  const filters: { id: Filter; label: string }[] = useMemo(
-    () => [
-      { id: "all" as Filter, label: "All" },
-      ...populatedCategories().map((id) => ({ id: id as Filter, label: CATEGORY_LABELS[id] })),
-    ],
+  const tabs: { id: TabId; label: string }[] = useMemo(
+    () => [{ id: "all" as TabId, label: "All" }, ...populatedFilters().map((f) => ({ id: f.id as TabId, label: f.label }))],
     []
   );
 
-  /** Video leads — it's the work that sells, and it's what people scan for. */
-  const filtered = useMemo(() => {
-    const items = active === "all" ? MEDIA_ITEMS : MEDIA_ITEMS.filter((i) => i.category === active);
-    return [...items].sort((a, b) => (a.type === b.type ? 0 : a.type === "video" ? -1 : 1));
+  /** Everything the current tab shows, in display order. */
+  const items = useMemo(() => {
+    if (active === "all") return allMontageItems();
+    if (active === "carousel") return []; // rendered as sets below
+    const filter = GALLERY_FILTERS.find((f) => f.id === active);
+    return filter ? mediaByCategory(...filter.categories) : [];
   }, [active]);
 
-  const shown = filtered.slice(0, visible);
-  const videos = shown.filter((i) => i.type === "video");
-  const photos = shown.filter((i) => i.type === "image");
+  const sets = useMemo(() => (active === "carousel" ? carouselSets() : []), [active]);
+  const shown = items.slice(0, visible);
 
-  const selectFilter = (id: Filter) => {
+  const selectTab = (id: TabId) => {
     setActive(id);
     setVisible(PAGE_SIZE);
   };
 
-  /** Arrows in the lightbox walk the whole filtered set, not just one section. */
+  /** Arrows in the lightbox walk the whole tab, not just what's loaded. */
   const openItem = (item: MediaItem) => {
-    setLightbox({
-      items: filtered.map(toLightboxItem),
-      index: filtered.indexOf(item),
-    });
+    setLightbox({ items: items.map(toLightboxItem), index: items.indexOf(item) });
   };
 
   return (
@@ -159,19 +162,19 @@ export default function WorkGallery() {
       <div className="sticky top-[var(--shell-h)] z-20 bg-re-ivory/95 backdrop-blur-sm border-b border-re-stone-light">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
           <div className="flex gap-2 md:gap-3 overflow-x-auto no-scrollbar py-4">
-            {filters.map((c) => {
-              const isActive = active === c.id;
+            {tabs.map((t) => {
+              const isActive = active === t.id;
               return (
                 <button
-                  key={c.id}
-                  onClick={() => selectFilter(c.id)}
+                  key={t.id}
+                  onClick={() => selectTab(t.id)}
                   className={`shrink-0 px-4 md:px-5 py-2.5 text-xs tracking-[0.16em] uppercase border transition-colors min-h-[40px] ${
                     isActive
                       ? "bg-re-blue text-white border-re-blue"
                       : "bg-transparent text-re-ink border-re-stone-light hover:border-re-blue"
                   }`}
                 >
-                  {c.label}
+                  {t.label}
                 </button>
               );
             })}
@@ -181,54 +184,47 @@ export default function WorkGallery() {
 
       <section className="py-12 md:py-16">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
-          {/* VIDEO — large tiles. Landscape takes half a row, vertical a third. */}
-          {videos.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4 [grid-auto-flow:dense] items-start">
+          {active === "carousel" ? (
+            /* One tile per carousel — click steps through its slides in order */
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 items-start">
               <AnimatePresence mode="popLayout">
-                {videos.map((item, idx) => (
+                {sets.map((set, idx) => (
                   <Tile
-                    key={item.src}
-                    item={item}
+                    key={set.key}
+                    item={set.cover}
                     index={idx}
-                    onOpen={() => openItem(item)}
-                    className={isPortrait(item) ? "col-span-1 md:col-span-2" : "col-span-2 md:col-span-3"}
+                    badge={`${set.items.length} slides`}
+                    onOpen={() => setLightbox({ items: set.items.map(toLightboxItem), index: 0 })}
                   />
+                ))}
+              </AnimatePresence>
+            </div>
+          ) : (
+            /* Masonry montage — photos and videos share the same columns */
+            <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4 [column-fill:_balance]">
+              <AnimatePresence mode="popLayout">
+                {shown.map((item, idx) => (
+                  <div key={item.src} className="mb-3 md:mb-4 break-inside-avoid">
+                    <Tile item={item} index={idx} onOpen={() => openItem(item)} />
+                  </div>
                 ))}
               </AnimatePresence>
             </div>
           )}
 
-          {/* PHOTOGRAPHY — masonry underneath */}
-          {photos.length > 0 && (
-            <div className={videos.length > 0 ? "mt-10 md:mt-14" : ""}>
-              {videos.length > 0 && active === "all" && (
-                <p className="label-eyebrow mb-5">Photography</p>
-              )}
-              <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4 [column-fill:_balance]">
-                <AnimatePresence mode="popLayout">
-                  {photos.map((item, idx) => (
-                    <div key={item.src} className="mb-3 md:mb-4 break-inside-avoid">
-                      <Tile item={item} index={idx} onOpen={() => openItem(item)} />
-                    </div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </div>
-          )}
-
-          {visible < filtered.length && (
+          {active !== "carousel" && visible < items.length && (
             <div className="mt-10 flex justify-center">
               <button
                 type="button"
                 onClick={() => setVisible((v) => v + PAGE_SIZE)}
                 className="px-8 py-4 text-xs tracking-[0.2em] uppercase border border-re-stone-light text-re-ink hover:border-re-blue hover:text-re-blue transition-colors"
               >
-                Load more ({filtered.length - visible})
+                Load more ({items.length - visible})
               </button>
             </div>
           )}
 
-          {filtered.length === 0 && (
+          {((active === "carousel" && sets.length === 0) || (active !== "carousel" && items.length === 0)) && (
             <p className="text-center text-re-stone py-20">No work in this category yet.</p>
           )}
         </div>

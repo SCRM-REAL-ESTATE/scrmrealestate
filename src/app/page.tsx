@@ -135,21 +135,27 @@ export default function HomePage() {
                 pSub: "/ month",
                 d: "Brand awareness, listing showcase, and social proof handled monthly.",
                 feat: ["8 videos", "6 posts", "6 stories", "Strategy & planning"],
-                featured: true,
               },
               {
                 t: "Listing Photography & Video",
                 p: "$600 – $1,000",
                 pSub: "per listing",
                 d: "Editorial photography and a horizontal listing video, every time.",
-                feat: ["10 / 15 / 20 photos", "Listing video included", "Same-day production", "Portal + social ready"],
+                feat: [
+                  "10 / 15 / 20 photos",
+                  "Listing video included",
+                  "Drone add-on from $100",
+                  "Same-day production",
+                  "Portal + social ready",
+                ],
+                featured: true,
               },
               {
                 t: "Vertical Listing Video",
                 p: "$300 – $450",
                 pSub: "per listing",
                 d: "Reels-first short-form that turns one listing into a week of distribution.",
-                feat: ["Hook-driven edit", "Captions included", "$300 for monthly clients", "Drone from $100"],
+                feat: ["Hook-driven edit", "Captions included", "$300 for monthly clients", "Pairs with listing photos"],
               },
             ].map((pkg) => (
               <StaggerChild

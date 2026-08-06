@@ -12,15 +12,15 @@ export type MediaCategory =
   | "listing" // property / listing photography
   | "vertical" // 9:16 listing reels
   | "landscape" // horizontal listing videos
-  | "carousel" // carousel post artwork
-  | "detail" // detail + vertical shots, used as stories
-  | "testimonial" // client testimonial clips
+  | "carousel" // carousel post artwork — grouped into sets, shown in their own tab
+  | "detail" // detail shots used as stories
+  | "testimonial" // client testimonial story frames
   | "agency"; // brand and team
 
 export type MediaItem = {
   type: "image" | "video";
   category: MediaCategory;
-  /** Either a bucket-relative key ("vertical/reel.mp4") or a site-absolute path. */
+  /** Either a bucket-relative key ("vertical/reel.mp4") or a full URL / site path. */
   src: string;
   /** Poster frame for videos, so the gallery renders before anything downloads. */
   poster?: string;
@@ -28,27 +28,6 @@ export type MediaItem = {
   height: number;
   alt?: string;
 };
-
-/** Display order and copy for the gallery filters and the service examples. */
-export const CATEGORY_LABELS: Record<MediaCategory, string> = {
-  listing: "Listing Photography",
-  vertical: "Vertical Video",
-  landscape: "Listing Video",
-  carousel: "Carousel Posts",
-  detail: "Stories & Detail",
-  testimonial: "Testimonials",
-  agency: "Brand & Team",
-};
-
-export const CATEGORY_ORDER: MediaCategory[] = [
-  "listing",
-  "vertical",
-  "landscape",
-  "carousel",
-  "detail",
-  "testimonial",
-  "agency",
-];
 
 /** Site-absolute paths and full URLs pass through; bucket keys get the CDN prefix. */
 export function mediaUrl(path: string): string {
@@ -61,7 +40,7 @@ const DEFAULT_RATIO: Record<MediaCategory, number> = {
   listing: 4 / 5,
   vertical: 9 / 16,
   landscape: 16 / 9,
-  carousel: 1,
+  carousel: 4 / 5,
   detail: 9 / 16,
   testimonial: 9 / 16,
   agency: 9 / 16,
@@ -92,7 +71,73 @@ export function toLightboxItem(item: MediaItem): LightboxItem {
   return { type: "image", src: mediaUrl(item.src), alt: item.alt };
 }
 
-/** Categories that actually have work in them — empty filters are never shown. */
-export function populatedCategories(): MediaCategory[] {
-  return CATEGORY_ORDER.filter((category) => MEDIA_ITEMS.some((item) => item.category === category));
+/* ── gallery tabs ──────────────────────────────────────────────────────────
+ * A tab can pull from more than one manifest category — Stories is the
+ * detail shots and the testimonial frames together. */
+
+export type GalleryFilter = {
+  id: "listing" | "vertical" | "landscape" | "carousel" | "stories" | "agency";
+  label: string;
+  categories: MediaCategory[];
+};
+
+export const GALLERY_FILTERS: GalleryFilter[] = [
+  { id: "listing", label: "Listing Photography", categories: ["listing"] },
+  { id: "vertical", label: "Vertical Video", categories: ["vertical"] },
+  { id: "landscape", label: "Listing Video", categories: ["landscape"] },
+  { id: "carousel", label: "Carousel Posts", categories: ["carousel"] },
+  { id: "stories", label: "Stories", categories: ["detail", "testimonial"] },
+  { id: "agency", label: "Brand & Team", categories: ["agency"] },
+];
+
+/** Tabs with no work in them are never shown. */
+export function populatedFilters(): GalleryFilter[] {
+  return GALLERY_FILTERS.filter((f) =>
+    f.categories.some((c) => MEDIA_ITEMS.some((item) => item.category === c))
+  );
+}
+
+/**
+ * "All" is the property work — photography and video mixed into one montage.
+ * Social artwork (carousels, stories) stays in its own tabs.
+ */
+const ALL_EXCLUDES: MediaCategory[] = ["carousel", "detail", "testimonial"];
+
+export function allMontageItems(): MediaItem[] {
+  const included = MEDIA_ITEMS.filter((item) => !ALL_EXCLUDES.includes(item.category));
+  const photos = included.filter((item) => item.type === "image");
+  const videos = included.filter((item) => item.type === "video");
+
+  // Spread the videos evenly through the photos so the grid reads as one
+  // montage instead of a block of videos followed by a block of photos.
+  const keyed = [
+    ...photos.map((item, i) => ({ item, k: (i + 0.5) / Math.max(photos.length, 1) })),
+    ...videos.map((item, i) => ({ item, k: (i + 0.5) / Math.max(videos.length, 1) })),
+  ];
+  return keyed.sort((a, b) => a.k - b.k).map((e) => e.item);
+}
+
+/* ── carousel sets ─────────────────────────────────────────────────────────
+ * One tile per carousel post. Slides share a filename prefix
+ * ("envesta-01…", "slide1…"), so the prefix is the set and the number is the
+ * slide order. Clicking the tile steps through the whole set in the lightbox. */
+
+export type CarouselSet = { key: string; cover: MediaItem; items: MediaItem[] };
+
+const naturalSort = (a: string, b: string) =>
+  a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+
+export function carouselSets(): CarouselSet[] {
+  const groups = new Map<string, MediaItem[]>();
+  for (const item of mediaByCategory("carousel")) {
+    const name = item.src.split("/").pop() ?? item.src;
+    const key = (name.match(/^[^0-9]+/)?.[0] ?? name).replace(/[-_.]+$/, "") || name;
+    groups.set(key, [...(groups.get(key) ?? []), item]);
+  }
+  return [...groups.entries()]
+    .sort(([a], [b]) => naturalSort(a, b))
+    .map(([key, items]) => {
+      const sorted = [...items].sort((a, b) => naturalSort(a.src, b.src));
+      return { key, cover: sorted[0], items: sorted };
+    });
 }

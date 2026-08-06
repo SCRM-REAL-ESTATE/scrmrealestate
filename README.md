@@ -103,13 +103,16 @@ Doing it by hand instead:
    | `media-src/vertical/` | 9:16 video | Vertical Video |
    | `media-src/landscape/` | 16:9 video | Listing Video |
    | `media-src/carousels/` | photos | Carousel Posts |
-   | `media-src/detail/` | photos or video | Stories & Detail |
-   | `media-src/testimonials/` | photos or video | Testimonials |
+   | `media-src/detail/` | photos or video | Stories |
+   | `media-src/testimonials/` | photos or video | Stories |
    | `media-src/agency/` | photos or video | Brand & Team |
 
    The last four accept photos and video together, so a folder of mixed story
    content can go in as-is. (`media-src/listings/` still works as an alias for
-   `property/`.)
+   `property/`.) Carousel slides that share a filename prefix ("envesta-01",
+   "envesta-02", …) display as one post — clicking it steps through the slides
+   in order. The "All" tab shows property work only (photography + video);
+   carousels and stories live in their own tabs.
 
    Raw camera exports are fine — files are compressed before upload. Filenames are tidied automatically (`My Reel 01.MOV` → `my-reel-01.mp4`), so name them however you like. iPhone `.HEIC` photos are the one exception: export them as JPG first.
 
