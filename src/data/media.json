@@ -137,10 +137,50 @@
     {
       "type": "video",
       "category": "vertical",
+      "src": "vertical/2-bed-vertical-first-song.mp4",
+      "width": 1080,
+      "height": 1920,
+      "poster": "vertical/2-bed-vertical-first-song.jpg"
+    },
+    {
+      "type": "video",
+      "category": "vertical",
+      "src": "vertical/4-bed-vertical-ad.mp4",
+      "width": 1080,
+      "height": 1920,
+      "poster": "vertical/4-bed-vertical-ad.jpg"
+    },
+    {
+      "type": "video",
+      "category": "vertical",
       "src": "vertical/mickleham-2.mp4",
       "width": 1080,
       "height": 1920,
       "poster": "vertical/mickleham-2.jpg"
+    },
+    {
+      "type": "video",
+      "category": "vertical",
+      "src": "vertical/vertical-3-bed.mp4",
+      "width": 1080,
+      "height": 1920,
+      "poster": "vertical/vertical-3-bed.jpg"
+    },
+    {
+      "type": "video",
+      "category": "landscape",
+      "src": "landscape/landscape-2-bed.mp4",
+      "width": 1080,
+      "height": 608,
+      "poster": "landscape/landscape-2-bed.jpg"
+    },
+    {
+      "type": "video",
+      "category": "landscape",
+      "src": "landscape/landscape-3-bed.mp4",
+      "width": 1080,
+      "height": 608,
+      "poster": "landscape/landscape-3-bed.jpg"
     },
     {
       "type": "image",
@@ -279,10 +319,26 @@
     {
       "type": "video",
       "category": "agency",
+      "src": "agency/favourite-person-mgm-martin.mp4",
+      "width": 1080,
+      "height": 1920,
+      "poster": "agency/favourite-person-mgm-martin.jpg"
+    },
+    {
+      "type": "video",
+      "category": "agency",
       "src": "agency/jessica-v2.mp4",
       "width": 1080,
       "height": 1920,
       "poster": "agency/jessica-v2.jpg"
+    },
+    {
+      "type": "video",
+      "category": "agency",
+      "src": "agency/peter-strata-informative.mp4",
+      "width": 1080,
+      "height": 1920,
+      "poster": "agency/peter-strata-informative.jpg"
     },
     {
       "type": "video",
