@@ -7,7 +7,6 @@ import {
   GALLERY_FILTERS,
   allMontageItems,
   aspectRatio,
-  isPortrait,
   mediaByCategory,
   mediaSets,
   mediaUrl,
@@ -216,24 +215,11 @@ export default function WorkGallery() {
             /* Masonry montage — photos and videos share the same columns */
             <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4 [column-fill:_balance]">
               <AnimatePresence mode="popLayout">
-                {shown.map((item, idx) => {
-                  // Wide video is the strongest work here — a column-width tile
-                  // renders it postage-stamp small, so it spans the full grid.
-                  const feature = item.type === "video" && !isPortrait(item);
-                  return (
-                    <div
-                      key={item.src}
-                      className={`mb-3 md:mb-4 break-inside-avoid ${feature ? "[column-span:all]" : ""}`}
-                    >
-                      <Tile
-                        item={item}
-                        index={idx}
-                        onOpen={() => openItem(item)}
-                        ratio={feature ? 21 / 9 : undefined}
-                      />
-                    </div>
-                  );
-                })}
+                {shown.map((item, idx) => (
+                  <div key={item.src} className="mb-3 md:mb-4 break-inside-avoid">
+                    <Tile item={item} index={idx} onOpen={() => openItem(item)} />
+                  </div>
+                ))}
               </AnimatePresence>
             </div>
           )}
