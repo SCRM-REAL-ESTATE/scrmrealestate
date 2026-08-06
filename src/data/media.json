@@ -276,7 +276,77 @@
     {
       "type": "image",
       "category": "detail",
+      "src": "detail/envesta-2.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
       "src": "detail/envesta-3.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-4.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-5.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-6.jpg",
+      "width": 1152,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-8.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-9.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-10.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-11.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta-12.jpg",
+      "width": 1365,
+      "height": 2048
+    },
+    {
+      "type": "image",
+      "category": "detail",
+      "src": "detail/envesta.jpg",
       "width": 1365,
       "height": 2048
     },
