@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
+import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import InViewVideo from "@/components/InViewVideo";
 import AgentVideoStrip from "@/components/AgentVideoStrip";
@@ -13,7 +13,7 @@ import { mediaByCategory, mediaUrl } from "@/lib/media";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Agent videos on every listing — $499",
+  title: "Agent videos on every listing, $499",
   description:
     "Signature is $499 a listing: 18 photos, a branded floor plan, the listing video, and a vertical agent-led video with you on camera. Delivered next business day.",
   alternates: { canonical: "/agents" },
@@ -26,7 +26,7 @@ const heroVideo = mediaByCategory("agency").find((item) => item.type === "video"
 const faqs = [
   {
     q: "I'm not good on camera.",
-    a: "Nobody is on their first one. We bring the questions, film it in short takes, and cut the rest. You're not performing — you're answering the same things you answer at an open home.",
+    a: "Nobody is on their first one. We bring the questions, film it in short takes, and cut the rest. You're not performing. You're answering the same things you answer at an open home.",
   },
   {
     q: "Do I need a script?",
@@ -46,7 +46,7 @@ const faqs = [
   },
   {
     q: "What if I want more than one video a month?",
-    a: "Listing media covers you on the properties you're already shooting. If you want a run of videos regardless of stock, we film four pieces to camera in one sitting each month for $800 — separate from listing media.",
+    a: "Listing media covers you on the properties you're already shooting. If you want a run of videos regardless of stock, we film four pieces to camera in one sitting each month for $800, separate from listing media.",
   },
 ];
 
@@ -68,7 +68,7 @@ export default function AgentsPage() {
                 </h1>
 
                 <p className="mt-6 max-w-xl text-lg text-white/85 leading-relaxed">
-                  $499 a listing gets you 18 photos, a branded floor plan and the listing video —
+                  $499 a listing gets you 18 photos, a branded floor plan and the listing video,
                   plus a vertical agent-led video with you on camera. Same shoot, next business day.
                 </p>
 
@@ -180,10 +180,9 @@ export default function AgentsPage() {
         <Container>
           <Reveal>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="max-w-2xl">
-                <Eyebrow>Real agent videos</Eyebrow>
-                <H2 className="mt-3">This is the bit you're not getting.</H2>
-              </div>
+              <H2 rule className="max-w-2xl">
+                This is the bit you're not getting.
+              </H2>
               <p className="max-w-sm text-re-stone leading-relaxed">
                 Vertical, branded to you, cut for Reels and TikTok. Play any of them.
               </p>
@@ -214,8 +213,8 @@ export default function AgentsPage() {
         <Container>
           <Reveal>
             <div className="max-w-4xl">
-              <Eyebrow light>Worth asking</Eyebrow>
-              <h2 className="mt-4 h-display text-3xl sm:text-4xl md:text-5xl text-white">
+              <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+              <h2 className="h-display text-3xl sm:text-4xl md:text-5xl text-white">
                 How does your current media team give you an agent-led video, on every property, for
                 this price?
               </h2>
@@ -244,7 +243,7 @@ export default function AgentsPage() {
                   <li className="flex gap-3 border-t border-white/15 pt-5 text-white">
                     <span aria-hidden className="mt-2 h-1 w-3 shrink-0 rounded-full bg-white/40" />
                     <span className="leading-relaxed">
-                      A video with you in it — extra shoot, extra invoice, or not offered at all.
+                      A video with you in it. Extra shoot, extra invoice, or not offered at all.
                     </span>
                   </li>
                 </ul>
@@ -292,7 +291,7 @@ export default function AgentsPage() {
               },
               {
                 t: "The ones who aren't ready still watch",
-                d: "Most sellers are twelve months out. They don't fill in a form — they follow, they lurk, and they call when the time comes.",
+                d: "Most sellers are twelve months out. They don't fill in a form. They follow, they lurk, and they call when the time comes.",
               },
               {
                 t: "Appraisals start warmer",
@@ -327,8 +326,7 @@ export default function AgentsPage() {
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <Reveal>
-              <Eyebrow>Signature</Eyebrow>
-              <H2 className="mt-3">What {SIGNATURE.price} gets you.</H2>
+              <H2 rule>What {SIGNATURE.price} gets you.</H2>
               <p className="mt-6 text-lg text-re-stone leading-relaxed">
                 Four products off one visit, delivered next business day. Branded and unbranded
                 exports so it drops straight onto the portals and onto your own feed.
@@ -369,10 +367,9 @@ export default function AgentsPage() {
       <Section>
         <Container>
           <Reveal>
-            <div className="max-w-3xl">
-              <Eyebrow>On the day</Eyebrow>
-              <H2 className="mt-3">Ten extra minutes. That's the whole ask.</H2>
-            </div>
+            <H2 rule className="max-w-3xl">
+              Ten extra minutes. That's the whole ask.
+            </H2>
           </Reveal>
 
           <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-14" staggerChildren={0.12}>
@@ -420,10 +417,7 @@ export default function AgentsPage() {
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
             <Reveal>
-              <Eyebrow light>Book a shoot</Eyebrow>
-              <H2 light className="mt-3">
-                Your next listing, with you in it.
-              </H2>
+              <H2 rule light>Your next listing, with you in it.</H2>
               <p className="mt-6 text-lg text-white/85 leading-relaxed">
                 Leave your details and we'll call to lock in a time. If it's urgent, ring{" "}
                 <a href={`tel:${SITE.phoneIntl}`} className="underline decoration-white/40 underline-offset-4 hover:decoration-white">
@@ -447,9 +441,9 @@ export default function AgentsPage() {
 
               <p className="mt-10 border-t border-white/20 pt-6 text-sm text-white/70">
                 Want videos every month regardless of what you've got listed? We film four pieces to
-                camera in one sitting for $800 a month —{" "}
+                camera in one sitting for $800 a month.{" "}
                 <Link href="/services#agent" className="underline decoration-white/40 underline-offset-4 hover:decoration-white">
-                  see how that works
+                  See how that works
                 </Link>
                 .
               </p>

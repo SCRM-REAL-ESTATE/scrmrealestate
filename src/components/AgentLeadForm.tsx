@@ -29,7 +29,7 @@ export default function AgentLeadForm() {
       message: listing
         ? `Signature $499 enquiry (agents page). Next listing: ${listing}`
         : "Signature $499 enquiry (agents page).",
-      services: ["Signature $499 — listing media + agent video"],
+      services: ["Signature $499"],
     };
 
     if (!payload.name || !payload.email || !payload.phone) {
@@ -60,7 +60,7 @@ export default function AgentLeadForm() {
         <h3 className="h-display text-3xl md:text-4xl text-white">You&apos;re in.</h3>
         <p className="mt-4 text-white/85 leading-relaxed">
           We&apos;ll call you within one business day to lock in a time. Bring the address and access
-          details — that&apos;s all we need to book it.
+          details. That&apos;s all we need to book it.
         </p>
       </div>
     );
