@@ -1,5 +1,6 @@
 import { CTAButton } from "./ui";
 import { Stagger, StaggerChild } from "./Reveal";
+import TiltCard from "./TiltCard";
 import { LISTING_PACKAGES } from "@/lib/pricing";
 
 /**
@@ -13,14 +14,14 @@ export default function ListingPackages({ className = "" }: { className?: string
       staggerChildren={0.1}
     >
       {LISTING_PACKAGES.map((pkg) => (
-        <StaggerChild
-          key={pkg.name}
-          className={`gold-ring snap-center shrink-0 w-[86%] sm:w-[64%] md:w-auto relative flex flex-col p-8 md:p-9 rounded-[1.75rem] border transition-all duration-500 hover:-translate-y-1.5 ${
-            pkg.featured
-              ? "bg-re-blue text-white border-re-blue hover:shadow-[0_30px_70px_rgba(28,58,94,0.32)]"
-              : "bg-re-ivory border-re-stone-light hover:shadow-[0_30px_70px_rgba(28,58,94,0.12)]"
-          }`}
-        >
+        <StaggerChild key={pkg.name} className="snap-center shrink-0 w-[86%] sm:w-[64%] md:w-auto">
+          <TiltCard
+            className={`gold-ring relative flex flex-col h-full p-8 md:p-9 rounded-[1.75rem] border transition-shadow duration-500 ${
+              pkg.featured
+                ? "bg-re-blue text-white border-re-blue hover:shadow-[0_30px_70px_rgba(28,58,94,0.32)]"
+                : "bg-re-ivory border-re-stone-light hover:shadow-[0_30px_70px_rgba(28,58,94,0.12)]"
+            }`}
+          >
           {pkg.featured && (
             <span className="gold-chrome-bg absolute -top-3.5 left-8 rounded-full text-re-ink text-[10px] tracking-[0.22em] uppercase px-4 py-1.5 shadow-[0_4px_14px_rgba(196,169,108,0.4)]">
               Most Popular
@@ -57,6 +58,7 @@ export default function ListingPackages({ className = "" }: { className?: string
               Book this package
             </CTAButton>
           </div>
+          </TiltCard>
         </StaggerChild>
       ))}
     </Stagger>

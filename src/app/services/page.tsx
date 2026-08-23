@@ -111,7 +111,7 @@ export default function ServicesPage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-[60vh] flex items-end overflow-hidden">
+      <section className="relative min-h-[60vh] flex items-end overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]">
         <div className="absolute inset-0">
           <Image
             src="/media/listings/listing-02.png"
@@ -140,7 +140,7 @@ export default function ServicesPage() {
 
       {/* SERVICES */}
       {services.map((s) => (
-        <Section id={s.id} key={s.id} className={s.reverse ? "bg-white border-y border-re-stone-light" : ""}>
+        <Section id={s.id} key={s.id} panel={s.reverse ? "white" : undefined}>
           <Container>
             <div className={`grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center ${s.reverse ? "md:[direction:rtl]" : ""}`}>
               <Reveal direction={s.reverse ? "right" : "left"} className="md:col-span-7 [direction:ltr]">
@@ -181,7 +181,7 @@ export default function ServicesPage() {
       ))}
 
       {/* LISTING PACKAGES */}
-      <Section id="packages" className="bg-white border-y border-re-stone-light">
+      <Section id="packages" panel="white">
         <Container>
           <Reveal>
             <div className="max-w-2xl">
@@ -295,7 +295,7 @@ export default function ServicesPage() {
       </Section>
 
       {/* SCALING BEYOND */}
-      <Section className="bg-re-blue text-white">
+      <Section panel="blue">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
             <Reveal className="md:col-span-7">
@@ -326,7 +326,7 @@ export default function ServicesPage() {
       </Section>
 
       {/* FAQ */}
-      <Section dark>
+      <Section panel="blue">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
             <Reveal direction="up" className="md:col-span-4">

@@ -13,7 +13,7 @@ export default function AboutPage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-[55vh] flex items-end overflow-hidden">
+      <section className="relative min-h-[55vh] flex items-end overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]">
         <div className="absolute inset-0">
           <Image
             src="/media/listings/listing-04.png"
@@ -58,7 +58,7 @@ export default function AboutPage() {
       </Section>
 
       {/* PRINCIPLES */}
-      <Section className="bg-white border-y border-re-stone-light">
+      <Section panel="white">
         <Container>
           <Reveal>
             <div className="max-w-2xl">
@@ -132,7 +132,7 @@ export default function AboutPage() {
       </Section>
 
       {/* CTA */}
-      <Section dark>
+      <Section panel="blue">
         <Container>
           <Reveal>
             <div className="max-w-3xl">

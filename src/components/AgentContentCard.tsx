@@ -1,4 +1,5 @@
 import { CTAButton } from "./ui";
+import TiltCard from "./TiltCard";
 import { AGENT_CONTENT } from "@/lib/pricing";
 
 /**
@@ -8,7 +9,7 @@ import { AGENT_CONTENT } from "@/lib/pricing";
  */
 export default function AgentContentCard({ dark = false }: { dark?: boolean }) {
   return (
-    <div
+    <TiltCard
       className={`gold-ring max-w-3xl mx-auto text-center border rounded-[2rem] p-9 md:p-12 transition-shadow duration-500 hover:shadow-[0_30px_70px_rgba(28,58,94,0.12)] ${
         dark ? "bg-re-blue border-white/20 text-white" : "bg-white border-re-stone-light"
       }`}
@@ -48,6 +49,6 @@ export default function AgentContentCard({ dark = false }: { dark?: boolean }) {
           Book a filming day
         </CTAButton>
       </div>
-    </div>
+    </TiltCard>
   );
 }

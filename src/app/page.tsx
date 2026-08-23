@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative -mt-[var(--shell-h)] pt-[var(--shell-h)] min-h-[100svh] flex items-end overflow-hidden">
+      <section className="relative -mt-[var(--shell-h)] pt-[var(--shell-h)] min-h-[100svh] flex items-end overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]">
         <HeroVideo />
         <Container className="relative w-full pb-16 md:pb-24">
           <Reveal direction="up">
@@ -116,7 +116,7 @@ export default function HomePage() {
       </Section>
 
       {/* LISTING PACKAGES */}
-      <Section className="bg-white border-y border-re-stone-light">
+      <Section panel="white">
         <Container>
           <Reveal>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
@@ -274,7 +274,7 @@ export default function HomePage() {
       </Section>
 
       {/* FINAL CTA */}
-      <Section dark className="!py-24">
+      <Section panel="blue">
         <Container>
           <Reveal>
             <div className="max-w-3xl">

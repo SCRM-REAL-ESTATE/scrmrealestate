@@ -82,13 +82,33 @@ export function Section({
   children,
   className = "",
   dark = false,
+  panel,
   id,
 }: {
   children: React.ReactNode;
   className?: string;
   dark?: boolean;
+  /** Floating rounded panel instead of a full-bleed band. */
+  panel?: "white" | "blue";
   id?: string;
 }) {
+  if (panel) {
+    return (
+      <section id={id} className={`py-6 md:py-10 ${className}`}>
+        <div className="mx-auto max-w-[1440px] px-3 md:px-6">
+          <div
+            className={`rounded-[2rem] md:rounded-[3rem] py-16 md:py-24 ${
+              panel === "blue"
+                ? "bg-re-blue text-white shadow-[0_30px_80px_rgba(28,58,94,0.25)]"
+                : "bg-white border border-re-stone-light shadow-[0_20px_60px_rgba(28,58,94,0.06)]"
+            }`}
+          >
+            {children}
+          </div>
+        </div>
+      </section>
+    );
+  }
   return (
     <section
       id={id}
