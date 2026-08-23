@@ -25,8 +25,7 @@ export default function AgentsVsAgencies() {
     {
       key: "agents",
       from: "left" as const,
-      eyebrow: "For agents",
-      title: "Sell yourself.",
+      title: "For agents",
       price: AGENT_CONTENT.price,
       priceSub: "per month",
       body: "Four videos a month that put you on camera, not the property. You turn up for an hour, we do the rest.",
@@ -37,8 +36,7 @@ export default function AgentsVsAgencies() {
     {
       key: "agencies",
       from: "right" as const,
-      eyebrow: "For agencies",
-      title: "Sell the agency.",
+      title: "For agencies",
       price: "$1,800",
       priceSub: "from, per month",
       body: "Your whole social presence run for you. 8 videos, 6 posts and 6 stories every month, planned and scheduled.",
@@ -51,7 +49,8 @@ export default function AgentsVsAgencies() {
   return (
     <section className="py-6 md:py-10">
       <div className="mx-auto max-w-[1440px] px-3 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-0 overflow-hidden md:rounded-[3rem]">
+        {/* The blue half runs wider so the section reads as blue-led. */}
+        <div className="grid grid-cols-1 md:grid-cols-[1.25fr_1fr] gap-4 md:gap-0 overflow-hidden md:rounded-[3rem]">
           {sides.map((s) => (
             <motion.div
               key={s.key}
@@ -60,17 +59,14 @@ export default function AgentsVsAgencies() {
               viewport={{ once: true, amount: 0.3 }}
               variants={slide(s.from)}
               className={`group relative flex flex-col justify-between p-10 md:p-16 lg:p-20 min-h-[420px] md:min-h-[560px] rounded-[2rem] md:rounded-none transition-colors duration-500 ${
-                s.dark ? "blue-fade text-white" : "bg-white border border-re-stone-light md:border-0"
+                s.dark ? "blue-fade text-white" : "bg-re-blue-light border border-re-stone-light md:border-0"
               }`}
             >
               <div>
-                <span className={`label-eyebrow inline-flex items-center gap-3 ${s.dark ? "!text-white/85" : ""}`}>
-                  <span aria-hidden className="gold-chrome-bg inline-block h-[3px] w-7 rounded-full" />
-                  {s.eyebrow}
-                </span>
+                <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
 
                 <h3
-                  className={`mt-5 h-display text-4xl md:text-6xl ${s.dark ? "text-white" : "text-re-ink"}`}
+                  className={`h-display text-4xl md:text-6xl ${s.dark ? "text-white" : "text-re-ink"}`}
                 >
                   {s.title}
                 </h3>

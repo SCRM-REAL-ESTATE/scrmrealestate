@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
+import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
 import FAQAccordion from "@/components/FAQAccordion";
-import ServiceIncludes from "@/components/ServiceIncludes";
-import AddOnsDialog from "@/components/AddOnsDialog";
+import AddOnsPanel from "@/components/AddOnsPanel";
 import ListingPackages from "@/components/ListingPackages";
 import AgentContentCard from "@/components/AgentContentCard";
 import { ADD_ONS_FROM } from "@/lib/pricing";
@@ -70,10 +69,8 @@ export default function ServicesPage() {
         </div>
         <Container className="relative w-full pb-16 md:pb-24">
           <Reveal>
-            <Eyebrow>
-              <span className="!text-white/90">Services & pricing</span>
-            </Eyebrow>
-            <h1 className="mt-3 h-display text-5xl md:text-6xl text-white max-w-3xl">
+            <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+            <h1 className="h-display text-5xl md:text-6xl text-white max-w-3xl">
               Packages priced before the call.
             </h1>
             <p className="mt-5 text-white/85 max-w-2xl text-lg">
@@ -90,13 +87,18 @@ export default function ServicesPage() {
           <Reveal>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
               <div className="max-w-xl">
-                <Eyebrow>Per listing</Eyebrow>
-                <H2 className="mt-3">Listing packages.</H2>
+                <H2 rule>Listing packages.</H2>
                 <p className="mt-5 text-re-stone leading-relaxed">
                   Photos, a branded floor plan and video in every package. Delivered next business day.
                 </p>
               </div>
-              <AddOnsDialog label={`Add-ons from ${ADD_ONS_FROM}`} variant="outline" />
+              <Link
+                href="#add-ons"
+                className="group inline-flex items-center gap-2 rounded-full border border-re-stone-light px-7 py-3.5 text-xs tracking-[0.2em] uppercase text-re-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-re-blue hover:text-re-blue"
+              >
+                Add-ons from {ADD_ONS_FROM}
+                <span aria-hidden className="text-base leading-none">+</span>
+              </Link>
             </div>
           </Reveal>
 
@@ -109,8 +111,8 @@ export default function ServicesPage() {
         <Container>
           <Reveal>
             <div className="max-w-3xl mx-auto text-center">
-              <Eyebrow>For agents</Eyebrow>
-              <H2 className="mt-3">Your listings market the house. Not you.</H2>
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>What every agent is missing.</H2>
             </div>
           </Reveal>
 
@@ -120,76 +122,21 @@ export default function ServicesPage() {
         </Container>
       </Section>
 
-      {/* AGENCY MANAGEMENT */}
-      <Section id="social" panel="tint">
-        <Container>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center">
-            <Reveal direction="left" className="md:col-span-7">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-re-stone-light group">
-                <Image
-                  src="/media/listings/listing-03.png"
-                  alt="Monthly social media management"
-                  fill
-                  sizes="(min-width: 768px) 60vw, 100vw"
-                  className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
-                />
-              </div>
-            </Reveal>
-            <Reveal direction="right" className="md:col-span-5">
-              <Eyebrow>For agencies</Eyebrow>
-              <h2 className="mt-3 h-display text-3xl md:text-4xl text-re-ink">
-                Monthly Social Media Management
-              </h2>
-
-              <p className="mt-4 font-serif text-4xl text-re-blue">
-                From $1,800
-                <span className="ml-2 text-sm font-sans text-re-stone">per month</span>
-              </p>
-
-              <p className="mt-5 text-re-stone leading-relaxed">
-                Your agency&apos;s whole social presence, planned, filmed, edited and scheduled by one team.
-              </p>
-
-              <div className="mt-7">
-                <ServiceIncludes
-                  items={[
-                    { label: "8 social media videos per month", examples: ["vertical", "testimonial", "agency"] },
-                    { label: "6 social media posts per month", examples: ["carousel"] },
-                    { label: "6 stories per month", examples: ["detail"] },
-                    { label: "Planning, editing, captions & scheduling" },
-                  ]}
-                />
-              </div>
-
-              <div className="mt-7 flex flex-wrap items-center gap-5">
-                <CTAButton href="/agencies">See the agency offer</CTAButton>
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors"
-                >
-                  Enquire now
-                  <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </Container>
-      </Section>
-
       {/* ADD-ONS */}
-      <Section>
+      <Section id="add-ons">
         <Container>
           <Reveal>
             <div className="max-w-3xl mx-auto text-center">
-              <Eyebrow>Add-ons</Eyebrow>
-              <H2 className="mt-3">Add depth to any listing.</H2>
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>Add depth to any listing.</H2>
               <p className="mt-5 text-re-stone leading-relaxed text-lg">
                 Twilight, aerial, virtual staging, 3D tours and more, priced individually from {ADD_ONS_FROM} so you scale presentation to the property.
               </p>
-              <div className="mt-8 flex justify-center">
-                <AddOnsDialog label="See all add-ons & prices" />
-              </div>
             </div>
+          </Reveal>
+
+          <Reveal delay={0.1} className="mt-10">
+            <AddOnsPanel label="See all add-ons & prices" />
           </Reveal>
         </Container>
       </Section>
@@ -199,8 +146,8 @@ export default function ServicesPage() {
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
             <Reveal className="md:col-span-7">
-              <Eyebrow light>Beyond the monthly system</Eyebrow>
-              <H2 light className="mt-3">
+              <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+              <H2 light>
                 More volume, more channels, paid distribution.
               </H2>
               <p className="mt-5 text-white/85 leading-relaxed text-lg">
@@ -230,8 +177,8 @@ export default function ServicesPage() {
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
             <Reveal direction="up" className="md:col-span-4">
-              <Eyebrow light>FAQ</Eyebrow>
-              <H2 light className="mt-3">
+              <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+              <H2 light>
                 Common questions, answered.
               </H2>
               <p className="mt-5 text-white/85 leading-relaxed">
@@ -250,8 +197,8 @@ export default function ServicesPage() {
         <Container>
           <Reveal>
             <div className="max-w-3xl mx-auto text-center">
-              <Eyebrow>Next step</Eyebrow>
-              <H2 className="mt-3">Find the right package for you.</H2>
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>Find the right package for you.</H2>
               <p className="mt-5 text-re-stone text-lg">
                 We&apos;ll review your current content, your goals, and where the highest-leverage move is right now, before you commit to anything.
               </p>

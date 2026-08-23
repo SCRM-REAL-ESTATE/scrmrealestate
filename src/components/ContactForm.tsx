@@ -4,12 +4,15 @@ import { useState } from "react";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { Eyebrow } from "@/components/ui";
 
+/** Mirrors what is actually sold: the three listing packages, the two
+ *  monthly packages, and add-ons. Keep in step with src/lib/pricing.ts. */
 const serviceOptions = [
-  "Monthly Social Media",
-  "Listing Photography",
-  "Listing Video",
-  "Vertical Social Video",
-  "Drone",
+  "Listing $349",
+  "Signature $499",
+  "Premiere $899",
+  "Agent content $800/mo",
+  "Agency management from $1,800/mo",
+  "Add-ons",
   "Not sure yet",
 ];
 

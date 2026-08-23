@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
+import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import HeroVideo from "@/components/HeroVideo";
-import AddOnsDialog from "@/components/AddOnsDialog";
 import ListingPackages from "@/components/ListingPackages";
 import HomeWorkPreview from "@/components/HomeWorkPreview";
+import HomeVideoReel from "@/components/HomeVideoReel";
 import AgentsVsAgencies from "@/components/AgentsVsAgencies";
 import { ADD_ONS_FROM } from "@/lib/pricing";
 
@@ -67,14 +67,43 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* WHO WE ARE */}
+      <Section>
+        <Container>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-start">
+            <Reveal direction="left" className="md:col-span-5">
+              <H2 rule>A studio built only for real estate.</H2>
+            </Reveal>
+            <Reveal direction="right" className="md:col-span-7 space-y-5 text-lg leading-relaxed" delay={0.1}>
+              <p className="text-re-ink">
+                We are the real estate arm of SCRM Media, an Australian content studio.
+                We film, edit and publish for agencies and agents right across the country,
+                and real estate is the only thing we do.
+              </p>
+              <p className="text-re-stone">
+                Every listing, every agent video and every month of social content is made
+                by the same small senior team. That is how the work stays consistent and
+                the turnaround stays fast.
+              </p>
+              <div className="pt-2">
+                <Link
+                  href="/about"
+                  className="group inline-flex items-center gap-2 text-sm font-medium text-re-blue hover:text-re-blue-accent transition-colors"
+                >
+                  More about us
+                  <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </Container>
+      </Section>
+
       {/* THREE PILLARS */}
       <Section>
         <Container>
           <Reveal>
-            <div className="max-w-2xl">
-              <Eyebrow>What we do</Eyebrow>
-              <H2 className="mt-3">Three ways to work with us.</H2>
-            </div>
+            <H2 rule className="max-w-2xl">Three ways to work with us.</H2>
           </Reveal>
 
           <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
@@ -130,44 +159,26 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* WORK GALLERY PREVIEW */}
-      <Section>
-        <Container>
-          <Reveal>
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-              <div>
-                <Eyebrow>Recent work</Eyebrow>
-                <H2 className="mt-3">A look at what we produce.</H2>
-              </div>
-              <Link href="/work" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
-                See full gallery
-                <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
-              </Link>
-            </div>
-          </Reveal>
-
-          <HomeWorkPreview />
-        </Container>
-      </Section>
-
-      {/* AGENTS AND AGENCIES */}
-      <AgentsVsAgencies />
-
       {/* LISTING PACKAGES */}
       <Section panel="white">
         <Container>
           <Reveal>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
               <div className="max-w-xl">
-                <Eyebrow>Per listing</Eyebrow>
-                <H2 className="mt-3">Listing packages.</H2>
+                <H2 rule>Listing packages.</H2>
                 <p className="mt-5 text-re-stone leading-relaxed">
                   Photos, a branded floor plan and video. Delivered next business day.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-4">
-                <AddOnsDialog label={`Add-ons from ${ADD_ONS_FROM}`} variant="outline" />
-                <Link href="/services" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
+                <Link
+                  href="/services#add-ons"
+                  className="inline-flex items-center gap-2 rounded-full border border-re-stone-light px-7 py-3.5 text-xs tracking-[0.2em] uppercase text-re-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-re-blue hover:text-re-blue"
+                >
+                  Add-ons from {ADD_ONS_FROM}
+                  <span aria-hidden className="text-base leading-none">+</span>
+                </Link>
+                <Link href="/services" className="group inline-flex items-center gap-2 text-sm font-medium text-re-blue hover:text-re-blue-accent transition-colors">
                   See services &amp; pricing
                   <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
                 </Link>
@@ -179,14 +190,48 @@ export default function HomePage() {
         </Container>
       </Section>
 
+      {/* VIDEO REEL */}
+      <Section>
+        <Container>
+          <Reveal>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+              <H2 rule className="max-w-xl">The video we make.</H2>
+              <Link href="/work" className="group inline-flex items-center gap-2 text-sm font-medium text-re-blue hover:text-re-blue-accent transition-colors">
+                See full gallery
+                <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+              </Link>
+            </div>
+          </Reveal>
+
+          <HomeVideoReel />
+        </Container>
+      </Section>
+
+      {/* AGENTS AND AGENCIES */}
+      <AgentsVsAgencies />
+
+      {/* PHOTO GALLERY PREVIEW */}
+      <Section>
+        <Container>
+          <Reveal>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+              <H2 rule className="max-w-xl">A look at what we produce.</H2>
+              <Link href="/work" className="group inline-flex items-center gap-2 text-sm font-medium text-re-blue hover:text-re-blue-accent transition-colors">
+                See full gallery
+                <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+              </Link>
+            </div>
+          </Reveal>
+
+          <HomeWorkPreview />
+        </Container>
+      </Section>
+
       {/* PROCESS */}
       <Section panel="tint">
         <Container>
           <Reveal>
-            <div className="max-w-2xl">
-              <Eyebrow>Process</Eyebrow>
-              <H2 className="mt-3">How we partner with you.</H2>
-            </div>
+            <H2 rule className="max-w-2xl">How we partner with you.</H2>
           </Reveal>
           <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-14" staggerChildren={0.12}>
             {[
@@ -221,8 +266,8 @@ export default function HomePage() {
         <Container>
           <Reveal>
             <div className="max-w-3xl mx-auto text-center">
-              <Eyebrow light>Ready to look like the agency you actually are?</Eyebrow>
-              <H2 light className="mt-3">
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2 light>
                 Let's build a content system worth trusting.
               </H2>
               <p className="mt-5 text-white/85 text-lg max-w-2xl mx-auto">

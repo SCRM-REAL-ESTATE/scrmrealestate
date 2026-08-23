@@ -18,8 +18,8 @@ export default function AgenciesPage() {
       <div className="blue-fade text-white rounded-[2rem] md:rounded-[2.5rem]">
         <Container className="py-20 md:py-28">
           <Reveal>
-            <Eyebrow light>For agencies</Eyebrow>
-            <h1 className="mt-3 h-display text-5xl md:text-7xl text-white max-w-4xl">
+            <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+            <h1 className="h-display text-5xl md:text-7xl text-white max-w-4xl">
               Your agency&apos;s social media. Run for you.
             </h1>
             <p className="mt-6 text-white/80 max-w-2xl text-lg md:text-xl leading-relaxed">
@@ -42,8 +42,7 @@ export default function AgenciesPage() {
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
             <Reveal direction="left" className="md:col-span-5">
-              <Eyebrow>What it is</Eyebrow>
-              <H2 className="mt-3">A content system, not a freelancer with a camera.</H2>
+              <H2 rule>A content system, not a freelancer with a camera.</H2>
             </Reveal>
             <Reveal direction="right" className="md:col-span-7 space-y-5 text-lg text-re-stone leading-relaxed" delay={0.1}>
               <p className="text-re-ink">
@@ -67,8 +66,8 @@ export default function AgenciesPage() {
         <Container>
           <Reveal>
             <div className="max-w-2xl mx-auto text-center">
-              <Eyebrow>The package</Eyebrow>
-              <H2 className="mt-3">Every month, on schedule.</H2>
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>Every month, on schedule.</H2>
             </div>
           </Reveal>
 
@@ -107,8 +106,7 @@ export default function AgenciesPage() {
         <Container>
           <Reveal>
             <div className="max-w-2xl">
-              <Eyebrow>Why it matters</Eyebrow>
-              <H2 className="mt-3">Sellers pick their agency before they call one.</H2>
+              <H2 rule>Sellers pick their agency before they call one.</H2>
             </div>
           </Reveal>
 
@@ -143,8 +141,7 @@ export default function AgenciesPage() {
         <Container>
           <Reveal>
             <div className="max-w-2xl">
-              <Eyebrow>What it looks like</Eyebrow>
-              <H2 className="mt-3">A month with us.</H2>
+              <H2 rule>A month with us.</H2>
             </div>
           </Reveal>
           <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10" staggerChildren={0.1}>
@@ -194,8 +191,8 @@ export default function AgenciesPage() {
         <Container>
           <Reveal>
             <div className="max-w-3xl">
-              <Eyebrow light>Next step</Eyebrow>
-              <H2 light className="mt-3">
+              <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+              <H2 light>
                 One call. We&apos;ll map your next 90 days of content.
               </H2>
               <p className="mt-5 text-white/85 text-lg max-w-2xl">
