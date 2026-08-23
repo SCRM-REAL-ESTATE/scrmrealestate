@@ -4,7 +4,9 @@ import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import HeroVideo from "@/components/HeroVideo";
 import AddOnsDialog from "@/components/AddOnsDialog";
-import { ADD_ONS_FROM, LISTING_PRICE_RANGE } from "@/lib/pricing";
+import ListingPackages from "@/components/ListingPackages";
+import AgentContentCard from "@/components/AgentContentCard";
+import { ADD_ONS_FROM } from "@/lib/pricing";
 
 export default function HomePage() {
   return (
@@ -113,94 +115,59 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* PRICING PREVIEW */}
+      {/* LISTING PACKAGES */}
       <Section className="bg-white border-y border-re-stone-light">
         <Container>
           <Reveal>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
               <div className="max-w-xl">
-                <Eyebrow>Services & pricing</Eyebrow>
-                <H2 className="mt-3">Built for the way agencies actually grow.</H2>
+                <Eyebrow>Listing packages</Eyebrow>
+                <H2 className="mt-3">Every listing, a complete campaign.</H2>
+                <p className="mt-5 text-re-stone leading-relaxed">
+                  Photos, a branded floor plan and video — delivered next business day.
+                </p>
               </div>
-              <Link href="/services" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
-                See services & pricing
-                <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
-              </Link>
+              <div className="flex flex-wrap items-center gap-4">
+                <AddOnsDialog label={`Add-ons from ${ADD_ONS_FROM}`} variant="outline" />
+                <Link href="/services" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
+                  See services &amp; pricing
+                  <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
             </div>
           </Reveal>
 
-          <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerChildren={0.1}>
-            {[
-              {
-                t: "Social Media Management",
-                p: "From $1,800",
-                pSub: "/ month",
-                d: "Brand awareness, listing showcase, and social proof handled monthly.",
-                feat: ["8 videos", "6 posts", "6 stories", "Strategy & planning"],
-              },
-              {
-                t: "Listing Packages",
-                p: LISTING_PRICE_RANGE,
-                pSub: "per listing",
-                d: "Photos, branded floor plan and video — a complete campaign, next business day.",
-                feat: [
-                  "15 / 18 / 25 photos",
-                  "Branded 2D floor plan",
-                  "Landscape listing video",
-                  "Agent-led vertical from $499",
-                  `Add-ons from ${ADD_ONS_FROM}`,
-                ],
-                featured: true,
-              },
-              {
-                t: "Add-Ons",
-                p: `From ${ADD_ONS_FROM}`,
-                pSub: "per listing",
-                d: "Scale presentation to the property — priced individually, added to any package.",
-                feat: ["Twilight & dusk images", "Aerial photography", "3D virtual tour", "Virtual staging"],
-                addOns: true,
-              },
-            ].map((pkg) => (
-              <StaggerChild
-                key={pkg.t}
-                className={`relative p-8 md:p-10 border transition-all duration-500 ${
-                  pkg.featured
-                    ? "bg-re-blue text-white border-re-blue hover:shadow-[0_24px_60px_rgba(28,58,94,0.25)]"
-                    : "bg-re-ivory border-re-stone-light hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(28,58,94,0.08)] hover:border-re-blue/40"
-                }`}
-              >
-                {pkg.featured && (
-                  <span className="absolute -top-3 left-8 bg-re-gold-thin text-re-ink text-[10px] tracking-[0.22em] uppercase px-3 py-1">
-                    Most Popular
-                  </span>
-                )}
-                <p className={`label-eyebrow ${pkg.featured ? "!text-white/70" : ""}`}>{pkg.t}</p>
-                <p className={`mt-4 font-serif text-4xl ${pkg.featured ? "text-white" : "text-re-ink"}`}>
-                  {pkg.p}
-                  <span className={`text-sm font-sans ml-1 ${pkg.featured ? "text-white/70" : "text-re-stone"}`}>
-                    {pkg.pSub}
-                  </span>
-                </p>
-                <p className={`mt-3 text-sm leading-relaxed ${pkg.featured ? "text-white/80" : "text-re-stone"}`}>
-                  {pkg.d}
-                </p>
-                <ul className={`mt-6 space-y-2 text-sm ${pkg.featured ? "text-white/90" : "text-re-ink"}`}>
-                  {pkg.feat.map((f) => (
-                    <li key={f} className="flex items-center gap-2">
-                      <span className={`h-1 w-3 ${pkg.featured ? "bg-white/60" : "bg-re-blue-accent"}`} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
+          <ListingPackages />
+        </Container>
+      </Section>
 
-                {pkg.addOns && (
-                  <div className="mt-7">
-                    <AddOnsDialog label="See all add-ons" variant="outline" />
-                  </div>
-                )}
-              </StaggerChild>
-            ))}
-          </Stagger>
+      {/* AGENT CONTENT */}
+      <Section>
+        <Container>
+          <Reveal>
+            <div className="max-w-2xl mx-auto text-center">
+              <Eyebrow>What every agent is missing</Eyebrow>
+              <H2 className="mt-3">Your listings market the house. Not you.</H2>
+              <p className="mt-5 text-re-stone leading-relaxed text-lg">
+                Vendors don&apos;t choose a house. They choose a person — and they decide before
+                they call. Four videos a month is how you win that.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.12} className="mt-12">
+            <AgentContentCard />
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <p className="mt-8 text-center text-sm text-re-stone">
+              Running an agency instead?{" "}
+              <Link href="/services#social" className="text-re-blue hover:text-re-blue-accent underline decoration-re-blue-accent/40 underline-offset-4 transition-colors">
+                Monthly social media management from $1,800
+              </Link>
+              .
+            </p>
+          </Reveal>
         </Container>
       </Section>
 

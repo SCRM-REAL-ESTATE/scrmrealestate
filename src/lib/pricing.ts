@@ -59,6 +59,25 @@ export const LISTING_PACKAGES: ListingPackage[] = [
   },
 ];
 
+/**
+ * Agent monthly content — sold to individual agents, separate from agency
+ * media management. Deliberately not framed as a management package.
+ */
+export const AGENT_CONTENT = {
+  name: "Agent Monthly Content",
+  price: "$800",
+  priceSub: "per month",
+  headline: "Four videos a month, filmed in one sitting.",
+  pitch:
+    "Your listings sell the property. These sell you. Four pieces to camera every month, planned, filmed and posted — so when a vendor looks you up before they call, they find someone worth calling.",
+  includes: [
+    "4 pieces to camera every month",
+    "Filmed in one sitting — you turn up for an hour",
+    "Planned, filmed, edited and posted for you",
+    "Built from the questions vendors actually ask",
+  ],
+};
+
 export type AddOn = {
   name: string;
   price: string;

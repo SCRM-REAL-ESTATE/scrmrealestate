@@ -5,7 +5,9 @@ import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import FAQAccordion from "@/components/FAQAccordion";
 import ServiceIncludes, { type IncludeItem } from "@/components/ServiceIncludes";
 import AddOnsDialog from "@/components/AddOnsDialog";
-import { ADD_ONS_FROM, LISTING_PACKAGES, LISTING_PRICE_RANGE } from "@/lib/pricing";
+import ListingPackages from "@/components/ListingPackages";
+import AgentContentCard from "@/components/AgentContentCard";
+import { ADD_ONS_FROM, LISTING_PRICE_RANGE } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -191,57 +193,82 @@ export default function ServicesPage() {
             </div>
           </Reveal>
 
-          <Stagger className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start" staggerChildren={0.1}>
-            {LISTING_PACKAGES.map((pkg) => (
-              <StaggerChild
-                key={pkg.name}
-                className={`relative flex flex-col p-8 md:p-9 border transition-all duration-500 ${
-                  pkg.featured
-                    ? "bg-re-blue text-white border-re-blue hover:shadow-[0_24px_60px_rgba(28,58,94,0.25)]"
-                    : "bg-re-ivory border-re-stone-light hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(28,58,94,0.08)] hover:border-re-blue/40"
-                }`}
-              >
-                {pkg.featured && (
-                  <span className="absolute -top-3 left-8 bg-re-gold-thin text-re-ink text-[10px] tracking-[0.22em] uppercase px-3 py-1">
-                    Most Popular
-                  </span>
-                )}
+          <ListingPackages className="mt-12" />
+        </Container>
+      </Section>
 
-                <p className={`label-eyebrow ${pkg.featured ? "!text-white/70" : ""}`}>{pkg.name}</p>
-                <p className={`mt-3 font-serif text-5xl ${pkg.featured ? "text-white" : "text-re-ink"}`}>
-                  {pkg.price}
-                </p>
-                <p className={`mt-3 text-sm ${pkg.featured ? "text-white/70" : "text-re-stone"}`}>
-                  {pkg.products} · {pkg.turnaround}
-                </p>
+      {/* WHAT EVERY AGENT IS MISSING */}
+      <Section id="agent">
+        <Container>
+          <Reveal>
+            <div className="max-w-3xl">
+              <Eyebrow>What every agent is missing</Eyebrow>
+              <H2 className="mt-3">Your listings market the house. Not you.</H2>
+              <p className="mt-6 text-re-stone leading-relaxed text-lg">
+                Every agent posts the same thing. Just Listed. Open Home. Just Sold. It works — it&apos;s
+                the proof you&apos;re active. But it&apos;s the property doing the talking, and the moment that
+                listing sells, the content goes with it.
+              </p>
+            </div>
+          </Reveal>
 
-                <ul className={`mt-7 space-y-3 text-sm flex-grow ${pkg.featured ? "text-white/90" : "text-re-ink"}`}>
-                  {pkg.includes.map((line) => (
-                    <li key={line} className="flex gap-3">
-                      <span
-                        className={`mt-2 h-1 w-3 shrink-0 ${pkg.featured ? "bg-white/60" : "bg-re-blue-accent"}`}
-                      />
-                      <span className="leading-relaxed">{line}</span>
-                    </li>
-                  ))}
-                </ul>
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14">
+            <Reveal direction="left" className="md:col-span-6">
+              <h3 className="font-serif text-2xl md:text-3xl text-re-ink">
+                Vendors don&apos;t choose a house. They choose a person.
+              </h3>
+              <p className="mt-5 text-re-stone leading-relaxed">
+                Before anyone calls an agent, they look them up. They watch a few seconds of
+                something. They decide whether you sound like someone who knows their street, or
+                someone who&apos;s just chasing a listing. That decision happens before you&apos;ve met them,
+                and it happens whether you&apos;ve made anything or not.
+              </p>
+            </Reveal>
 
-                <p
-                  className={`mt-7 pt-6 border-t font-serif text-lg leading-snug ${
-                    pkg.featured ? "border-white/20 text-white" : "border-re-stone-light text-re-ink"
-                  }`}
-                >
-                  {pkg.note}
-                </p>
+            <Reveal direction="right" className="md:col-span-6" delay={0.1}>
+              <h3 className="font-serif text-2xl md:text-3xl text-re-ink">
+                Four videos a month is how you win that.
+              </h3>
+              <p className="mt-5 text-re-stone leading-relaxed">
+                We film four pieces to camera with you in one sitting each month. Not scripted
+                corporate lines — the questions vendors actually ask. What&apos;s happening in your
+                suburb. Why that place on the corner went for what it did. What people get wrong
+                before they list. What you&apos;d do differently in this market.
+              </p>
+              <p className="mt-4 text-re-stone leading-relaxed">
+                We plan them, film them, edit them, and post them for you. You turn up for an hour.
+              </p>
+            </Reveal>
+          </div>
 
-                <div className="mt-7">
-                  <CTAButton href="/contact" variant={pkg.featured ? "outline-light" : "solid"}>
-                    Book this package
-                  </CTAButton>
-                </div>
+          <Reveal className="mt-16">
+            <p className="label-eyebrow">Why it works</p>
+          </Reveal>
+          <Stagger className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-px bg-re-stone-light border border-re-stone-light" staggerChildren={0.08}>
+            {[
+              {
+                t: "It compounds",
+                d: "Listing content disappears when the listing does. This builds. Four a month is nearly fifty pieces a year — enough that people in your area stop seeing an agent and start seeing the agent.",
+              },
+              {
+                t: "Nobody can copy it",
+                d: "Every agent in your office has the same listing photos. None of them have your face, your voice, or your read on the market.",
+              },
+              {
+                t: "It works while you're not",
+                d: "Someone thinking about selling finds you on a Sunday night and calls on Monday morning.",
+              },
+            ].map((point) => (
+              <StaggerChild key={point.t} className="bg-re-ivory p-8 md:p-9 transition-colors hover:bg-white">
+                <h4 className="font-serif text-xl text-re-ink">{point.t}</h4>
+                <p className="mt-3 text-sm text-re-stone leading-relaxed">{point.d}</p>
               </StaggerChild>
             ))}
           </Stagger>
+
+          <Reveal className="mt-16">
+            <AgentContentCard />
+          </Reveal>
         </Container>
       </Section>
 
