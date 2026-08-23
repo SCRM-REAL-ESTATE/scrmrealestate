@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
@@ -6,13 +5,15 @@ import HeroVideo from "@/components/HeroVideo";
 import AddOnsDialog from "@/components/AddOnsDialog";
 import ListingPackages from "@/components/ListingPackages";
 import AgentContentCard from "@/components/AgentContentCard";
+import HomeWorkPreview from "@/components/HomeWorkPreview";
 import { ADD_ONS_FROM } from "@/lib/pricing";
 
 export default function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative -mt-[var(--shell-h)] pt-[var(--shell-h)] min-h-[100svh] flex items-end overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]">
+      <section className="px-3 md:px-6 pt-2 md:pt-3">
+      <div className="relative min-h-[86svh] flex items-end overflow-hidden rounded-[2rem] md:rounded-[2.5rem]">
         <HeroVideo />
         <Container className="relative w-full pb-16 md:pb-24">
           <Reveal direction="up">
@@ -24,7 +25,7 @@ export default function HomePage() {
                 for luxury real estate.
               </h1>
               <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
-                We help boutique agencies, top-performing agents, and developers build a consistent, editorial brand presence that earns trust before the first call.
+                Listing media, agent videos and full social management — filmed, edited and delivered for you.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <CTAButton href="/contact">Book a strategy call</CTAButton>
@@ -43,6 +44,7 @@ export default function HomePage() {
             <span className="absolute top-0 left-0 right-0 h-4 bg-white animate-[scrollHint_1.8s_cubic-bezier(0.22,1,0.36,1)_infinite]" />
           </span>
         </div>
+      </div>
       </section>
 
       {/* MARQUEE STRIP */}
@@ -73,41 +75,46 @@ export default function HomePage() {
           <Reveal>
             <div className="max-w-2xl">
               <Eyebrow>What we do</Eyebrow>
-              <H2 className="mt-3">Three pillars. One coherent brand.</H2>
-              <p className="mt-5 text-re-stone text-lg leading-relaxed">
-                Most agencies post. The strongest agencies build a system. Ours is built around three pillars that work together — not independently.
-              </p>
+              <H2 className="mt-3">Three ways to work with us.</H2>
             </div>
           </Reveal>
 
-          <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-px bg-re-stone-light border border-re-stone-light rounded-[1.75rem] overflow-hidden">
+          <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
             {[
               {
-                t: "Social Media",
-                d: "8 videos, 6 posts, 6 stories per month. Strategy, planning, scripting, filming, editing, scheduling — all coordinated.",
+                t: "Listing packages",
+                d: "Photos, a branded floor plan and video from $349. Shot one day, delivered the next.",
                 i: "01",
+                href: "/services",
+                cta: "See the packages",
               },
               {
-                t: "Listing Photography",
-                d: "Photos, a branded floor plan and listing video in one package — from $349, delivered next business day.",
+                t: "Agent content",
+                d: "Four videos a month that sell you, not the house. $800 a month, one hour of your time.",
                 i: "02",
+                href: "/services#agent",
+                cta: "How it works",
               },
               {
-                t: "Vertical Content",
-                d: "Reels, TikTok, and short-form video that turns a single listing into a week of distribution.",
+                t: "Agency management",
+                d: "Your whole social presence run for you — 8 videos, 6 posts, 6 stories a month. $1,800 a month.",
                 i: "03",
+                href: "/agencies",
+                cta: "For agencies",
               },
             ].map((p) => (
-              <StaggerChild key={p.t} className="bg-re-ivory p-8 md:p-10 group transition-colors hover:bg-white">
-                <span className="font-serif text-re-blue-accent text-2xl">{p.i}</span>
-                <h3 className="mt-6 font-serif text-2xl md:text-3xl text-re-ink">{p.t}</h3>
-                <p className="mt-3 text-re-stone leading-relaxed">{p.d}</p>
+              <StaggerChild key={p.t}>
                 <Link
-                  href="/services"
-                  className="mt-6 inline-flex items-center gap-2 text-sm text-re-blue group-hover:text-re-blue-accent transition-colors"
+                  href={p.href}
+                  className="group flex flex-col h-full rounded-[1.75rem] border border-re-stone-light bg-white p-8 md:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-re-blue-accent/40 hover:shadow-[0_24px_60px_rgba(30,98,224,0.12)]"
                 >
-                  Learn more
-                  <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+                  <span className="font-serif text-re-blue-accent text-2xl">{p.i}</span>
+                  <h3 className="mt-6 font-serif text-2xl md:text-3xl text-re-ink">{p.t}</h3>
+                  <p className="mt-3 text-re-stone leading-relaxed flex-grow">{p.d}</p>
+                  <span className="mt-6 inline-flex items-center gap-2 text-sm text-re-blue group-hover:text-re-blue-accent transition-colors">
+                    {p.cta}
+                    <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+                  </span>
                 </Link>
               </StaggerChild>
             ))}
@@ -166,7 +173,7 @@ export default function HomePage() {
           <Reveal delay={0.2}>
             <p className="mt-8 text-center text-sm text-re-stone">
               Running an agency instead?{" "}
-              <Link href="/services#social" className="text-re-blue hover:text-re-blue-accent underline decoration-re-blue-accent/40 underline-offset-4 transition-colors">
+              <Link href="/agencies" className="text-re-blue hover:text-re-blue-accent underline decoration-re-blue-accent/40 underline-offset-4 transition-colors">
                 Monthly social media management from $1,800
               </Link>
               .
@@ -191,25 +198,12 @@ export default function HomePage() {
             </div>
           </Reveal>
 
-          <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4" staggerChildren={0.05}>
-            {[2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-              <StaggerChild key={n} className="relative aspect-[4/5] overflow-hidden bg-re-stone-light group">
-                <Image
-                  src={`/media/listings/listing-${String(n).padStart(2, "0")}.png`}
-                  alt={`Listing ${n}`}
-                  fill
-                  sizes="(min-width: 768px) 25vw, 50vw"
-                  className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-re-ink/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </StaggerChild>
-            ))}
-          </Stagger>
+          <HomeWorkPreview />
         </Container>
       </Section>
 
       {/* PROCESS */}
-      <Section className="bg-re-ivory border-y border-re-stone-light">
+      <Section panel="tint">
         <Container>
           <Reveal>
             <div className="max-w-2xl">
@@ -245,34 +239,6 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* TESTIMONIALS */}
-      <Section>
-        <Container>
-          <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-10" staggerChildren={0.15}>
-            {[
-              {
-                q: "Our enquiry quality changed almost immediately. Sellers come in already understanding our process.",
-                a: "Principal, Boutique Agency",
-              },
-              {
-                q: "It finally feels like we have a brand, not just a feed. The team look the part on camera and we're winning listings on it.",
-                a: "Director, Sales & Property Management",
-              },
-            ].map((t) => (
-              <StaggerChild key={t.a}>
-                <figure className="gold-ring rounded-[1.75rem] border border-re-stone-light p-8 md:p-10 bg-white h-full transition-shadow duration-500 hover:shadow-[0_30px_70px_rgba(28,58,94,0.12)]">
-                  <span className="font-serif text-5xl text-re-blue-accent leading-none">“</span>
-                  <blockquote className="mt-2 font-serif text-2xl md:text-[28px] text-re-ink leading-snug">
-                    {t.q}
-                  </blockquote>
-                  <figcaption className="mt-6 label-eyebrow">{t.a}</figcaption>
-                </figure>
-              </StaggerChild>
-            ))}
-          </Stagger>
-        </Container>
-      </Section>
-
       {/* FINAL CTA */}
       <Section panel="blue">
         <Container>
@@ -286,7 +252,7 @@ export default function HomePage() {
                 A 30-minute call is enough to map what your content should look like over the next 90 days. No pressure, no template pitch.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
-                <CTAButton href="/contact">Book a call</CTAButton>
+                <CTAButton href="/contact" variant="white">Book a call</CTAButton>
                 <CTAButton href="/services" variant="outline-light">
                   See services & pricing
                 </CTAButton>

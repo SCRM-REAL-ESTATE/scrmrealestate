@@ -3,7 +3,8 @@ import Logo from "./Logo";
 import { NAV_LINKS, SITE } from "@/lib/site";
 
 const services = [
-  { label: "Social Media Management", href: "/services#social" },
+  { label: "Agency Social Media Management", href: "/agencies" },
+  { label: "Agent Monthly Content", href: "/services#agent" },
   { label: "Listing Photography & Video", href: "/services#photography" },
   { label: "Listing Packages", href: "/services#packages" },
   { label: "Add-Ons", href: "/services#packages" },

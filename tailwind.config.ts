@@ -5,13 +5,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "re-blue": "#1C3A5E",
+        "re-blue": "#1E62E0",
         "re-ivory": "#F8F6F1",
         "re-ink": "#1A1A1A",
-        "re-stone": "#8A8680",
+        "re-stone": "#625E56",
         "re-stone-light": "#E8E5DF",
-        "re-blue-accent": "#3B6FAA",
-        "re-blue-light": "#EDF2F8",
+        "re-blue-accent": "#3080F8",
+        "re-blue-light": "#EAF2FF",
         "re-gold-thin": "#C4A96C",
       },
       fontFamily: {

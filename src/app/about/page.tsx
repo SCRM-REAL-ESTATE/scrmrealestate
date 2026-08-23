@@ -13,7 +13,8 @@ export default function AboutPage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-[55vh] flex items-end overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]">
+      <section className="px-3 md:px-6 pt-2 md:pt-3">
+      <div className="relative min-h-[55vh] flex items-end overflow-hidden rounded-[2rem] md:rounded-[2.5rem]">
         <div className="absolute inset-0">
           <Image
             src="/media/listings/listing-04.png"
@@ -35,6 +36,7 @@ export default function AboutPage() {
             </h1>
           </Reveal>
         </Container>
+      </div>
       </section>
 
       {/* INTRO */}
@@ -144,7 +146,7 @@ export default function AboutPage() {
                 We don't onboard everyone — we work best with agencies that take their reputation seriously and want a real partner. Tell us about your goals.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
-                <CTAButton href="/contact">Book a strategy call</CTAButton>
+                <CTAButton href="/contact" variant="white">Book a strategy call</CTAButton>
                 <CTAButton href="/work" variant="outline-light">
                   See our work
                 </CTAButton>

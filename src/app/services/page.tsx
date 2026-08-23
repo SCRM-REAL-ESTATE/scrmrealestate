@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import FAQAccordion from "@/components/FAQAccordion";
@@ -26,6 +27,8 @@ type Service = {
   ideal: string;
   image: string;
   reverse: boolean;
+  /** Optional deep link when a service has its own page. */
+  link?: { href: string; label: string };
 };
 
 const services: Service[] = [
@@ -48,6 +51,7 @@ const services: Service[] = [
       "Agencies who want to look more premium, build trust before the call, and stop posting reactively.",
     image: "/media/listings/listing-03.png",
     reverse: false,
+    link: { href: "/agencies", label: "See the full agency offer" },
   },
   {
     id: "photography",
@@ -111,7 +115,8 @@ export default function ServicesPage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-[60vh] flex items-end overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]">
+      <section className="px-3 md:px-6 pt-2 md:pt-3">
+      <div className="relative min-h-[60vh] flex items-end overflow-hidden rounded-[2rem] md:rounded-[2.5rem]">
         <div className="absolute inset-0">
           <Image
             src="/media/listings/listing-02.png"
@@ -136,6 +141,7 @@ export default function ServicesPage() {
             </p>
           </Reveal>
         </Container>
+      </div>
       </section>
 
       {/* SERVICES */}
@@ -169,10 +175,19 @@ export default function ServicesPage() {
                   <p className="mt-1 text-sm text-re-ink">{s.ideal}</p>
                 </div>
 
-                <div className="mt-7">
+                <div className="mt-7 flex flex-wrap items-center gap-5">
                   <CTAButton href="/contact" variant="outline">
                     Enquire about this
                   </CTAButton>
+                  {s.link && (
+                    <Link
+                      href={s.link.href}
+                      className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors"
+                    >
+                      {s.link.label}
+                      <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+                    </Link>
+                  )}
                 </div>
               </Reveal>
             </div>

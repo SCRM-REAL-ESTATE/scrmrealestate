@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <section className="bg-re-blue text-white">
+      <section className="px-3 md:px-6 pt-2 md:pt-3">
+      <div className="bg-re-blue text-white rounded-[2rem] md:rounded-[2.5rem]">
         <Container className="py-20 md:py-24">
           <Reveal>
             <Eyebrow light>Contact</Eyebrow>
@@ -25,6 +26,7 @@ export default function ContactPage() {
             </p>
           </Reveal>
         </Container>
+      </div>
       </section>
 
       <section className="py-16 md:py-24">

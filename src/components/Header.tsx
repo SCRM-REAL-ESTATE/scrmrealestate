@@ -35,34 +35,33 @@ export default function Header() {
 
   return (
     <>
-    <header
-      className={`fixed top-[var(--topbar-h)] inset-x-0 z-40 transition-[background-color,box-shadow,backdrop-filter] duration-300 ${
-        scrolled
-          ? "bg-re-blue/95 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.18)]"
-          : "bg-re-blue"
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-4 md:px-8 h-[var(--header-h)] flex items-center justify-between gap-6">
-        <Logo variant="light" />
+    <header className="fixed top-[var(--topbar-h)] inset-x-0 z-40 px-3 md:px-6 pt-2 md:pt-3">
+      <div
+        className={`mx-auto max-w-7xl h-[56px] md:h-[64px] rounded-full border border-white/15 px-4 md:px-3 flex items-center justify-between gap-4 transition-all duration-300 ${
+          scrolled
+            ? "bg-re-blue/90 backdrop-blur-md shadow-[0_16px_40px_rgba(30,98,224,0.35)]"
+            : "bg-re-blue shadow-[0_10px_30px_rgba(30,98,224,0.25)]"
+        }`}
+      >
+        <div className="pl-2 md:pl-4">
+          <Logo variant="light" />
+        </div>
 
         {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-8 text-sm" aria-label="Primary">
+        <nav className="hidden lg:flex items-center gap-1 text-sm" aria-label="Primary">
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative tracking-tight transition-colors ${
-                  active ? "text-white" : "text-white/70 hover:text-white"
+                className={`rounded-full px-4 py-2 tracking-tight transition-colors duration-200 ${
+                  active
+                    ? "bg-white text-re-blue font-medium"
+                    : "text-white/80 hover:text-white hover:bg-white/10"
                 }`}
               >
                 {link.label}
-                <span
-                  className={`absolute -bottom-2 left-0 right-0 h-px bg-white transition-transform origin-left duration-300 ${
-                    active ? "scale-x-100" : "scale-x-0"
-                  }`}
-                />
               </Link>
             );
           })}
@@ -71,7 +70,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/contact"
-            className="hidden md:inline-flex items-center gap-2 border rounded-full border-white/40 hover:border-white hover:bg-white hover:text-re-blue text-white text-sm px-6 py-2.5 transition-all duration-300"
+            className="hidden md:inline-flex items-center gap-2 rounded-full bg-white text-re-blue text-sm font-medium px-6 py-2.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.25)] hover:-translate-y-0.5 transition-all duration-300"
           >
             Book a Call
             <span aria-hidden>→</span>
@@ -112,7 +111,7 @@ export default function Header() {
           className={`absolute inset-0 bg-black/60 transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`}
         />
         <aside
-          className={`absolute top-0 right-0 h-full w-[88%] max-w-sm bg-re-blue text-white shadow-2xl transition-transform duration-300 ${
+          className={`absolute top-0 right-0 h-full w-[88%] max-w-sm bg-re-blue text-white shadow-2xl rounded-l-[2rem] transition-transform duration-300 ${
             open ? "translate-x-0" : "translate-x-full"
           }`}
           role="dialog"

@@ -13,7 +13,8 @@ export default function WorkPage() {
   return (
     <>
       {/* HERO */}
-      <section className="bg-re-blue text-white">
+      <section className="px-3 md:px-6 pt-2 md:pt-3">
+      <div className="bg-re-blue text-white rounded-[2rem] md:rounded-[2.5rem]">
         <Container className="py-20 md:py-28">
           <Reveal>
             <Eyebrow light>Selected work</Eyebrow>
@@ -25,6 +26,7 @@ export default function WorkPage() {
             </p>
           </Reveal>
         </Container>
+      </div>
       </section>
 
       <WorkGallery />

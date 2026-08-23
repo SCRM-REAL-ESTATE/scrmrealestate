@@ -37,7 +37,7 @@ export function H2({
 type ButtonProps = {
   href: string;
   children: React.ReactNode;
-  variant?: "solid" | "outline" | "outline-light";
+  variant?: "solid" | "outline" | "outline-light" | "white";
   className?: string;
   external?: boolean;
 };
@@ -55,6 +55,7 @@ export function CTAButton({
     solid: "bg-re-blue text-white hover:bg-re-blue-accent hover:shadow-[0_10px_30px_rgba(28,58,94,0.3)]",
     outline: "border border-re-ink text-re-ink hover:bg-re-ink hover:text-white hover:shadow-[0_10px_30px_rgba(26,26,26,0.18)]",
     "outline-light": "border border-white/70 text-white hover:bg-white hover:text-re-blue hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)]",
+    white: "bg-white text-re-blue font-medium hover:shadow-[0_10px_30px_rgba(0,0,0,0.25)]",
   } as const;
 
   const content = (
@@ -89,20 +90,19 @@ export function Section({
   className?: string;
   dark?: boolean;
   /** Floating rounded panel instead of a full-bleed band. */
-  panel?: "white" | "blue";
+  panel?: "white" | "blue" | "tint";
   id?: string;
 }) {
   if (panel) {
+    const panelStyles = {
+      blue: "bg-re-blue text-white shadow-[0_30px_80px_rgba(30,98,224,0.28)]",
+      white: "bg-white border border-re-stone-light shadow-[0_20px_60px_rgba(30,98,224,0.07)]",
+      tint: "bg-re-blue-light shadow-[0_20px_60px_rgba(30,98,224,0.08)]",
+    } as const;
     return (
       <section id={id} className={`py-6 md:py-10 ${className}`}>
         <div className="mx-auto max-w-[1440px] px-3 md:px-6">
-          <div
-            className={`rounded-[2rem] md:rounded-[3rem] py-16 md:py-24 ${
-              panel === "blue"
-                ? "bg-re-blue text-white shadow-[0_30px_80px_rgba(28,58,94,0.25)]"
-                : "bg-white border border-re-stone-light shadow-[0_20px_60px_rgba(28,58,94,0.06)]"
-            }`}
-          >
+          <div className={`rounded-[2rem] md:rounded-[3rem] py-16 md:py-24 ${panelStyles[panel]}`}>
             {children}
           </div>
         </div>
