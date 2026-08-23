@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import ServiceIncludes from "@/components/ServiceIncludes";
+import AgencyShowcase from "@/components/AgencyShowcase";
 import TiltCard from "@/components/TiltCard";
 
 export const metadata: Metadata = {
@@ -40,24 +41,20 @@ export default function AgenciesPage() {
       {/* WHAT IT IS */}
       <Section>
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
-            <Reveal direction="left" className="md:col-span-5">
-              <H2 rule>A content system, not a freelancer with a camera.</H2>
-            </Reveal>
-            <Reveal direction="right" className="md:col-span-7 space-y-5 text-lg text-re-stone leading-relaxed" delay={0.1}>
-              <p className="text-re-ink">
-                Most agencies post when someone remembers to. We replace that with a monthly
-                rhythm: we plan the month, film it in one batch at your office or on a listing,
-                edit everything, write the captions, and schedule it. Your feed runs whether
-                you&apos;re busy or not.
+          <Reveal>
+            <div className="mx-auto max-w-3xl text-center">
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>A content system, not a freelancer with a camera.</H2>
+              <p className="mt-7 text-lg md:text-xl leading-relaxed text-re-ink">
+                We plan the month, film it in one batch, edit it, write the captions and
+                post it. One team, start to finish. Here is what that looks like.
               </p>
-              <p>
-                One team owns the whole thing: strategy, filming, editing and posting. So the
-                brand stays consistent and nothing falls between a photographer, an editor and
-                whoever has the login this week.
-              </p>
-            </Reveal>
-          </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.1} className="mt-14">
+            <AgencyShowcase />
+          </Reveal>
         </Container>
       </Section>
 

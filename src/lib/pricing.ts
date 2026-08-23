@@ -99,4 +99,4 @@ export const ADD_ONS: AddOn[] = [
 export const ADD_ONS_FROM = "$40";
 
 /** Price span across the packages, for summary lines. */
-export const LISTING_PRICE_RANGE = "$349 – $899";
+export const LISTING_PRICE_RANGE = "$349 to $899";

@@ -42,12 +42,12 @@ function ReelVideo({ item }: { item: MediaItem }) {
  * silently in a row; clicking one opens it full screen with sound.
  */
 export default function HomeVideoReel() {
-  const items = useMemo(() => {
-    const vertical = mediaByCategory("vertical").filter((i) => i.type === "video");
-    const agency = mediaByCategory("agency").filter((i) => i.type === "video");
-    const testimonial = mediaByCategory("testimonial").filter((i) => i.type === "video");
-    return [...vertical, ...agency, ...testimonial].slice(0, 8);
-  }, []);
+  // Listing video only. Brand, team and testimonial clips are agency work and
+  // belong with the agency offer, not here.
+  const items = useMemo(
+    () => mediaByCategory("vertical").filter((i) => i.type === "video").slice(0, 4),
+    []
+  );
 
   const [lightbox, setLightbox] = useState<LightboxState>(null);
 

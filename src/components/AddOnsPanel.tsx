@@ -45,12 +45,14 @@ export default function AddOnsPanel({
         }`}
       >
         <div className="overflow-hidden">
-          <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 text-left">
+          {/* Flex rather than grid so a final odd card centres instead of
+              stranding itself in the left column. */}
+          <ul className="mt-10 flex flex-wrap justify-center gap-5 text-left">
             {ADD_ONS.map((addOn, i) => (
               <li
                 key={addOn.name}
                 style={{ transitionDelay: open ? `${80 + i * 45}ms` : "0ms" }}
-                className={`rounded-2xl border border-re-stone-light bg-white p-6 transition-all duration-500 hover:border-re-blue-accent/40 hover:shadow-[0_18px_44px_rgba(30,98,224,0.1)] ${
+                className={`w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.834rem)] rounded-2xl border border-re-stone-light bg-white p-6 transition-all duration-500 hover:border-re-blue-accent/40 hover:shadow-[0_18px_44px_rgba(30,98,224,0.1)] ${
                   open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
                 }`}
               >
