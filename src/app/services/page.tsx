@@ -67,25 +67,6 @@ const services: Service[] = [
     image: "/media/listings/listing-06.png",
     reverse: true,
   },
-  {
-    id: "vertical",
-    eyebrow: "Service 03",
-    title: "Vertical Social Media Listing Video",
-    price: "$300 – $450",
-    priceSub: "per listing",
-    body:
-      "Reels-first short-form video that turns one listing into a week of distribution. Built to perform on Instagram, TikTok, and Facebook Reels.",
-    includes: [
-      { label: "Punchy edit, hook-driven structure", examples: ["vertical"] },
-      { label: "Captions and platform-ready exports" },
-      { label: "$300 for monthly management clients" },
-      { label: "$450 standalone" },
-      { label: "Pairs with listing photography" },
-    ],
-    ideal: "Agents who already get good results but want their listings to travel further online.",
-    image: "/media/listings/listing-09.png",
-    reverse: false,
-  },
 ];
 
 

@@ -122,13 +122,10 @@ export default function HomePage() {
                 <Eyebrow>Services & pricing</Eyebrow>
                 <H2 className="mt-3">Built for the way agencies actually grow.</H2>
               </div>
-              <div className="flex flex-wrap items-center gap-4">
-                <AddOnsDialog label={`Add-ons from ${ADD_ONS_FROM}`} variant="outline" />
-                <Link href="/services" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
-                  See services & pricing
-                  <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
-                </Link>
-              </div>
+              <Link href="/services" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
+                See services & pricing
+                <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+              </Link>
             </div>
           </Reveal>
 
@@ -156,11 +153,12 @@ export default function HomePage() {
                 featured: true,
               },
               {
-                t: "Vertical Listing Video",
-                p: "$300 – $450",
+                t: "Add-Ons",
+                p: `From ${ADD_ONS_FROM}`,
                 pSub: "per listing",
-                d: "Reels-first short-form that turns one listing into a week of distribution.",
-                feat: ["Hook-driven edit", "Captions included", "$300 for monthly clients", "Pairs with listing photos"],
+                d: "Scale presentation to the property — priced individually, added to any package.",
+                feat: ["Twilight & dusk images", "Aerial photography", "3D virtual tour", "Virtual staging"],
+                addOns: true,
               },
             ].map((pkg) => (
               <StaggerChild
@@ -194,6 +192,12 @@ export default function HomePage() {
                     </li>
                   ))}
                 </ul>
+
+                {pkg.addOns && (
+                  <div className="mt-7">
+                    <AddOnsDialog label="See all add-ons" variant="outline" />
+                  </div>
+                )}
               </StaggerChild>
             ))}
           </Stagger>

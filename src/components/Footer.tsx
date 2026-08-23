@@ -4,10 +4,9 @@ import { NAV_LINKS, SITE } from "@/lib/site";
 
 const services = [
   { label: "Social Media Management", href: "/services#social" },
-  { label: "Listing Photography", href: "/services#photography" },
-  { label: "Listing Videos", href: "/services#video" },
-  { label: "Vertical Social Videos", href: "/services#vertical" },
-  { label: "Drone Add-On", href: "/services#drone" },
+  { label: "Listing Photography & Video", href: "/services#photography" },
+  { label: "Listing Packages", href: "/services#packages" },
+  { label: "Add-Ons", href: "/services#packages" },
 ];
 
 export default function Footer() {
