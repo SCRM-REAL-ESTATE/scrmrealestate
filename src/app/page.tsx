@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import HeroVideo from "@/components/HeroVideo";
+import AddOnsDialog from "@/components/AddOnsDialog";
+import { ADD_ONS_FROM, LISTING_PRICE_RANGE } from "@/lib/pricing";
 
 export default function HomePage() {
   return (
@@ -85,7 +87,7 @@ export default function HomePage() {
               },
               {
                 t: "Listing Photography",
-                d: "Editorial-grade photography and listing video that makes properties feel premium across every touchpoint.",
+                d: "Photos, a branded floor plan and listing video in one package — from $349, delivered next business day.",
                 i: "02",
               },
               {
@@ -120,10 +122,13 @@ export default function HomePage() {
                 <Eyebrow>Services & pricing</Eyebrow>
                 <H2 className="mt-3">Built for the way agencies actually grow.</H2>
               </div>
-              <Link href="/services" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
-                See services & pricing
-                <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
-              </Link>
+              <div className="flex flex-wrap items-center gap-4">
+                <AddOnsDialog label={`Add-ons from ${ADD_ONS_FROM}`} variant="outline" />
+                <Link href="/services" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
+                  See services & pricing
+                  <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
             </div>
           </Reveal>
 
@@ -137,16 +142,16 @@ export default function HomePage() {
                 feat: ["8 videos", "6 posts", "6 stories", "Strategy & planning"],
               },
               {
-                t: "Listing Photography & Video",
-                p: "$600 – $1,000",
+                t: "Listing Packages",
+                p: LISTING_PRICE_RANGE,
                 pSub: "per listing",
-                d: "Editorial photography and a horizontal listing video, every time.",
+                d: "Photos, branded floor plan and video — a complete campaign, next business day.",
                 feat: [
-                  "10 / 15 / 20 photos",
-                  "Listing video included",
-                  "Drone add-on from $100",
-                  "Same-day production",
-                  "Portal + social ready",
+                  "15 / 18 / 25 photos",
+                  "Branded 2D floor plan",
+                  "Landscape listing video",
+                  "Agent-led vertical from $499",
+                  `Add-ons from ${ADD_ONS_FROM}`,
                 ],
                 featured: true,
               },

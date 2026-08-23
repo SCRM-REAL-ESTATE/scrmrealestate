@@ -4,11 +4,13 @@ import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import FAQAccordion from "@/components/FAQAccordion";
 import ServiceIncludes, { type IncludeItem } from "@/components/ServiceIncludes";
+import AddOnsDialog from "@/components/AddOnsDialog";
+import { ADD_ONS_FROM, LISTING_PACKAGES, LISTING_PRICE_RANGE } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Monthly social media management from $1,800, listing photography and video from $600, vertical listing video, and drone — built specifically for real estate agencies.",
+    "Monthly social media management from $1,800, listing packages from $349 including photos, floor plan and video, plus agent-led vertical video and aerial — built specifically for real estate agencies.",
 };
 
 type Service = {
@@ -49,16 +51,17 @@ const services: Service[] = [
     id: "photography",
     eyebrow: "Service 02",
     title: "Listing Photography & Video",
-    price: "$600 – $1,000",
+    price: LISTING_PRICE_RANGE,
     priceSub: "per listing",
     body:
-      "Editorial-grade listing photography paired with a horizontal listing video that makes properties look the part on portals, brochures, and social. Priced per listing, no monthly commitment required.",
+      "Three packages, each a complete listing campaign — photos, branded floor plan and video delivered together. Priced per listing, no monthly commitment required.",
     includes: [
-      { label: "Professional listing video included in every package", examples: ["landscape"] },
-      { label: "Editorial photography, premium colour grade", examples: ["listing"] },
-      { label: "Drone add-ons from $100" },
-      { label: "Same-day on-site production" },
-      { label: "Optimised for portals + social" },
+      { label: "Editorial DSLR photography, premium colour grade", examples: ["listing"] },
+      { label: "Landscape listing video in every package", examples: ["landscape"] },
+      { label: "2D colour floor plan with your agency branding" },
+      { label: "Agent-led vertical video from Signature up", examples: ["vertical"] },
+      { label: "Branded and unbranded exports, portal-ready" },
+      { label: "Delivered next business day" },
     ],
     ideal: "Boutique agencies and agents who want every listing to look like a flagship listing.",
     image: "/media/listings/listing-06.png",
@@ -85,29 +88,6 @@ const services: Service[] = [
   },
 ];
 
-const listingTiers = [
-  { name: "Listing Essentials", price: "$600", details: "10 photos + listing video" },
-  { name: "Listing Standard", price: "$800", details: "15 photos + listing video" },
-  { name: "Listing Premium", price: "$1,000", details: "20 photos + listing video" },
-];
-
-const addOns = [
-  {
-    name: "Vertical Social Video",
-    price: "$300 – $450",
-    details: "$300 for monthly management clients · $450 standalone",
-  },
-  {
-    name: "Drone — Small Add-On",
-    price: "$100",
-    details: "1–3 drone photos. Front of property, exterior, or context shot.",
-  },
-  {
-    name: "Drone — Larger Add-On",
-    price: "$200",
-    details: "~3 extra drone shots: wide area, top of building, front, location/context.",
-  },
-];
 
 const faqs = [
   {
@@ -120,11 +100,11 @@ const faqs = [
   },
   {
     q: "Can I just buy listing photos without monthly management?",
-    a: "Yes. Listing photography and video are sold per listing at $600, $800, or $1,000. Monthly management is separate and optional — the two work very well together, but neither requires the other.",
+    a: "Yes. Listing packages are sold per listing at $349, $499, or $899. Monthly management is separate and optional — the two work very well together, but neither requires the other.",
   },
   {
-    q: "How do drone shots work?",
-    a: "We add drone to listing media for $100 (1–3 shots) or $200 for a wider package — front of property, location/context, top-of-building, etc. Adjusted to suit the property.",
+    q: "How does aerial work?",
+    a: "Aerial photography and footage is included in Premiere. On Listing and Signature it's a $149 add-on, adjusted to suit the property — front elevation, location and context, top-of-building.",
   },
   {
     q: "How does invoicing work?",
@@ -217,41 +197,70 @@ export default function ServicesPage() {
         </Section>
       ))}
 
-      {/* LISTING TIERS */}
-      <Section className="bg-white border-y border-re-stone-light">
+      {/* LISTING PACKAGES */}
+      <Section id="packages" className="bg-white border-y border-re-stone-light">
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
-            <Reveal direction="left" className="md:col-span-5">
-              <Eyebrow>Listing media</Eyebrow>
+          <Reveal>
+            <div className="max-w-2xl">
+              <Eyebrow>Listing packages</Eyebrow>
               <H2 className="mt-3">Per-listing pricing.</H2>
               <p className="mt-5 text-re-stone leading-relaxed">
-                Editorial-grade photography paired with a horizontal listing video — every package, every time. Add vertical, drone, or both below.
+                Every package is a complete campaign — photos, a branded floor plan and video, delivered next business day. Add-ons scale presentation to the property.
               </p>
-              <div className="relative mt-8 aspect-[4/5] overflow-hidden bg-re-stone-light group">
-                <Image
-                  src="/media/listings/listing-12.png"
-                  alt="Listing photography"
-                  fill
-                  sizes="(min-width: 768px) 40vw, 100vw"
-                  className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
-                />
-              </div>
-            </Reveal>
-            <Stagger className="md:col-span-7 grid grid-cols-1 gap-4" staggerChildren={0.08}>
-              {listingTiers.map((p) => (
-                <StaggerChild
-                  key={p.name}
-                  className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 p-6 md:p-7 border border-re-stone-light bg-re-ivory hover:border-re-blue/40 hover:bg-white transition-all duration-500"
+            </div>
+          </Reveal>
+
+          <Stagger className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start" staggerChildren={0.1}>
+            {LISTING_PACKAGES.map((pkg) => (
+              <StaggerChild
+                key={pkg.name}
+                className={`relative flex flex-col p-8 md:p-9 border transition-all duration-500 ${
+                  pkg.featured
+                    ? "bg-re-blue text-white border-re-blue hover:shadow-[0_24px_60px_rgba(28,58,94,0.25)]"
+                    : "bg-re-ivory border-re-stone-light hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(28,58,94,0.08)] hover:border-re-blue/40"
+                }`}
+              >
+                {pkg.featured && (
+                  <span className="absolute -top-3 left-8 bg-re-gold-thin text-re-ink text-[10px] tracking-[0.22em] uppercase px-3 py-1">
+                    Most Popular
+                  </span>
+                )}
+
+                <p className={`label-eyebrow ${pkg.featured ? "!text-white/70" : ""}`}>{pkg.name}</p>
+                <p className={`mt-3 font-serif text-5xl ${pkg.featured ? "text-white" : "text-re-ink"}`}>
+                  {pkg.price}
+                </p>
+                <p className={`mt-3 text-sm ${pkg.featured ? "text-white/70" : "text-re-stone"}`}>
+                  {pkg.products} · {pkg.turnaround}
+                </p>
+
+                <ul className={`mt-7 space-y-3 text-sm flex-grow ${pkg.featured ? "text-white/90" : "text-re-ink"}`}>
+                  {pkg.includes.map((line) => (
+                    <li key={line} className="flex gap-3">
+                      <span
+                        className={`mt-2 h-1 w-3 shrink-0 ${pkg.featured ? "bg-white/60" : "bg-re-blue-accent"}`}
+                      />
+                      <span className="leading-relaxed">{line}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p
+                  className={`mt-7 pt-6 border-t font-serif text-lg leading-snug ${
+                    pkg.featured ? "border-white/20 text-white" : "border-re-stone-light text-re-ink"
+                  }`}
                 >
-                  <div>
-                    <p className="label-eyebrow">{p.name}</p>
-                    <p className="mt-2 font-serif text-2xl text-re-ink">{p.details}</p>
-                  </div>
-                  <p className="font-serif text-3xl text-re-blue">{p.price}</p>
-                </StaggerChild>
-              ))}
-            </Stagger>
-          </div>
+                  {pkg.note}
+                </p>
+
+                <div className="mt-7">
+                  <CTAButton href="/contact" variant={pkg.featured ? "outline-light" : "solid"}>
+                    Book this package
+                  </CTAButton>
+                </div>
+              </StaggerChild>
+            ))}
+          </Stagger>
         </Container>
       </Section>
 
@@ -259,26 +268,17 @@ export default function ServicesPage() {
       <Section>
         <Container>
           <Reveal>
-            <div className="max-w-2xl mb-12">
+            <div className="max-w-3xl mx-auto text-center">
               <Eyebrow>Add-ons</Eyebrow>
               <H2 className="mt-3">Add depth to any listing.</H2>
-              <p className="mt-5 text-re-stone leading-relaxed">
-                Vertical and drone are priced individually so you can scale presentation to the property — not the other way around.
+              <p className="mt-5 text-re-stone leading-relaxed text-lg">
+                Twilight, aerial, virtual staging, 3D tours and more — priced individually from {ADD_ONS_FROM}, so you scale presentation to the property rather than the other way around.
               </p>
+              <div className="mt-8 flex justify-center">
+                <AddOnsDialog label="See all add-ons & prices" />
+              </div>
             </div>
           </Reveal>
-          <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-4" staggerChildren={0.08}>
-            {addOns.map((a) => (
-              <StaggerChild
-                key={a.name}
-                className="p-7 border border-re-stone-light bg-re-ivory hover:border-re-blue/40 hover:bg-white transition-all duration-500"
-              >
-                <p className="label-eyebrow">{a.name}</p>
-                <p className="mt-2 font-serif text-3xl text-re-blue">{a.price}</p>
-                <p className="mt-3 text-sm text-re-stone leading-relaxed">{a.details}</p>
-              </StaggerChild>
-            ))}
-          </Stagger>
         </Container>
       </Section>
 
