@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import ServiceIncludes from "@/components/ServiceIncludes";
@@ -16,7 +15,7 @@ export default function AgenciesPage() {
     <>
       {/* HERO */}
       <section className="px-3 md:px-6 pt-2 md:pt-3">
-      <div className="bg-re-blue text-white rounded-[2rem] md:rounded-[2.5rem]">
+      <div className="blue-fade text-white rounded-[2rem] md:rounded-[2.5rem]">
         <Container className="py-20 md:py-28">
           <Reveal>
             <Eyebrow light>For agencies</Eyebrow>
@@ -63,21 +62,27 @@ export default function AgenciesPage() {
         </Container>
       </Section>
 
-      {/* WHAT YOU GET */}
+      {/* THE PACKAGE */}
       <Section panel="white">
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center">
-            <Reveal direction="left" className="md:col-span-6">
-              <Eyebrow>What you get</Eyebrow>
+          <Reveal>
+            <div className="max-w-2xl mx-auto text-center">
+              <Eyebrow>The package</Eyebrow>
               <H2 className="mt-3">Every month, on schedule.</H2>
-              <p className="mt-4 font-serif text-4xl text-re-blue">
-                From $1,800
-                <span className="ml-2 text-sm font-sans text-re-stone">per month</span>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.1} className="mt-12">
+            <TiltCard className="gold-ring max-w-2xl mx-auto rounded-[2rem] border border-re-stone-light bg-white p-8 md:p-12 text-center shadow-[0_24px_70px_rgba(30,98,224,0.1)]">
+              <p className="label-eyebrow">Monthly Social Media Management</p>
+              <p className="mt-4 font-serif text-6xl text-re-ink">
+                $1,800
+                <span className="ml-2 text-base font-sans text-re-stone">from / month</span>
               </p>
-              <div className="mt-8">
+              <div className="mt-8 mx-auto max-w-md text-left">
                 <ServiceIncludes
                   items={[
-                    { label: "8 social media videos per month", examples: ["vertical", "testimonial"] },
+                    { label: "8 social media videos per month", examples: ["vertical", "testimonial", "agency"] },
                     { label: "6 social media posts per month", examples: ["carousel"] },
                     { label: "6 stories per month", examples: ["detail"] },
                     { label: "Monthly planning, direction & content coordination" },
@@ -85,26 +90,15 @@ export default function AgenciesPage() {
                   ]}
                 />
               </div>
-              <p className="mt-8 text-re-stone leading-relaxed">
-                Need more volume, paid social, or listing media rolled in? We scope that against
+              <p className="mt-8 text-re-stone leading-relaxed max-w-md mx-auto">
+                Need more volume, paid social, or listing media rolled in? We scope it against
                 your listing volume and quote it — no forced tiers.
               </p>
-              <div className="mt-7">
+              <div className="mt-8 flex justify-center">
                 <CTAButton href="/contact">Enquire now</CTAButton>
               </div>
-            </Reveal>
-            <Reveal direction="right" className="md:col-span-6" delay={0.1}>
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-re-stone-light group">
-                <Image
-                  src="/media/listings/listing-05.png"
-                  alt="Agency content production"
-                  fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
-                />
-              </div>
-            </Reveal>
-          </div>
+            </TiltCard>
+          </Reveal>
         </Container>
       </Section>
 
@@ -204,7 +198,7 @@ export default function AgenciesPage() {
               <H2 light className="mt-3">
                 One call. We&apos;ll map your next 90 days of content.
               </H2>
-              <p className="mt-5 text-white/75 text-lg max-w-2xl">
+              <p className="mt-5 text-white/85 text-lg max-w-2xl">
                 Bring your listing volume and your goals — we&apos;ll tell you exactly what we&apos;d
                 post, film and run for your agency, and what it costs.
               </p>

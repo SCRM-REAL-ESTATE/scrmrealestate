@@ -31,7 +31,7 @@ export default function ServiceIncludes({
 
           return (
             <li key={item.label} className="flex gap-3">
-              <span className={`mt-2 h-1 w-3 shrink-0 ${light ? "bg-white/60" : "bg-re-blue-accent"}`} />
+              <span className={`mt-2 h-1 w-3 shrink-0 rounded-full ${light ? "bg-white/60" : "bg-re-blue-accent"}`} />
               {examples.length > 0 ? (
                 <button
                   type="button"

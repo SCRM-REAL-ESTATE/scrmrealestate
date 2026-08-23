@@ -49,7 +49,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal direction="right" className="md:col-span-7 space-y-5 text-lg text-re-stone leading-relaxed" delay={0.1}>
               <p>
-                SCRM Media Real Estate is the real estate division of SCRM Media — an Australian content and marketing studio working specifically with luxury real estate agencies, top-performing agents, and boutique developers.
+                SCRM Media Real Estate is the real estate division of SCRM Media — an Australian content and marketing studio working specifically with real estate agencies, top-performing agents, and boutique developers.
               </p>
               <p>
                 We are not a generalist agency that "also does real estate." Every system, every workflow, and every piece of creative we produce is built around how property actually sells: trust before the call, presentation before the listing, and consistency before the campaign.
@@ -69,7 +69,7 @@ export default function AboutPage() {
             </div>
           </Reveal>
 
-          <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-px bg-re-stone-light border border-re-stone-light" staggerChildren={0.1}>
+          <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6" staggerChildren={0.1}>
             {[
               {
                 t: "Systems beat sprints",
@@ -84,8 +84,8 @@ export default function AboutPage() {
                 d: "Real estate has its own pace, language, compliance, and audience. A studio focused only on real estate compounds that knowledge into every asset we produce.",
               },
             ].map((p, i) => (
-              <StaggerChild key={p.t} className="bg-re-ivory p-8 md:p-10 transition-colors duration-500 hover:bg-white">
-                <p className="font-serif text-re-blue-accent text-2xl">0{i + 1}</p>
+              <StaggerChild key={p.t} className="rounded-[1.75rem] border border-re-stone-light bg-re-ivory p-8 md:p-10 transition-all duration-500 hover:bg-white hover:shadow-[0_24px_60px_rgba(30,98,224,0.1)]">
+                <p className="font-serif gold-text text-2xl">0{i + 1}</p>
                 <h3 className="mt-6 font-serif text-2xl text-re-ink">{p.t}</h3>
                 <p className="mt-3 text-re-stone leading-relaxed">{p.d}</p>
               </StaggerChild>
@@ -99,7 +99,7 @@ export default function AboutPage() {
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center">
             <Reveal direction="left" className="md:col-span-6">
-              <div className="relative aspect-[4/3] overflow-hidden bg-re-stone-light group">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-re-stone-light group">
                 <Image
                   src="/media/listings/listing-08.png"
                   alt="SCRM Media production"
@@ -123,7 +123,7 @@ export default function AboutPage() {
                   "Editorial-grade output, not template content",
                 ].map((line) => (
                   <li key={line} className="flex gap-3">
-                    <span className="mt-2 h-1 w-3 bg-re-blue-accent shrink-0" />
+                    <span className="mt-2 h-1 w-3 rounded-full bg-re-blue-accent shrink-0" />
                     <span>{line}</span>
                   </li>
                 ))}
@@ -142,7 +142,7 @@ export default function AboutPage() {
               <H2 light className="mt-3">
                 The right partner if your brand should look better than it currently does.
               </H2>
-              <p className="mt-5 text-white/75 text-lg max-w-2xl">
+              <p className="mt-5 text-white/85 text-lg max-w-2xl">
                 We don't onboard everyone — we work best with agencies that take their reputation seriously and want a real partner. Tell us about your goals.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">

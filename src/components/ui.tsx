@@ -14,7 +14,10 @@ export function Container({
 
 export function Eyebrow({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
   return (
-    <span className={`label-eyebrow ${light ? "!text-white/70" : ""}`}>{children}</span>
+    <span className={`label-eyebrow inline-flex items-center gap-3 ${light ? "!text-white/85" : ""}`}>
+      <span aria-hidden className="gold-chrome-bg inline-block h-[3px] w-7 rounded-full" />
+      {children}
+    </span>
   );
 }
 
@@ -95,7 +98,7 @@ export function Section({
 }) {
   if (panel) {
     const panelStyles = {
-      blue: "bg-re-blue text-white shadow-[0_30px_80px_rgba(30,98,224,0.28)]",
+      blue: "blue-fade text-white shadow-[0_30px_80px_rgba(30,98,224,0.28)]",
       white: "bg-white border border-re-stone-light shadow-[0_20px_60px_rgba(30,98,224,0.07)]",
       tint: "bg-re-blue-light shadow-[0_20px_60px_rgba(30,98,224,0.08)]",
     } as const;

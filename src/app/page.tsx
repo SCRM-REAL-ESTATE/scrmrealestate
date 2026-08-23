@@ -22,7 +22,7 @@ export default function HomePage() {
               <h1 className="mt-4 h-display text-5xl md:text-7xl text-white">
                 Premium content systems
                 <br />
-                for luxury real estate.
+                for real estate.
               </h1>
               <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
                 Listing media, agent videos and full social management — filmed, edited and delivered for you.
@@ -48,8 +48,8 @@ export default function HomePage() {
       </section>
 
       {/* MARQUEE STRIP */}
-      <div className="bg-re-blue text-white/60 overflow-hidden border-y border-white/10">
-        <div className="flex animate-[marquee_38s_linear_infinite] py-4 whitespace-nowrap label-eyebrow !text-white/55">
+      <div className="blue-fade text-white overflow-hidden border-y border-white/10">
+        <div className="flex animate-[marquee_38s_linear_infinite] py-4 whitespace-nowrap label-eyebrow !text-white">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="flex items-center gap-10 px-5 shrink-0">
               <span>Boutique Agencies</span>
@@ -58,7 +58,7 @@ export default function HomePage() {
               <span className="text-re-gold-thin">◆</span>
               <span>Property Developers</span>
               <span className="text-re-gold-thin">◆</span>
-              <span>Luxury Listings</span>
+              <span>Premium Listings</span>
               <span className="text-re-gold-thin">◆</span>
               <span>Editorial Content</span>
               <span className="text-re-gold-thin">◆</span>
@@ -108,7 +108,7 @@ export default function HomePage() {
                   href={p.href}
                   className="group flex flex-col h-full rounded-[1.75rem] border border-re-stone-light bg-white p-8 md:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-re-blue-accent/40 hover:shadow-[0_24px_60px_rgba(30,98,224,0.12)]"
                 >
-                  <span className="font-serif text-re-blue-accent text-2xl">{p.i}</span>
+                  <span className="font-serif gold-text text-2xl">{p.i}</span>
                   <h3 className="mt-6 font-serif text-2xl md:text-3xl text-re-ink">{p.t}</h3>
                   <p className="mt-3 text-re-stone leading-relaxed flex-grow">{p.d}</p>
                   <span className="mt-6 inline-flex items-center gap-2 text-sm text-re-blue group-hover:text-re-blue-accent transition-colors">
@@ -229,8 +229,8 @@ export default function HomePage() {
                 d: "We measure what's working, double down, and add channels — paid social, vertical, drone — when the time is right.",
               },
             ].map((s) => (
-              <StaggerChild key={s.n} className="border-t border-re-stone-light/80 pt-6">
-                <p className="font-serif text-3xl text-re-blue-accent">{s.n}</p>
+              <StaggerChild key={s.n} className="border-t border-re-blue/15 pt-6">
+                <p className="font-serif text-3xl gold-text">{s.n}</p>
                 <h3 className="mt-3 font-serif text-2xl text-re-ink">{s.t}</h3>
                 <p className="mt-3 text-re-stone leading-relaxed">{s.d}</p>
               </StaggerChild>
@@ -243,15 +243,15 @@ export default function HomePage() {
       <Section panel="blue">
         <Container>
           <Reveal>
-            <div className="max-w-3xl">
+            <div className="max-w-3xl mx-auto text-center">
               <Eyebrow light>Ready to look like the agency you actually are?</Eyebrow>
               <H2 light className="mt-3">
                 Let's build a content system worth trusting.
               </H2>
-              <p className="mt-5 text-white/75 text-lg max-w-2xl">
+              <p className="mt-5 text-white/85 text-lg max-w-2xl mx-auto">
                 A 30-minute call is enough to map what your content should look like over the next 90 days. No pressure, no template pitch.
               </p>
-              <div className="mt-9 flex flex-wrap items-center gap-4">
+              <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
                 <CTAButton href="/contact" variant="white">Book a call</CTAButton>
                 <CTAButton href="/services" variant="outline-light">
                   See services & pricing

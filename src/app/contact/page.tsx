@@ -14,7 +14,7 @@ export default function ContactPage() {
   return (
     <>
       <section className="px-3 md:px-6 pt-2 md:pt-3">
-      <div className="bg-re-blue text-white rounded-[2rem] md:rounded-[2.5rem]">
+      <div className="blue-fade text-white rounded-[2rem] md:rounded-[2.5rem]">
         <Container className="py-20 md:py-24">
           <Reveal>
             <Eyebrow light>Contact</Eyebrow>
@@ -39,7 +39,7 @@ export default function ContactPage() {
 
             {/* Info panel */}
             <Reveal direction="right" delay={0.15} as="aside" className="lg:col-span-5">
-              <div className="bg-re-ivory border border-re-stone-light p-8 md:p-10">
+              <div className="rounded-[1.75rem] bg-white border border-re-stone-light p-8 md:p-10 shadow-[0_16px_44px_rgba(30,98,224,0.06)]">
                 <Eyebrow>Direct contact</Eyebrow>
                 <ul className="mt-5 space-y-5">
                   <li>

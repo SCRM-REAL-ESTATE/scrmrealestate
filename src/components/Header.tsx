@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Logo from "./Logo";
 import { NAV_LINKS, SITE } from "@/lib/site";
+import { useHideOnScroll } from "@/lib/useHideOnScroll";
 
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const hidden = useHideOnScroll();
 
   useEffect(() => {
     setOpen(false);
@@ -35,16 +37,20 @@ export default function Header() {
 
   return (
     <>
-    <header className="fixed top-[var(--topbar-h)] inset-x-0 z-40 px-3 md:px-6 pt-2 md:pt-3">
+    <header
+      className={`fixed top-[var(--topbar-h)] inset-x-0 z-40 px-3 md:px-6 pt-2 md:pt-3 transition-all duration-500 ${
+        hidden ? "-translate-y-[150%] opacity-0 pointer-events-none" : "translate-y-0 opacity-100"
+      }`}
+    >
       <div
-        className={`mx-auto max-w-7xl h-[56px] md:h-[64px] rounded-full border border-white/15 px-4 md:px-3 flex items-center justify-between gap-4 transition-all duration-300 ${
+        className={`mx-auto max-w-7xl h-[56px] md:h-[64px] rounded-full border border-re-ink/[0.06] bg-white/95 backdrop-blur-md px-4 md:px-3 flex items-center justify-between gap-4 transition-shadow duration-300 ${
           scrolled
-            ? "bg-re-blue/90 backdrop-blur-md shadow-[0_16px_40px_rgba(30,98,224,0.35)]"
-            : "bg-re-blue shadow-[0_10px_30px_rgba(30,98,224,0.25)]"
+            ? "shadow-[0_16px_44px_rgba(26,26,26,0.14)]"
+            : "shadow-[0_8px_28px_rgba(26,26,26,0.08)]"
         }`}
       >
         <div className="pl-2 md:pl-4">
-          <Logo variant="light" />
+          <Logo variant="dark" />
         </div>
 
         {/* Desktop nav */}
@@ -57,8 +63,8 @@ export default function Header() {
                 href={link.href}
                 className={`rounded-full px-4 py-2 tracking-tight transition-colors duration-200 ${
                   active
-                    ? "bg-white text-re-blue font-medium"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
+                    ? "bg-re-blue text-white font-medium"
+                    : "text-re-ink/75 hover:text-re-ink hover:bg-re-ink/[0.05]"
                 }`}
               >
                 {link.label}
@@ -70,7 +76,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/contact"
-            className="hidden md:inline-flex items-center gap-2 rounded-full bg-white text-re-blue text-sm font-medium px-6 py-2.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.25)] hover:-translate-y-0.5 transition-all duration-300"
+            className="hidden md:inline-flex items-center gap-2 rounded-full bg-re-blue text-white text-sm font-medium px-6 py-2.5 hover:bg-re-blue-accent hover:shadow-[0_10px_28px_rgba(30,98,224,0.35)] hover:-translate-y-0.5 transition-all duration-300"
           >
             Book a Call
             <span aria-hidden>→</span>
@@ -79,7 +85,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="lg:hidden inline-flex items-center justify-center h-11 w-11 -mr-2 text-white"
+            className="lg:hidden inline-flex items-center justify-center h-11 w-11 -mr-2 text-re-ink"
             aria-label="Open menu"
             aria-expanded={open}
           >
@@ -111,7 +117,7 @@ export default function Header() {
           className={`absolute inset-0 bg-black/60 transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`}
         />
         <aside
-          className={`absolute top-0 right-0 h-full w-[88%] max-w-sm bg-re-blue text-white shadow-2xl rounded-l-[2rem] transition-transform duration-300 ${
+          className={`absolute top-0 right-0 h-full w-[88%] max-w-sm blue-fade text-white shadow-2xl rounded-l-[2rem] transition-transform duration-300 ${
             open ? "translate-x-0" : "translate-x-full"
           }`}
           role="dialog"

@@ -1,6 +1,10 @@
 "use client";
 
+import { useHideOnScroll } from "@/lib/useHideOnScroll";
+
 export default function TopBar() {
+  const hidden = useHideOnScroll();
+
   const handleAutomotiveClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.dispatchEvent(new CustomEvent("scrm:glitch-start"));
@@ -8,7 +12,9 @@ export default function TopBar() {
 
   return (
     <div
-      className="fixed top-0 inset-x-0 z-50 h-[var(--topbar-h)] bg-re-ink text-white/80 text-[11px] tracking-[0.18em] uppercase"
+      className={`fixed top-0 inset-x-0 z-50 h-[var(--topbar-h)] bg-re-ink text-white/80 text-[11px] tracking-[0.18em] uppercase transition-all duration-500 ${
+        hidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
+      }`}
       role="region"
       aria-label="Cross-brand bar"
     >

@@ -38,7 +38,7 @@ export default function AgentContentCard({ dark = false }: { dark?: boolean }) {
       >
         {AGENT_CONTENT.includes.map((line) => (
           <li key={line} className="flex gap-3">
-            <span className={`mt-2 h-1 w-3 shrink-0 ${dark ? "bg-white/60" : "bg-re-blue-accent"}`} />
+            <span className={`mt-2 h-1 w-3 shrink-0 rounded-full ${dark ? "bg-white/60" : "bg-re-blue-accent"}`} />
             <span className="leading-relaxed">{line}</span>
           </li>
         ))}

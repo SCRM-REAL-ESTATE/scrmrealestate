@@ -17,9 +17,9 @@ export const MEDIA_BASE_URL =
 export const SITE = {
   name: "SCRM Media Real Estate",
   shortName: "SCRM Real Estate",
-  tagline: "Premium content marketing for luxury real estate.",
+  tagline: "Premium content marketing for real estate.",
   description:
-    "SCRM Media Real Estate is a premium digital marketing agency partnering with luxury real estate agencies, top-performing agents, and boutique developers across Australia.",
+    "SCRM Media Real Estate is a premium digital marketing agency partnering with real estate agencies, top-performing agents, and boutique developers across Australia.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://scrmrealestate.com.au",
   phone: "0490 036 289",
   phoneIntl: "+61490036289",

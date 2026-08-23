@@ -1,0 +1,20 @@
+# Supabase pauses free-tier projects after ~7 days without API traffic, which
+# took the site's videos offline on 23 Aug. Photos survived only because
+# Vercel's image cache still held copies. Two pings a week keeps the media
+# project awake; the URL is a tiny public object in the bucket.
+name: Keep media bucket awake
+
+on:
+  schedule:
+    - cron: "0 20 * * 1,4" # Mon & Thu 20:00 UTC
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase storage
+        run: |
+          curl -fsS -o /dev/null -r 0-1024 \
+            "https://gzlwrvhwtepoomrwwpng.supabase.co/storage/v1/object/public/media/property/envesta.jpg" \
+            && echo "Bucket awake."

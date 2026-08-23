@@ -26,7 +26,7 @@ export default function ListingPackages({ className = "" }: { className?: string
             <TiltCard
               className={`gold-ring relative flex flex-col h-full p-8 md:p-9 rounded-[1.75rem] border transition-shadow duration-500 ${
                 pkg.featured
-                  ? "bg-re-blue text-white border-re-blue hover:shadow-[0_30px_70px_rgba(30,98,224,0.35)]"
+                  ? "blue-fade text-white border-re-blue hover:shadow-[0_30px_70px_rgba(30,98,224,0.35)]"
                   : "bg-white border-re-stone-light hover:shadow-[0_30px_70px_rgba(30,98,224,0.12)]"
               }`}
             >
@@ -36,11 +36,11 @@ export default function ListingPackages({ className = "" }: { className?: string
                 </span>
               )}
 
-              <p className={`label-eyebrow ${pkg.featured ? "!text-white/70" : ""}`}>{pkg.name}</p>
+              <p className={`label-eyebrow ${pkg.featured ? "!text-white/85" : ""}`}>{pkg.name}</p>
               <p className={`mt-3 font-serif text-5xl ${pkg.featured ? "text-white" : "text-re-ink"}`}>
                 {pkg.price}
               </p>
-              <p className={`mt-3 text-sm ${pkg.featured ? "text-white/70" : "text-re-stone"}`}>
+              <p className={`mt-3 text-sm ${pkg.featured ? "text-white/85" : "text-re-stone"}`}>
                 {pkg.products} · {pkg.turnaround}
               </p>
 

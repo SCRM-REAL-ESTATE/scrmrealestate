@@ -18,7 +18,6 @@ const cormorant = Cormorant_Garamond({
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-inter",
   display: "swap",
 });
@@ -26,7 +25,7 @@ const inter = Inter({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#1C3A5E",
+  themeColor: "#1E62E0",
 };
 
 export const metadata: Metadata = {
@@ -40,7 +39,7 @@ export const metadata: Metadata = {
   keywords: [
     "real estate marketing",
     "real estate social media",
-    "luxury real estate marketing",
+    "real estate video production",
     "real estate content agency",
     "listing photography",
     "Australia",

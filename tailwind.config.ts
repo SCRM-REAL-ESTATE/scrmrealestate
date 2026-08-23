@@ -8,7 +8,7 @@ const config: Config = {
         "re-blue": "#1E62E0",
         "re-ivory": "#F8F6F1",
         "re-ink": "#1A1A1A",
-        "re-stone": "#625E56",
+        "re-stone": "#514D46",
         "re-stone-light": "#E8E5DF",
         "re-blue-accent": "#3080F8",
         "re-blue-light": "#EAF2FF",

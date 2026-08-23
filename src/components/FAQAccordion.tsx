@@ -46,7 +46,7 @@ export default function FAQAccordion({
               }`}
             >
               <div className="overflow-hidden">
-                <p className={`pb-6 pr-12 leading-relaxed ${light ? "text-white/75" : "text-re-stone"}`}>
+                <p className={`pb-6 pr-12 leading-relaxed ${light ? "text-white/85" : "text-re-stone"}`}>
                   {item.a}
                 </p>
               </div>

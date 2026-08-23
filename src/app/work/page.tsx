@@ -14,7 +14,7 @@ export default function WorkPage() {
     <>
       {/* HERO */}
       <section className="px-3 md:px-6 pt-2 md:pt-3">
-      <div className="bg-re-blue text-white rounded-[2rem] md:rounded-[2.5rem]">
+      <div className="blue-fade text-white rounded-[2rem] md:rounded-[2.5rem]">
         <Container className="py-20 md:py-28">
           <Reveal>
             <Eyebrow light>Selected work</Eyebrow>
