@@ -89,7 +89,10 @@ const UNSUPPORTED_EXT = new Set([".heic", ".heif", ".raw", ".cr2", ".cr3", ".nef
 /** Supabase free tier rejects anything larger. We warn well before that. */
 const SIZE_LIMIT = 50 * 1024 * 1024;
 
-const VIDEO_MAX_WIDTH = 1080; // 1080 wide: full-res for 9:16, 1080p for 16:9
+// Cap the LONG edge, not the width: 16:9 → 1920×1080, 9:16 → 1080×1920.
+// (The old 1080-wide cap silently turned landscape videos into 608p.)
+const VIDEO_MAX_LONG_EDGE = 1920;
+const VIDEO_SCALE = `scale=w='min(${VIDEO_MAX_LONG_EDGE},iw)':h='min(${VIDEO_MAX_LONG_EDGE},ih)':force_original_aspect_ratio=decrease:force_divisible_by=2`;
 const IMAGE_MAX_WIDTH = 2400;
 const UPLOAD_CONCURRENCY = 4;
 
@@ -177,10 +180,10 @@ async function compressVideo(src, out) {
     "-y", "-i", src,
     "-vcodec", "libx264",
     "-preset", "slow",
-    "-crf", "26",
-    "-maxrate", "2500k",
-    "-bufsize", "5000k",
-    "-vf", `scale='min(${VIDEO_MAX_WIDTH},iw)':-2`,
+    "-crf", "22",
+    "-maxrate", "6000k",
+    "-bufsize", "12000k",
+    "-vf", VIDEO_SCALE,
     "-acodec", "aac", "-b:a", "128k",
     "-movflags", "+faststart",
     "-loglevel", "error",
@@ -193,7 +196,7 @@ async function makePoster(src, out) {
   await run("ffmpeg", [
     "-y", "-ss", "1", "-i", src,
     "-frames:v", "1",
-    "-vf", `scale='min(${VIDEO_MAX_WIDTH},iw)':-2`,
+    "-vf", VIDEO_SCALE,
     "-q:v", "4",
     "-loglevel", "error",
     out,

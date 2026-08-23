@@ -49,7 +49,7 @@ button, a {
 /* Section label utility */
 .label-eyebrow {
   font-family: var(--font-inter), Inter, sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 650;
   letter-spacing: 0.22em;
   text-transform: uppercase;

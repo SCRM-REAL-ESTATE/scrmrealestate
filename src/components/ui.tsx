@@ -31,7 +31,7 @@ export function H2({
   className?: string;
 }) {
   return (
-    <h2 className={`h-display text-3xl md:text-5xl ${light ? "text-white" : "text-re-ink"} ${className}`}>
+    <h2 className={`h-display text-4xl md:text-6xl ${light ? "text-white" : "text-re-ink"} ${className}`}>
       {children}
     </h2>
   );

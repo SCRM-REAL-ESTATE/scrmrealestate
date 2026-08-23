@@ -83,21 +83,27 @@ export default function HomePage() {
             {[
               {
                 t: "Listing packages",
-                d: "Photos, a branded floor plan and video from $349. Shot one day, delivered the next.",
+                price: "$349",
+                priceSub: "from, per listing",
+                d: "Photos, floor plan and video. Shot one day, delivered the next.",
                 i: "01",
                 href: "/services",
                 cta: "See the packages",
               },
               {
                 t: "Agent content",
-                d: "Four videos a month that sell you, not the house. $800 a month, one hour of your time.",
+                price: "$800",
+                priceSub: "per month",
+                d: "Four videos a month that sell you, not the house. One hour of your time.",
                 i: "02",
                 href: "/services#agent",
                 cta: "How it works",
               },
               {
                 t: "Agency management",
-                d: "Your whole social presence run for you — 8 videos, 6 posts, 6 stories a month. $1,800 a month.",
+                price: "$1,800",
+                priceSub: "from, per month",
+                d: "Your whole social presence run for you — 8 videos, 6 posts, 6 stories a month.",
                 i: "03",
                 href: "/agencies",
                 cta: "For agencies",
@@ -109,9 +115,13 @@ export default function HomePage() {
                   className="group flex flex-col h-full rounded-[1.75rem] border border-re-stone-light bg-white p-8 md:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-re-blue-accent/40 hover:shadow-[0_24px_60px_rgba(30,98,224,0.12)]"
                 >
                   <span className="font-serif gold-text text-2xl">{p.i}</span>
-                  <h3 className="mt-6 font-serif text-2xl md:text-3xl text-re-ink">{p.t}</h3>
-                  <p className="mt-3 text-re-stone leading-relaxed flex-grow">{p.d}</p>
-                  <span className="mt-6 inline-flex items-center gap-2 text-sm text-re-blue group-hover:text-re-blue-accent transition-colors">
+                  <h3 className="mt-5 font-serif text-2xl md:text-3xl text-re-ink">{p.t}</h3>
+                  <p className="mt-4 font-serif text-4xl md:text-5xl text-re-blue">
+                    {p.price}
+                    <span className="ml-2 text-xs font-sans text-re-stone tracking-wide uppercase">{p.priceSub}</span>
+                  </p>
+                  <p className="mt-4 text-re-stone leading-relaxed flex-grow">{p.d}</p>
+                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-re-blue group-hover:text-re-blue-accent transition-colors">
                     {p.cta}
                     <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
                   </span>
