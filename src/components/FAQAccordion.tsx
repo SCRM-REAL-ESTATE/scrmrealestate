@@ -14,7 +14,7 @@ export default function FAQAccordion({
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <ul className="divide-y divide-white/15">
+    <ul className={`divide-y ${light ? "divide-white/15" : "divide-re-blue/15"}`}>
       {items.map((item, i) => {
         const isOpen = open === i;
         return (
