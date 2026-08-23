@@ -15,7 +15,9 @@ const config: Config = {
         "re-gold-thin": "#C4A96C",
       },
       fontFamily: {
-        serif: ["var(--font-cormorant)", "Cormorant Garamond", "Georgia", "serif"],
+        // Display face — Urbanist (geometric, Montserrat-adjacent). The
+        // utility keeps its old `font-serif` name so no component churn.
+        serif: ["var(--font-display)", "Urbanist", "system-ui", "sans-serif"],
         sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
       },
       letterSpacing: {

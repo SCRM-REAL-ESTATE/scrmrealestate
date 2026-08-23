@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Inter, Urbanist } from "next/font/google";
 import "./globals.css";
 
 import TopBar from "@/components/TopBar";
@@ -9,10 +9,9 @@ import WhatsAppFab from "@/components/WhatsAppFab";
 import GlitchTransition from "@/components/GlitchTransition";
 import { SITE } from "@/lib/site";
 
-const cormorant = Cormorant_Garamond({
+const urbanist = Urbanist({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-cormorant",
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -81,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-AU" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang="en-AU" className={`${urbanist.variable} ${inter.variable}`}>
       <body className="bg-re-ivory text-re-ink antialiased">
         <script
           type="application/ld+json"

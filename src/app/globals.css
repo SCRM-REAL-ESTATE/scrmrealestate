@@ -39,8 +39,8 @@ body {
 /* A touch of extra weight wherever Tailwind's scale is used. */
 .font-medium { font-weight: 550; }
 
-/* Cormorant is featherweight at 400 — serif headings and prices hold 600. */
-.font-serif { font-weight: 600; }
+/* The display face (Urbanist) — card titles and prices hold 650. */
+.font-serif { font-weight: 650; letter-spacing: -0.01em; }
 
 button, a {
   -webkit-tap-highlight-color: transparent;
@@ -58,9 +58,9 @@ button, a {
 
 /* Display heading defaults */
 .h-display {
-  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-family: var(--font-display), Urbanist, system-ui, sans-serif;
+  font-weight: 650;
+  letter-spacing: -0.025em;
   line-height: 1.05;
 }
 

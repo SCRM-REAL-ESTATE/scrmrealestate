@@ -20,9 +20,7 @@ export default function HomePage() {
             <div className="max-w-3xl">
               <span className="label-eyebrow !text-white/85">SCRM Media · Real Estate</span>
               <h1 className="mt-4 h-display text-5xl md:text-7xl text-white">
-                Premium content systems
-                <br />
-                for real estate.
+                Premium content systems for real estate.
               </h1>
               <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
                 Listing media, agent videos and full social management — filmed, edited and delivered for you.
