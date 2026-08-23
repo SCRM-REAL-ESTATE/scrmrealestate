@@ -64,7 +64,7 @@ export const LISTING_PACKAGES: ListingPackage[] = [
  * media management. Deliberately not framed as a management package.
  */
 export const AGENT_CONTENT = {
-  name: "Agent Monthly Content",
+  name: "Everything But The House",
   price: "$800",
   priceSub: "per month",
   headline: "Four videos a month, filmed in one sitting.",
