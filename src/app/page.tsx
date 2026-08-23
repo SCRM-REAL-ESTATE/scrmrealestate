@@ -70,22 +70,21 @@ export default function HomePage() {
       {/* WHO WE ARE */}
       <Section>
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-start">
-            <Reveal direction="left" className="md:col-span-5">
-              <H2 rule>A studio built only for real estate.</H2>
-            </Reveal>
-            <Reveal direction="right" className="md:col-span-7 space-y-5 text-lg leading-relaxed" delay={0.1}>
-              <p className="text-re-ink">
+          <Reveal>
+            <div className="mx-auto max-w-3xl text-center">
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>A studio built only for real estate.</H2>
+              <p className="mt-7 text-lg md:text-xl leading-relaxed text-re-ink">
                 We are the real estate arm of SCRM Media, an Australian content studio.
                 We film, edit and publish for agencies and agents right across the country,
                 and real estate is the only thing we do.
               </p>
-              <p className="text-re-stone">
+              <p className="mt-5 text-lg leading-relaxed text-re-stone">
                 Every listing, every agent video and every month of social content is made
                 by the same small senior team. That is how the work stays consistent and
                 the turnaround stays fast.
               </p>
-              <div className="pt-2">
+              <div className="mt-8 flex justify-center">
                 <Link
                   href="/about"
                   className="group inline-flex items-center gap-2 text-sm font-medium text-re-blue hover:text-re-blue-accent transition-colors"
@@ -94,8 +93,8 @@ export default function HomePage() {
                   <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
                 </Link>
               </div>
-            </Reveal>
-          </div>
+            </div>
+          </Reveal>
         </Container>
       </Section>
 
