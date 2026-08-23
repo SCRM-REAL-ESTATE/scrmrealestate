@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
-import InViewVideo from "@/components/InViewVideo";
+import AgentFunnel from "@/components/AgentFunnel";
 import AgentVideoStrip from "@/components/AgentVideoStrip";
 import ListingVsAgent from "@/components/ListingVsAgent";
 import AgentLeadForm from "@/components/AgentLeadForm";
 import StickyOfferBar from "@/components/StickyOfferBar";
 import FAQAccordion from "@/components/FAQAccordion";
 import { LISTING_PACKAGES, ADD_ONS_FROM } from "@/lib/pricing";
-import { mediaByCategory, mediaUrl } from "@/lib/media";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -20,8 +19,6 @@ export const metadata: Metadata = {
 };
 
 const SIGNATURE = LISTING_PACKAGES.find((p) => p.name === "Signature") ?? LISTING_PACKAGES[1];
-
-const heroVideo = mediaByCategory("agency").find((item) => item.type === "video");
 
 const faqs = [
   {
@@ -72,10 +69,7 @@ export default function AgentsPage() {
                   plus a vertical agent-led video with you on camera. Same shoot, next business day.
                 </p>
 
-                <div className="mt-9 flex flex-wrap items-center gap-4">
-                  <CTAButton href="#book" variant="white">
-                    Book your next listing
-                  </CTAButton>
+                <div className="mt-9">
                   <CTAButton href="#videos" variant="outline-light">
                     Watch agent videos
                   </CTAButton>
@@ -97,20 +91,7 @@ export default function AgentsPage() {
               </Reveal>
 
               <Reveal direction="up" delay={0.15}>
-                <div className="relative mx-auto w-full max-w-[300px]">
-                  <div className="gold-ring overflow-hidden rounded-[1.75rem] border border-white/25 bg-black/20 aspect-[9/16]">
-                    {heroVideo && (
-                      <InViewVideo
-                        src={mediaUrl(heroVideo.src)}
-                        poster={heroVideo.poster ? mediaUrl(heroVideo.poster) : undefined}
-                        className="h-full w-full object-cover"
-                      />
-                    )}
-                  </div>
-                  <p className="mt-4 text-center text-sm text-white/70">
-                    Filmed at the property, on the same visit as the photos.
-                  </p>
-                </div>
+                <AgentFunnel />
               </Reveal>
             </div>
           </Container>
