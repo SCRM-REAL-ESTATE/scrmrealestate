@@ -71,7 +71,7 @@ export default function ContactForm() {
       <div className="bg-re-blue-light rounded-[1.75rem] border-l-2 border-re-blue-accent p-8 md:p-10">
         <Eyebrow>Message received</Eyebrow>
         <h2 className="mt-3 h-display text-3xl md:text-4xl text-re-ink">
-          Thanks — we'll be in touch within 1 business day.
+          Thanks. We'll be in touch within 1 business day.
         </h2>
         <p className="mt-4 text-re-stone">
           In the meantime, you're welcome to message us on WhatsApp or call directly using the details on the right.

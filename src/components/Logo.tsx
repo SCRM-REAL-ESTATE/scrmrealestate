@@ -16,7 +16,7 @@ export default function Logo({
     return (
       <Link
         href="/"
-        aria-label="SCRM Media Real Estate — Home"
+        aria-label="SCRM Media Real Estate. Home"
         className={`inline-flex items-center ${className}`}
       >
         <Image
@@ -31,30 +31,21 @@ export default function Logo({
     );
   }
 
-  // Dark variant — clean text mark for white header
+  // Dark variant: the brand PNG recoloured for light backgrounds.
   return (
     <Link
       href="/"
-      aria-label="SCRM Media Real Estate — Home"
-      className={`inline-flex items-center gap-3 ${className}`}
+      aria-label="SCRM Media Real Estate. Home"
+      className={`inline-flex items-center ${className}`}
     >
-      <span
-        className="relative inline-flex h-9 w-9 md:h-10 md:w-10 items-center justify-center border border-re-ink"
-        aria-hidden
-      >
-        <span className="font-sans text-[11px] font-bold tracking-tight text-re-blue-accent">
-          scrm
-        </span>
-      </span>
-      <span className="flex flex-col leading-none">
-        <span className="font-sans text-base md:text-lg font-semibold tracking-tight text-re-ink">
-          <span className="text-re-blue-accent">scrm</span>
-          <span className="text-re-ink"> media</span>
-        </span>
-        <span className="mt-0.5 font-sans text-[9px] md:text-[10px] tracking-[0.22em] uppercase text-re-stone">
-          Real Estate
-        </span>
-      </span>
+      <Image
+        src="/logo-dark.png"
+        alt="SCRM Media Real Estate"
+        width={2726}
+        height={1245}
+        priority
+        className="h-10 md:h-11 w-auto"
+      />
     </Link>
   );
 }

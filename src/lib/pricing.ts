@@ -36,7 +36,7 @@ export const LISTING_PACKAGES: ListingPackage[] = [
       "18 professionally edited DSLR photos",
       "2D colour floor plan with your agency branding",
       "Landscape listing video",
-      "Vertical agent-led video — you on camera, branded to you, cut for Reels and TikTok",
+      "Vertical agent-led video. You on camera, branded to you, cut for Reels and TikTok",
       "Branded and unbranded exports, portal-ready",
     ],
     note: "The listing sells the property. The agent video sells you.",
@@ -50,7 +50,7 @@ export const LISTING_PACKAGES: ListingPackage[] = [
     includes: [
       "25 professionally edited DSLR photos",
       "2D colour floor plan with your agency branding",
-      "Filmed landscape property film — shot on camera, not built from stills",
+      "Filmed landscape property film, shot on camera rather than built from stills",
       "Vertical agent-led video",
       "Aerial photography and footage",
       "Branded and unbranded exports, portal-ready",
@@ -69,7 +69,7 @@ export const AGENT_CONTENT = {
   priceSub: "per month",
   headline: "Four videos a month. One hour of your time.",
   pitch:
-    "Your listings sell the property. These sell you. Once a month we sit you down and film four pieces to camera — so when a vendor looks you up before they call, they find someone worth calling.",
+    "Your listings sell the property. These sell you. Once a month we sit you down and film four pieces to camera, so when a vendor looks you up before they call, they find someone worth calling.",
   includes: [
     "Four pieces to camera every month",
     "The questions vendors actually ask",
@@ -88,7 +88,7 @@ export type AddOn = {
 export const ADD_ONS: AddOn[] = [
   { name: "Twilight & dusk images", price: "$40" },
   { name: "3D virtual tour", price: "$179" },
-  { name: "Aerial photography", price: "$149", detail: "Listing & Signature — included in Premiere" },
+  { name: "Aerial photography", price: "$149", detail: "Listing & Signature. Included in Premiere" },
   { name: "Virtual staging", price: "$45", detail: "per image" },
   { name: "Open home video", price: "$129" },
   { name: "Express floor plan", price: "$40", detail: "6 hours" },

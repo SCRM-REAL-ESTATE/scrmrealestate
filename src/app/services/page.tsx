@@ -13,13 +13,13 @@ import { ADD_ONS_FROM } from "@/lib/pricing";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Listing packages from $349 with photos, floor plan and video, agent content at $800 a month, and monthly social media management from $1,800 — built specifically for real estate.",
+    "Listing packages from $349 with photos, floor plan and video, agent content at $800 a month, and monthly social media management from $1,800, built specifically for real estate.",
 };
 
 const faqs = [
   {
     q: "What does the $1,800 actually cover?",
-    a: "Monthly management starts at $1,800 and covers the content system — filming, editing, captions, scheduling, and the monthly planning behind it. Where an agency needs more volume, more channels, or paid distribution on top, we quote that against what you're actually trying to hit rather than pushing you into a bigger tier.",
+    a: "Monthly management starts at $1,800 and covers the content system: filming, editing, captions, scheduling, and the monthly planning behind it. Where an agency needs more volume, more channels, or paid distribution on top, we quote that against what you're actually trying to hit rather than pushing you into a bigger tier.",
   },
   {
     q: "Is the monthly management locked in?",
@@ -27,11 +27,11 @@ const faqs = [
   },
   {
     q: "Can I just buy listing photos without monthly management?",
-    a: "Yes. Listing packages are sold per listing at $349, $499, or $899. Monthly management is separate and optional — the two work very well together, but neither requires the other.",
+    a: "Yes. Listing packages are sold per listing at $349, $499, or $899. Monthly management is separate and optional. The two work very well together, but neither requires the other.",
   },
   {
     q: "How does aerial work?",
-    a: "Aerial photography and footage is included in Premiere. On Listing and Signature it's a $149 add-on, adjusted to suit the property — front elevation, location and context, top-of-building.",
+    a: "Aerial photography and footage is included in Premiere. On Listing and Signature it's a $149 add-on, adjusted to suit the property: front elevation, location and context, top-of-building.",
   },
   {
     q: "How does invoicing work?",
@@ -39,7 +39,7 @@ const faqs = [
   },
   {
     q: "Do you film in person each month?",
-    a: "Yes. We film monthly content batches in person — typically a half-day at your office or out on a listing — to capture team, agent, and listing-based content together.",
+    a: "Yes. We film monthly content batches in person, typically a half-day at your office or out on a listing, to capture team, agent, and listing-based content together.",
   },
   {
     q: "Where are you based and how far do you travel?",
@@ -77,7 +77,7 @@ export default function ServicesPage() {
               Packages priced before the call.
             </h1>
             <p className="mt-5 text-white/85 max-w-2xl text-lg">
-              Listing media per listing, agent content per month, full management for agencies — pick the layer you need.
+              Listing media per listing, agent content per month, full management for agencies. Pick the layer you need.
             </p>
           </Reveal>
         </Container>
@@ -90,10 +90,10 @@ export default function ServicesPage() {
           <Reveal>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
               <div className="max-w-xl">
-                <Eyebrow>Listing packages</Eyebrow>
-                <H2 className="mt-3">Per-listing pricing.</H2>
+                <Eyebrow>Per listing</Eyebrow>
+                <H2 className="mt-3">Listing packages.</H2>
                 <p className="mt-5 text-re-stone leading-relaxed">
-                  Photos, a branded floor plan and video in every package — delivered next business day.
+                  Photos, a branded floor plan and video in every package. Delivered next business day.
                 </p>
               </div>
               <AddOnsDialog label={`Add-ons from ${ADD_ONS_FROM}`} variant="outline" />
@@ -108,17 +108,13 @@ export default function ServicesPage() {
       <Section id="agent">
         <Container>
           <Reveal>
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="h-display text-5xl md:text-7xl text-re-ink">
-                What every agent is missing.
-              </h2>
-              <p className="mt-6 font-serif text-2xl md:text-3xl text-re-ink/85">
-                Your listings market the house. Not you.
-              </p>
+            <div className="max-w-3xl mx-auto text-center">
+              <Eyebrow>For agents</Eyebrow>
+              <H2 className="mt-3">Your listings market the house. Not you.</H2>
             </div>
           </Reveal>
 
-          <Reveal delay={0.12} className="mt-12">
+          <Reveal delay={0.12} className="mt-10">
             <AgentContentCard />
           </Reveal>
         </Container>
@@ -151,7 +147,7 @@ export default function ServicesPage() {
               </p>
 
               <p className="mt-5 text-re-stone leading-relaxed">
-                Your agency&apos;s whole social presence — planned, filmed, edited and scheduled by one team.
+                Your agency&apos;s whole social presence, planned, filmed, edited and scheduled by one team.
               </p>
 
               <div className="mt-7">
@@ -188,7 +184,7 @@ export default function ServicesPage() {
               <Eyebrow>Add-ons</Eyebrow>
               <H2 className="mt-3">Add depth to any listing.</H2>
               <p className="mt-5 text-re-stone leading-relaxed text-lg">
-                Twilight, aerial, virtual staging, 3D tours and more — priced individually from {ADD_ONS_FROM}, so you scale presentation to the property.
+                Twilight, aerial, virtual staging, 3D tours and more, priced individually from {ADD_ONS_FROM} so you scale presentation to the property.
               </p>
               <div className="mt-8 flex justify-center">
                 <AddOnsDialog label="See all add-ons & prices" />
@@ -208,7 +204,7 @@ export default function ServicesPage() {
                 More volume, more channels, paid distribution.
               </H2>
               <p className="mt-5 text-white/85 leading-relaxed text-lg">
-                Higher content velocity, paid social behind the creative that&apos;s working, or the full solution with listing media rolled in — scoped against your listing volume and goals.
+                Higher content velocity, paid social behind the creative that&apos;s working, or the full solution with listing media rolled in. All scoped against your listing volume and goals.
               </p>
             </Reveal>
             <Reveal className="md:col-span-5" delay={0.12}>
@@ -216,7 +212,7 @@ export default function ServicesPage() {
                 <p className="label-eyebrow !text-white/85">Tailored</p>
                 <p className="mt-3 font-serif text-4xl text-white">On request</p>
                 <p className="mt-4 text-white/85 text-sm leading-relaxed">
-                  Tell us your listing volume, current content, and where you want to be in 90 days — we&apos;ll come back with a scope and a number.
+                  Tell us your listing volume, current content, and where you want to be in 90 days. We&apos;ll come back with a scope and a number.
                 </p>
                 <div className="mt-7">
                   <CTAButton href="/contact" variant="white">
@@ -257,7 +253,7 @@ export default function ServicesPage() {
               <Eyebrow>Next step</Eyebrow>
               <H2 className="mt-3">Find the right package for you.</H2>
               <p className="mt-5 text-re-stone text-lg">
-                We&apos;ll review your current content, your goals, and where the highest-leverage move is right now — before you commit to anything.
+                We&apos;ll review your current content, your goals, and where the highest-leverage move is right now, before you commit to anything.
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
                 <CTAButton href="/contact">Book a strategy call</CTAButton>

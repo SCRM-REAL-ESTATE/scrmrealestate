@@ -7,7 +7,7 @@ import TiltCard from "@/components/TiltCard";
 export const metadata: Metadata = {
   title: "Agencies",
   description:
-    "Monthly social media management for real estate agencies — 8 videos, 6 posts and 6 stories a month, planned, filmed, edited and scheduled for you. From $1,800 per month.",
+    "Monthly social media management for real estate agencies. 8 videos, 6 posts and 6 stories a month, planned, filmed, edited and scheduled for you. From $1,800 per month.",
 };
 
 export default function AgenciesPage() {
@@ -23,7 +23,7 @@ export default function AgenciesPage() {
               Your agency&apos;s social media. Run for you.
             </h1>
             <p className="mt-6 text-white/80 max-w-2xl text-lg md:text-xl leading-relaxed">
-              8 videos, 6 posts and 6 stories every month — planned, filmed, edited and
+              8 videos, 6 posts and 6 stories every month, planned, filmed, edited and
               scheduled by one team. From $1,800 a month.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-4">
@@ -53,7 +53,7 @@ export default function AgenciesPage() {
                 you&apos;re busy or not.
               </p>
               <p>
-                One team owns the whole thing — strategy, filming, editing, posting — so the
+                One team owns the whole thing: strategy, filming, editing and posting. So the
                 brand stays consistent and nothing falls between a photographer, an editor and
                 whoever has the login this week.
               </p>
@@ -92,7 +92,7 @@ export default function AgenciesPage() {
               </div>
               <p className="mt-8 text-re-stone leading-relaxed max-w-md mx-auto">
                 Need more volume, paid social, or listing media rolled in? We scope it against
-                your listing volume and quote it — no forced tiers.
+                your listing volume and quote it. No forced tiers.
               </p>
               <div className="mt-8 flex justify-center">
                 <CTAButton href="/contact">Enquire now</CTAButton>
@@ -124,7 +124,7 @@ export default function AgenciesPage() {
               },
               {
                 t: "Your team stays selling",
-                d: "Nobody at your office has to script, film, edit or remember to post. You show up to one filming batch a month — we do the rest.",
+                d: "Nobody at your office has to script, film, edit or remember to post. You show up to one filming batch a month and we do the rest.",
               },
             ].map((p) => (
               <StaggerChild key={p.t}>
@@ -152,7 +152,7 @@ export default function AgenciesPage() {
               {
                 n: "01",
                 t: "Plan",
-                d: "We map the month — listings coming up, team moments, market talking points — and send you the plan.",
+                d: "We map the month: listings coming up, team moments and market talking points. Then we send you the plan.",
               },
               {
                 n: "02",
@@ -162,7 +162,7 @@ export default function AgenciesPage() {
               {
                 n: "03",
                 t: "Edit",
-                d: "We cut the videos, design the posts, write the captions — all in your branding.",
+                d: "We cut the videos, design the posts and write the captions, all in your branding.",
               },
               {
                 n: "04",
@@ -199,7 +199,7 @@ export default function AgenciesPage() {
                 One call. We&apos;ll map your next 90 days of content.
               </H2>
               <p className="mt-5 text-white/85 text-lg max-w-2xl">
-                Bring your listing volume and your goals — we&apos;ll tell you exactly what we&apos;d
+                Bring your listing volume and your goals. We&apos;ll tell you exactly what we&apos;d
                 post, film and run for your agency, and what it costs.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">

@@ -4,8 +4,8 @@ import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import HeroVideo from "@/components/HeroVideo";
 import AddOnsDialog from "@/components/AddOnsDialog";
 import ListingPackages from "@/components/ListingPackages";
-import AgentContentCard from "@/components/AgentContentCard";
 import HomeWorkPreview from "@/components/HomeWorkPreview";
+import AgentsVsAgencies from "@/components/AgentsVsAgencies";
 import { ADD_ONS_FROM } from "@/lib/pricing";
 
 export default function HomePage() {
@@ -23,7 +23,7 @@ export default function HomePage() {
                 Premium content systems for real estate.
               </h1>
               <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
-                Listing media, agent videos and full social management — filmed, edited and delivered for you.
+                Listing media, agent videos and full social management. Filmed, edited and delivered for you.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <CTAButton href="/contact">Book a strategy call</CTAButton>
@@ -101,7 +101,7 @@ export default function HomePage() {
                 t: "Agency management",
                 price: "$1,800",
                 priceSub: "from, per month",
-                d: "Your whole social presence run for you — 8 videos, 6 posts, 6 stories a month.",
+                d: "Your whole social presence run for you. 8 videos, 6 posts and 6 stories a month.",
                 i: "03",
                 href: "/agencies",
                 cta: "For agencies",
@@ -130,66 +130,6 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* LISTING PACKAGES */}
-      <Section panel="white">
-        <Container>
-          <Reveal>
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-              <div className="max-w-xl">
-                <Eyebrow>Listing packages</Eyebrow>
-                <H2 className="mt-3">Every listing, a complete campaign.</H2>
-                <p className="mt-5 text-re-stone leading-relaxed">
-                  Photos, a branded floor plan and video — delivered next business day.
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-4">
-                <AddOnsDialog label={`Add-ons from ${ADD_ONS_FROM}`} variant="outline" />
-                <Link href="/services" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
-                  See services &amp; pricing
-                  <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
-                </Link>
-              </div>
-            </div>
-          </Reveal>
-
-          <ListingPackages />
-        </Container>
-      </Section>
-
-      {/* AGENT CONTENT */}
-      <Section>
-        <Container>
-          <Reveal>
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="h-display text-5xl md:text-7xl text-re-ink">
-                What every agent is missing.
-              </h2>
-              <p className="mt-6 font-serif text-2xl md:text-3xl text-re-ink/85">
-                Your listings market the house. Not you.
-              </p>
-              <p className="mt-5 max-w-2xl mx-auto text-re-stone leading-relaxed text-lg">
-                Vendors don&apos;t choose a house. They choose a person — and they decide before
-                they call. Four videos a month is how you win that.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.12} className="mt-12">
-            <AgentContentCard />
-          </Reveal>
-
-          <Reveal delay={0.2}>
-            <p className="mt-8 text-center text-sm text-re-stone">
-              Running an agency instead?{" "}
-              <Link href="/agencies" className="text-re-blue hover:text-re-blue-accent underline decoration-re-blue-accent/40 underline-offset-4 transition-colors">
-                Monthly social media management from $1,800
-              </Link>
-              .
-            </p>
-          </Reveal>
-        </Container>
-      </Section>
-
       {/* WORK GALLERY PREVIEW */}
       <Section>
         <Container>
@@ -210,6 +150,35 @@ export default function HomePage() {
         </Container>
       </Section>
 
+      {/* AGENTS AND AGENCIES */}
+      <AgentsVsAgencies />
+
+      {/* LISTING PACKAGES */}
+      <Section panel="white">
+        <Container>
+          <Reveal>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+              <div className="max-w-xl">
+                <Eyebrow>Per listing</Eyebrow>
+                <H2 className="mt-3">Listing packages.</H2>
+                <p className="mt-5 text-re-stone leading-relaxed">
+                  Photos, a branded floor plan and video. Delivered next business day.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-4">
+                <AddOnsDialog label={`Add-ons from ${ADD_ONS_FROM}`} variant="outline" />
+                <Link href="/services" className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors">
+                  See services &amp; pricing
+                  <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
+            </div>
+          </Reveal>
+
+          <ListingPackages />
+        </Container>
+      </Section>
+
       {/* PROCESS */}
       <Section panel="tint">
         <Container>
@@ -224,17 +193,17 @@ export default function HomePage() {
               {
                 n: "01",
                 t: "Strategy & direction",
-                d: "We map content pillars to your business goals — what you sell, who you serve, and what makes you different locally.",
+                d: "We map content pillars to your business goals. What you sell, who you serve, and what makes you different locally.",
               },
               {
                 n: "02",
                 t: "Production system",
-                d: "Monthly filming, editing, listing media, and scheduling — built to run consistently, month after month.",
+                d: "Monthly filming, editing, listing media and scheduling, built to run consistently month after month.",
               },
               {
                 n: "03",
                 t: "Refine & scale",
-                d: "We measure what's working, double down, and add channels — paid social, vertical, drone — when the time is right.",
+                d: "We measure what's working, double down, and add channels like paid social, vertical and drone when the time is right.",
               },
             ].map((s) => (
               <StaggerChild key={s.n} className="border-t border-re-blue/15 pt-6">

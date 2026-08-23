@@ -49,7 +49,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal direction="right" className="md:col-span-7 space-y-5 text-lg text-re-stone leading-relaxed" delay={0.1}>
               <p>
-                SCRM Media Real Estate is the real estate division of SCRM Media — an Australian content and marketing studio working specifically with real estate agencies, top-performing agents, and boutique developers.
+                SCRM Media Real Estate is the real estate division of SCRM Media, an Australian content and marketing studio working specifically with real estate agencies, top-performing agents, and boutique developers.
               </p>
               <p>
                 We are not a generalist agency that "also does real estate." Every system, every workflow, and every piece of creative we produce is built around how property actually sells: trust before the call, presentation before the listing, and consistency before the campaign.
@@ -113,7 +113,7 @@ export default function AboutPage() {
               <Eyebrow>How we work</Eyebrow>
               <H2 className="mt-3">A small senior team. End-to-end production.</H2>
               <p className="mt-5 text-re-stone leading-relaxed">
-                Strategy, planning, filming, editing, scheduling, and listing media — handled by a tight, senior team rather than handed off through a chain of juniors. That's how we keep voice consistent and turnaround fast.
+                Strategy, planning, filming, editing, scheduling and listing media, all handled by a tight senior team rather than handed off through a chain of juniors. That's how we keep voice consistent and turnaround fast.
               </p>
               <ul className="mt-6 space-y-3 text-re-ink">
                 {[
@@ -143,7 +143,7 @@ export default function AboutPage() {
                 The right partner if your brand should look better than it currently does.
               </H2>
               <p className="mt-5 text-white/85 text-lg max-w-2xl">
-                We don't onboard everyone — we work best with agencies that take their reputation seriously and want a real partner. Tell us about your goals.
+                We don't onboard everyone. We work best with agencies that take their reputation seriously and want a real partner. Tell us about your goals.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <CTAButton href="/contact" variant="white">Book a strategy call</CTAButton>

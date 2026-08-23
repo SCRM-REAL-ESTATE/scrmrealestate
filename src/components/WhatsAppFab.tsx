@@ -2,7 +2,7 @@ import { SITE } from "@/lib/site";
 
 export default function WhatsAppFab() {
   const message = encodeURIComponent(
-    "Hi SCRM Media — I'd like to chat about real estate marketing for my agency."
+    "Hi SCRM Media, I'd like to chat about real estate marketing for my agency."
   );
   const href = `https://wa.me/${SITE.whatsappIntl}?text=${message}`;
 

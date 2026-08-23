@@ -10,29 +10,29 @@ import { AGENT_CONTENT } from "@/lib/pricing";
 export default function AgentContentCard({ dark = false }: { dark?: boolean }) {
   return (
     <TiltCard
-      className={`gold-ring max-w-3xl mx-auto text-center border rounded-[2rem] p-9 md:p-12 transition-shadow duration-500 hover:shadow-[0_30px_70px_rgba(28,58,94,0.12)] ${
+      className={`gold-ring max-w-2xl mx-auto text-center border rounded-[2rem] p-7 md:p-10 transition-shadow duration-500 hover:shadow-[0_30px_70px_rgba(28,58,94,0.12)] ${
         dark ? "bg-re-blue border-white/20 text-white" : "bg-white border-re-stone-light"
       }`}
     >
-      <p className={`label-eyebrow ${dark ? "!text-white/70" : ""}`}>{AGENT_CONTENT.name}</p>
+      <p className={`label-eyebrow ${dark ? "!text-white/85" : ""}`}>{AGENT_CONTENT.name}</p>
 
-      <p className={`mt-4 font-serif text-5xl md:text-6xl ${dark ? "text-white" : "text-re-ink"}`}>
+      <p className={`mt-3 font-serif text-4xl md:text-5xl ${dark ? "text-white" : "text-re-ink"}`}>
         {AGENT_CONTENT.price}
-        <span className={`ml-2 text-base font-sans ${dark ? "text-white/70" : "text-re-stone"}`}>
+        <span className={`ml-2 text-sm font-sans ${dark ? "text-white/85" : "text-re-stone"}`}>
           {AGENT_CONTENT.priceSub}
         </span>
       </p>
 
-      <h3 className={`mt-6 font-serif text-2xl md:text-3xl ${dark ? "text-white" : "text-re-ink"}`}>
+      <h3 className={`mt-5 font-serif text-xl md:text-2xl ${dark ? "text-white" : "text-re-ink"}`}>
         {AGENT_CONTENT.headline}
       </h3>
 
-      <p className={`mt-5 text-lg leading-relaxed ${dark ? "text-white/75" : "text-re-stone"}`}>
+      <p className={`mt-4 leading-relaxed ${dark ? "text-white/85" : "text-re-stone"}`}>
         {AGENT_CONTENT.pitch}
       </p>
 
       <ul
-        className={`mt-8 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm text-left ${
+        className={`mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 text-sm text-left ${
           dark ? "text-white/90" : "text-re-ink"
         }`}
       >
@@ -44,7 +44,7 @@ export default function AgentContentCard({ dark = false }: { dark?: boolean }) {
         ))}
       </ul>
 
-      <div className="mt-9 flex justify-center">
+      <div className="mt-7 flex justify-center">
         <CTAButton href="/contact" variant={dark ? "outline-light" : "solid"}>
           Book a filming day
         </CTAButton>
