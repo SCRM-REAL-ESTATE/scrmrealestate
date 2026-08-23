@@ -33,7 +33,7 @@ export default function WorkPage() {
       <Section className="bg-re-ivory border-t border-re-stone-light">
         <Container>
           <Reveal>
-            <div className="max-w-3xl mx-auto bg-white border border-re-stone-light p-8 md:p-12 text-center">
+            <div className="max-w-3xl mx-auto bg-white border border-re-stone-light rounded-[2rem] p-8 md:p-12 text-center">
               <Eyebrow>A note on this gallery</Eyebrow>
               <H2 className="mt-3">More than fits on one page.</H2>
               <p className="mt-5 text-re-stone leading-relaxed text-lg">

@@ -80,7 +80,7 @@ export default function HomePage() {
             </div>
           </Reveal>
 
-          <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-px bg-re-stone-light border border-re-stone-light">
+          <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-px bg-re-stone-light border border-re-stone-light rounded-[1.75rem] overflow-hidden">
             {[
               {
                 t: "Social Media",
@@ -145,10 +145,14 @@ export default function HomePage() {
       <Section>
         <Container>
           <Reveal>
-            <div className="max-w-2xl mx-auto text-center">
-              <Eyebrow>What every agent is missing</Eyebrow>
-              <H2 className="mt-3">Your listings market the house. Not you.</H2>
-              <p className="mt-5 text-re-stone leading-relaxed text-lg">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="h-display text-5xl md:text-7xl text-re-ink">
+                What every agent is missing.
+              </h2>
+              <p className="mt-6 font-serif text-2xl md:text-3xl text-re-ink/85">
+                Your listings market the house. Not you.
+              </p>
+              <p className="mt-5 max-w-2xl mx-auto text-re-stone leading-relaxed text-lg">
                 Vendors don&apos;t choose a house. They choose a person — and they decide before
                 they call. Four videos a month is how you win that.
               </p>
@@ -256,7 +260,7 @@ export default function HomePage() {
               },
             ].map((t) => (
               <StaggerChild key={t.a}>
-                <figure className="border border-re-stone-light p-8 md:p-10 bg-white h-full transition-shadow duration-500 hover:shadow-[0_24px_60px_rgba(28,58,94,0.08)]">
+                <figure className="gold-ring rounded-[1.75rem] border border-re-stone-light p-8 md:p-10 bg-white h-full transition-shadow duration-500 hover:shadow-[0_30px_70px_rgba(28,58,94,0.12)]">
                   <span className="font-serif text-5xl text-re-blue-accent leading-none">“</span>
                   <blockquote className="mt-2 font-serif text-2xl md:text-[28px] text-re-ink leading-snug">
                     {t.q}

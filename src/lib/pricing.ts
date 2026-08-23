@@ -67,14 +67,14 @@ export const AGENT_CONTENT = {
   name: "Everything But The House",
   price: "$800",
   priceSub: "per month",
-  headline: "Four videos a month, filmed in one sitting.",
+  headline: "Four videos a month. One hour of your time.",
   pitch:
-    "Your listings sell the property. These sell you. Four pieces to camera every month, planned, filmed and posted — so when a vendor looks you up before they call, they find someone worth calling.",
+    "Your listings sell the property. These sell you. Once a month we sit you down and film four pieces to camera — so when a vendor looks you up before they call, they find someone worth calling.",
   includes: [
-    "4 pieces to camera every month",
-    "Filmed in one sitting — you turn up for an hour",
-    "Planned, filmed, edited and posted for you",
-    "Built from the questions vendors actually ask",
+    "Four pieces to camera every month",
+    "The questions vendors actually ask",
+    "We plan, film, edit and post them for you",
+    "You turn up for an hour",
   ],
 };
 

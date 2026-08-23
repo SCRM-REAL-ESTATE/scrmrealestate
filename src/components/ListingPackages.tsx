@@ -9,20 +9,20 @@ import { LISTING_PACKAGES } from "@/lib/pricing";
 export default function ListingPackages({ className = "" }: { className?: string }) {
   return (
     <Stagger
-      className={`grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start ${className}`}
+      className={`flex overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-5 px-5 pb-2 md:pb-0 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible gap-6 md:gap-8 items-stretch md:items-start ${className}`}
       staggerChildren={0.1}
     >
       {LISTING_PACKAGES.map((pkg) => (
         <StaggerChild
           key={pkg.name}
-          className={`relative flex flex-col p-8 md:p-9 border transition-all duration-500 ${
+          className={`gold-ring snap-center shrink-0 w-[86%] sm:w-[64%] md:w-auto relative flex flex-col p-8 md:p-9 rounded-[1.75rem] border transition-all duration-500 hover:-translate-y-1.5 ${
             pkg.featured
-              ? "bg-re-blue text-white border-re-blue hover:shadow-[0_24px_60px_rgba(28,58,94,0.25)]"
-              : "bg-re-ivory border-re-stone-light hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(28,58,94,0.08)] hover:border-re-blue/40"
+              ? "bg-re-blue text-white border-re-blue hover:shadow-[0_30px_70px_rgba(28,58,94,0.32)]"
+              : "bg-re-ivory border-re-stone-light hover:shadow-[0_30px_70px_rgba(28,58,94,0.12)]"
           }`}
         >
           {pkg.featured && (
-            <span className="absolute -top-3 left-8 bg-re-gold-thin text-re-ink text-[10px] tracking-[0.22em] uppercase px-3 py-1">
+            <span className="gold-chrome-bg absolute -top-3.5 left-8 rounded-full text-re-ink text-[10px] tracking-[0.22em] uppercase px-4 py-1.5 shadow-[0_4px_14px_rgba(196,169,108,0.4)]">
               Most Popular
             </span>
           )}

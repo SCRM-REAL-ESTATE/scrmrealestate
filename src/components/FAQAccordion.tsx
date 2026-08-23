@@ -29,7 +29,7 @@ export default function FAQAccordion({
             >
               <span className="font-serif text-xl md:text-2xl leading-snug">{item.q}</span>
               <span
-                className={`flex-shrink-0 h-9 w-9 inline-flex items-center justify-center border ${
+                className={`flex-shrink-0 h-9 w-9 inline-flex items-center justify-center rounded-full border ${
                   light ? "border-white/40" : "border-re-stone-light"
                 } transition-transform ${isOpen ? "rotate-45" : ""}`}
                 aria-hidden

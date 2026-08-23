@@ -71,7 +71,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/contact"
-            className="hidden md:inline-flex items-center gap-2 border border-white/40 hover:border-white hover:bg-white hover:text-re-blue text-white text-sm px-5 py-2.5 transition-colors"
+            className="hidden md:inline-flex items-center gap-2 border rounded-full border-white/40 hover:border-white hover:bg-white hover:text-re-blue text-white text-sm px-6 py-2.5 transition-all duration-300"
           >
             Book a Call
             <span aria-hidden>→</span>
@@ -154,7 +154,7 @@ export default function Header() {
           <div className="px-5 mt-2 space-y-3 text-sm">
             <Link
               href="/contact"
-              className="flex items-center justify-center w-full bg-white text-re-blue py-3.5 hover:bg-white/90 transition-colors"
+              className="flex items-center justify-center w-full rounded-full bg-white text-re-blue py-3.5 hover:bg-white/90 transition-colors"
             >
               Book a Call
             </Link>

@@ -144,7 +144,7 @@ export default function ServicesPage() {
           <Container>
             <div className={`grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center ${s.reverse ? "md:[direction:rtl]" : ""}`}>
               <Reveal direction={s.reverse ? "right" : "left"} className="md:col-span-7 [direction:ltr]">
-                <div className="relative aspect-[4/3] overflow-hidden bg-re-stone-light group">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-re-stone-light group">
                   <Image src={s.image} alt={s.title} fill sizes="(min-width: 768px) 60vw, 100vw" className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
                 </div>
               </Reveal>
@@ -164,7 +164,7 @@ export default function ServicesPage() {
                   <ServiceIncludes items={s.includes} />
                 </div>
 
-                <div className="mt-6 bg-re-blue-light p-5 border-l-2 border-re-blue-accent">
+                <div className="mt-6 bg-re-blue-light rounded-2xl p-5 border-l-2 border-re-blue-accent">
                   <p className="label-eyebrow">Ideal for</p>
                   <p className="mt-1 text-sm text-re-ink">{s.ideal}</p>
                 </div>
@@ -201,9 +201,13 @@ export default function ServicesPage() {
       <Section id="agent">
         <Container>
           <Reveal>
-            <div className="max-w-3xl">
-              <Eyebrow>What every agent is missing</Eyebrow>
-              <H2 className="mt-3">Your listings market the house. Not you.</H2>
+            <div className="max-w-4xl">
+              <h2 className="h-display text-5xl md:text-7xl text-re-ink">
+                What every agent is missing.
+              </h2>
+              <p className="mt-6 font-serif text-2xl md:text-3xl text-re-ink/85">
+                Your listings market the house. Not you.
+              </p>
               <p className="mt-6 text-re-stone leading-relaxed text-lg">
                 Every agent posts the same thing. Just Listed. Open Home. Just Sold. It works — it&apos;s
                 the proof you&apos;re active. But it&apos;s the property doing the talking, and the moment that
@@ -244,7 +248,7 @@ export default function ServicesPage() {
           <Reveal className="mt-16">
             <p className="label-eyebrow">Why it works</p>
           </Reveal>
-          <Stagger className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-px bg-re-stone-light border border-re-stone-light" staggerChildren={0.08}>
+          <Stagger className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-px bg-re-stone-light border border-re-stone-light rounded-[1.75rem] overflow-hidden" staggerChildren={0.08}>
             {[
               {
                 t: "It compounds",
@@ -304,7 +308,7 @@ export default function ServicesPage() {
               </p>
             </Reveal>
             <Reveal className="md:col-span-5" delay={0.12}>
-              <div className="border border-white/20 p-8">
+              <div className="gold-ring rounded-[1.75rem] border border-white/20 p-8">
                 <p className="label-eyebrow !text-white/70">Tailored</p>
                 <p className="mt-3 font-serif text-4xl text-white">On request</p>
                 <p className="mt-4 text-white/75 text-sm leading-relaxed">

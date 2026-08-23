@@ -71,7 +71,7 @@ export default function Lightbox({
   }, [item]);
 
   const arrowClass =
-    "absolute top-1/2 -translate-y-1/2 z-10 inline-flex items-center justify-center h-12 w-12 md:h-14 md:w-14 border border-white/30 text-white hover:border-white hover:bg-white/10 transition-colors";
+    "absolute top-1/2 -translate-y-1/2 z-10 inline-flex items-center justify-center h-12 w-12 md:h-14 md:w-14 rounded-full border border-white/30 text-white hover:border-white hover:bg-white/10 transition-colors";
 
   return (
     <AnimatePresence>
@@ -92,7 +92,7 @@ export default function Lightbox({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="absolute top-5 right-5 md:top-7 md:right-7 inline-flex items-center justify-center h-12 w-12 border border-white/30 text-white hover:border-white hover:bg-white/10 transition-colors z-10"
+            className="absolute top-5 right-5 md:top-7 md:right-7 inline-flex items-center justify-center h-12 w-12 rounded-full border border-white/30 text-white hover:border-white hover:bg-white/10 transition-colors z-10"
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
               <line x1="6" y1="6" x2="18" y2="18" />
@@ -151,7 +151,7 @@ export default function Lightbox({
                 poster={item.poster}
                 controls
                 playsInline
-                className={`max-h-[90vh] max-w-[95vw] bg-black ${
+                className={`max-h-[90vh] max-w-[95vw] bg-black rounded-2xl ${
                   item.aspect === "9/16" ? "aspect-[9/16] w-auto" : ""
                 }`}
               />
@@ -160,7 +160,7 @@ export default function Lightbox({
               <img
                 src={item.src}
                 alt={item.alt ?? ""}
-                className="max-h-[90vh] max-w-[95vw] object-contain"
+                className="max-h-[90vh] max-w-[95vw] object-contain rounded-2xl"
               />
             )}
           </motion.div>

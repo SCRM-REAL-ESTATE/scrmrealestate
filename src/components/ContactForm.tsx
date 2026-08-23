@@ -68,7 +68,7 @@ export default function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="bg-re-blue-light border-l-2 border-re-blue-accent p-8 md:p-10">
+      <div className="bg-re-blue-light rounded-[1.75rem] border-l-2 border-re-blue-accent p-8 md:p-10">
         <Eyebrow>Message received</Eyebrow>
         <h2 className="mt-3 h-display text-3xl md:text-4xl text-re-ink">
           Thanks — we'll be in touch within 1 business day.
@@ -81,7 +81,7 @@ export default function ContactForm() {
   }
 
   const inputCls =
-    "w-full bg-white border border-re-stone-light px-4 py-3 text-re-ink placeholder:text-re-stone/70 focus:outline-none focus:border-re-blue transition-colors";
+    "w-full bg-white border border-re-stone-light rounded-2xl px-4 py-3 text-re-ink placeholder:text-re-stone/70 focus:outline-none focus:border-re-blue transition-colors";
 
   return (
     <form onSubmit={onSubmit} className="space-y-7" noValidate>
@@ -132,7 +132,7 @@ export default function ContactForm() {
                 key={s}
                 type="button"
                 onClick={() => toggleService(s)}
-                className={`px-4 py-2.5 text-sm border transition-colors min-h-[44px] ${
+                className={`px-4 py-2.5 text-sm border rounded-full transition-colors min-h-[44px] ${
                   selected
                     ? "bg-re-blue text-white border-re-blue"
                     : "bg-white text-re-ink border-re-stone-light hover:border-re-blue"
@@ -160,7 +160,7 @@ export default function ContactForm() {
       </div>
 
       {status === "error" && errorMsg && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-200 px-4 py-3">
+        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-2xl px-4 py-3">
           {errorMsg}
         </p>
       )}
@@ -168,7 +168,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex items-center gap-2 bg-re-blue text-white px-7 py-4 text-sm hover:bg-re-blue-accent transition-colors disabled:opacity-60 disabled:cursor-not-allowed min-h-[44px]"
+        className="inline-flex items-center gap-2 rounded-full bg-re-blue text-white px-8 py-4 text-sm hover:bg-re-blue-accent hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed min-h-[44px]"
       >
         {status === "submitting" ? "Sending…" : "Send message"} <span aria-hidden>→</span>
       </button>

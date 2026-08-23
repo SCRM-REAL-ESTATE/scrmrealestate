@@ -63,7 +63,7 @@ function GalleryVideo({ item }: { item: MediaItem }) {
 function PlayBadge() {
   return (
     <div className="absolute inset-0 flex items-end p-3 md:p-4 pointer-events-none">
-      <span className="inline-flex h-9 w-9 md:h-10 md:w-10 items-center justify-center border border-white/70 bg-black/35 text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-white group-hover:text-re-ink drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)]">
+      <span className="inline-flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full border border-white/70 bg-black/35 text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-white group-hover:text-re-ink drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)]">
         <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
           <path d="M3 1.5l11 6.5-11 6.5z" />
         </svg>
@@ -96,7 +96,7 @@ function Tile({
       exit={{ opacity: 0, y: 8 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: Math.min((index % PAGE_SIZE) * 0.03, 0.4) }}
       style={{ aspectRatio: ratio ?? aspectRatio(item) }}
-      className="group relative overflow-hidden bg-re-stone-light w-full cursor-pointer block"
+      className="group relative overflow-hidden rounded-2xl bg-re-stone-light w-full cursor-pointer block"
       aria-label={`Open ${item.type === "video" ? "video" : "image"} preview`}
     >
       {item.type === "image" ? (
@@ -116,7 +116,7 @@ function Tile({
       {item.type === "video" && <PlayBadge />}
 
       {badge && (
-        <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 bg-black/45 text-white text-[10px] tracking-[0.18em] uppercase px-2.5 py-1.5 backdrop-blur-sm pointer-events-none">
+        <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-black/45 text-white text-[10px] tracking-[0.18em] uppercase px-3 py-1.5 backdrop-blur-sm pointer-events-none">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
             <rect x="1.5" y="4.5" width="10" height="10" />
             <path d="M4.5 4.5v-3h10v10h-3" />
@@ -176,10 +176,10 @@ export default function WorkGallery() {
                 <button
                   key={t.id}
                   onClick={() => selectTab(t.id)}
-                  className={`shrink-0 px-4 md:px-5 py-2.5 text-xs tracking-[0.16em] uppercase border transition-colors min-h-[40px] ${
+                  className={`shrink-0 px-5 py-2.5 text-xs tracking-[0.16em] uppercase border rounded-full transition-all duration-300 min-h-[40px] ${
                     isActive
-                      ? "bg-re-blue text-white border-re-blue"
-                      : "bg-transparent text-re-ink border-re-stone-light hover:border-re-blue"
+                      ? "bg-re-blue text-white border-re-blue shadow-[0_6px_20px_rgba(28,58,94,0.25)]"
+                      : "bg-transparent text-re-ink border-re-stone-light hover:border-re-blue hover:-translate-y-0.5"
                   }`}
                 >
                   {t.label}
@@ -229,7 +229,7 @@ export default function WorkGallery() {
               <button
                 type="button"
                 onClick={() => setVisible((v) => v + PAGE_SIZE)}
-                className="px-8 py-4 text-xs tracking-[0.2em] uppercase border border-re-stone-light text-re-ink hover:border-re-blue hover:text-re-blue transition-colors"
+                className="px-8 py-4 text-xs tracking-[0.2em] uppercase border rounded-full border-re-stone-light text-re-ink hover:border-re-blue hover:text-re-blue hover:-translate-y-0.5 transition-all duration-300"
               >
                 Load more ({items.length - visible})
               </button>

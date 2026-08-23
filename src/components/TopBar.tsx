@@ -16,7 +16,7 @@ export default function TopBar() {
         <span className="hidden sm:inline text-white/55">Also visit:</span>
         <button
           onClick={handleAutomotiveClick}
-          className="inline-flex items-center gap-2 px-3 py-1 border border-white/20 hover:border-white/60 transition-colors duration-200 text-white"
+          className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-white/20 hover:border-white/60 transition-colors duration-200 text-white"
           aria-label="Visit SCRM Media Automotive"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-re-blue-accent" aria-hidden />

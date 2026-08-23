@@ -42,7 +42,7 @@ export default function AddOnsDialog({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`inline-flex items-center gap-2.5 border px-6 py-3.5 text-xs tracking-[0.2em] uppercase transition-colors duration-300 ${buttonStyles}`}
+        className={`inline-flex items-center gap-2.5 border rounded-full px-7 py-3.5 text-xs tracking-[0.2em] uppercase transition-all duration-300 hover:-translate-y-0.5 ${buttonStyles}`}
       >
         {label}
         <span aria-hidden className="text-base leading-none">+</span>
@@ -62,7 +62,7 @@ export default function AddOnsDialog({
             aria-label="Add-ons and pricing"
           >
             <motion.div
-              className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto bg-white border border-re-stone-light text-left"
+              className="gold-ring relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-[1.75rem] bg-white border border-re-stone-light text-left"
               initial={{ scale: 0.97, opacity: 0, y: 8 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.97, opacity: 0, y: 8 }}
@@ -78,7 +78,7 @@ export default function AddOnsDialog({
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Close"
-                  className="shrink-0 inline-flex items-center justify-center h-10 w-10 border border-re-stone-light text-re-stone hover:border-re-blue hover:text-re-blue transition-colors"
+                  className="shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full border border-re-stone-light text-re-stone hover:border-re-blue hover:text-re-blue transition-colors"
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                     <line x1="6" y1="6" x2="18" y2="18" />
@@ -107,7 +107,7 @@ export default function AddOnsDialog({
               <div className="px-7 md:px-9 pb-7 md:pb-9 pt-4">
                 <a
                   href="/contact"
-                  className="flex items-center justify-center w-full bg-re-blue text-white py-4 text-xs tracking-[0.2em] uppercase hover:bg-re-blue-accent transition-colors"
+                  className="flex items-center justify-center w-full rounded-full bg-re-blue text-white py-4 text-xs tracking-[0.2em] uppercase hover:bg-re-blue-accent transition-colors"
                 >
                   Enquire about add-ons
                 </a>

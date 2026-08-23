@@ -50,11 +50,11 @@ export function CTAButton({
   external,
 }: ButtonProps) {
   const base =
-    "inline-flex items-center gap-2 px-6 py-3.5 text-sm tracking-tight transition-colors min-h-[44px]";
+    "inline-flex items-center gap-2 px-7 py-3.5 text-sm tracking-tight rounded-full transition-all duration-300 min-h-[44px] hover:-translate-y-0.5 active:translate-y-0";
   const styles = {
-    solid: "bg-re-blue text-white hover:bg-re-blue-accent",
-    outline: "border border-re-ink text-re-ink hover:bg-re-ink hover:text-white",
-    "outline-light": "border border-white/70 text-white hover:bg-white hover:text-re-blue",
+    solid: "bg-re-blue text-white hover:bg-re-blue-accent hover:shadow-[0_10px_30px_rgba(28,58,94,0.3)]",
+    outline: "border border-re-ink text-re-ink hover:bg-re-ink hover:text-white hover:shadow-[0_10px_30px_rgba(26,26,26,0.18)]",
+    "outline-light": "border border-white/70 text-white hover:bg-white hover:text-re-blue hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)]",
   } as const;
 
   const content = (
