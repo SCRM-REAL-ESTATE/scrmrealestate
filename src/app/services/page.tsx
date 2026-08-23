@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
+import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
 import FAQAccordion from "@/components/FAQAccordion";
-import ServiceIncludes from "@/components/ServiceIncludes";
-import AddOnsDialog from "@/components/AddOnsDialog";
+import AddOnsPanel from "@/components/AddOnsPanel";
 import ListingPackages from "@/components/ListingPackages";
 import AgentContentCard from "@/components/AgentContentCard";
 import { ADD_ONS_FROM } from "@/lib/pricing";
@@ -13,13 +12,13 @@ import { ADD_ONS_FROM } from "@/lib/pricing";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Listing packages from $349 with photos, floor plan and video, agent content at $800 a month, and monthly social media management from $1,800 — built specifically for real estate.",
+    "Listing packages from $349 with photos, floor plan and video, agent content at $800 a month, and monthly social media management from $1,800, built specifically for real estate.",
 };
 
 const faqs = [
   {
     q: "What does the $1,800 actually cover?",
-    a: "Monthly management starts at $1,800 and covers the content system — filming, editing, captions, scheduling, and the monthly planning behind it. Where an agency needs more volume, more channels, or paid distribution on top, we quote that against what you're actually trying to hit rather than pushing you into a bigger tier.",
+    a: "Monthly management starts at $1,800 and covers the content system: filming, editing, captions, scheduling, and the monthly planning behind it. Where an agency needs more volume, more channels, or paid distribution on top, we quote that against what you're actually trying to hit rather than pushing you into a bigger tier.",
   },
   {
     q: "Is the monthly management locked in?",
@@ -27,11 +26,11 @@ const faqs = [
   },
   {
     q: "Can I just buy listing photos without monthly management?",
-    a: "Yes. Listing packages are sold per listing at $349, $499, or $899. Monthly management is separate and optional — the two work very well together, but neither requires the other.",
+    a: "Yes. Listing packages are sold per listing at $349, $499, or $899. Monthly management is separate and optional. The two work very well together, but neither requires the other.",
   },
   {
     q: "How does aerial work?",
-    a: "Aerial photography and footage is included in Premiere. On Listing and Signature it's a $149 add-on, adjusted to suit the property — front elevation, location and context, top-of-building.",
+    a: "Aerial photography and footage is included in Premiere. On Listing and Signature it's a $149 add-on, adjusted to suit the property: front elevation, location and context, top-of-building.",
   },
   {
     q: "How does invoicing work?",
@@ -39,7 +38,7 @@ const faqs = [
   },
   {
     q: "Do you film in person each month?",
-    a: "Yes. We film monthly content batches in person — typically a half-day at your office or out on a listing — to capture team, agent, and listing-based content together.",
+    a: "Yes. We film monthly content batches in person, typically a half-day at your office or out on a listing, to capture team, agent, and listing-based content together.",
   },
   {
     q: "Where are you based and how far do you travel?",
@@ -70,14 +69,12 @@ export default function ServicesPage() {
         </div>
         <Container className="relative w-full pb-16 md:pb-24">
           <Reveal>
-            <Eyebrow>
-              <span className="!text-white/90">Services & pricing</span>
-            </Eyebrow>
-            <h1 className="mt-3 h-display text-5xl md:text-6xl text-white max-w-3xl">
+            <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+            <h1 className="h-display text-5xl md:text-6xl text-white max-w-3xl">
               Packages priced before the call.
             </h1>
             <p className="mt-5 text-white/85 max-w-2xl text-lg">
-              Listing media per listing, agent content per month, full management for agencies — pick the layer you need.
+              Listing media per listing, agent content per month, full management for agencies. Pick the layer you need.
             </p>
           </Reveal>
         </Container>
@@ -90,13 +87,18 @@ export default function ServicesPage() {
           <Reveal>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
               <div className="max-w-xl">
-                <Eyebrow>Listing packages</Eyebrow>
-                <H2 className="mt-3">Per-listing pricing.</H2>
+                <H2 rule>Listing packages.</H2>
                 <p className="mt-5 text-re-stone leading-relaxed">
-                  Photos, a branded floor plan and video in every package — delivered next business day.
+                  Photos, a branded floor plan and video in every package. Delivered next business day.
                 </p>
               </div>
-              <AddOnsDialog label={`Add-ons from ${ADD_ONS_FROM}`} variant="outline" />
+              <Link
+                href="#add-ons"
+                className="group inline-flex items-center gap-2 rounded-full border border-re-stone-light px-7 py-3.5 text-xs tracking-[0.2em] uppercase text-re-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-re-blue hover:text-re-blue"
+              >
+                Add-ons from {ADD_ONS_FROM}
+                <span aria-hidden className="text-base leading-none">+</span>
+              </Link>
             </div>
           </Reveal>
 
@@ -108,92 +110,33 @@ export default function ServicesPage() {
       <Section id="agent">
         <Container>
           <Reveal>
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="h-display text-5xl md:text-7xl text-re-ink">
-                What every agent is missing.
-              </h2>
-              <p className="mt-6 font-serif text-2xl md:text-3xl text-re-ink/85">
-                Your listings market the house. Not you.
-              </p>
+            <div className="max-w-3xl mx-auto text-center">
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>What every agent is missing.</H2>
             </div>
           </Reveal>
 
-          <Reveal delay={0.12} className="mt-12">
+          <Reveal delay={0.12} className="mt-10">
             <AgentContentCard />
           </Reveal>
         </Container>
       </Section>
 
-      {/* AGENCY MANAGEMENT */}
-      <Section id="social" panel="tint">
-        <Container>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center">
-            <Reveal direction="left" className="md:col-span-7">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-re-stone-light group">
-                <Image
-                  src="/media/listings/listing-03.png"
-                  alt="Monthly social media management"
-                  fill
-                  sizes="(min-width: 768px) 60vw, 100vw"
-                  className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
-                />
-              </div>
-            </Reveal>
-            <Reveal direction="right" className="md:col-span-5">
-              <Eyebrow>For agencies</Eyebrow>
-              <h2 className="mt-3 h-display text-3xl md:text-4xl text-re-ink">
-                Monthly Social Media Management
-              </h2>
-
-              <p className="mt-4 font-serif text-4xl text-re-blue">
-                From $1,800
-                <span className="ml-2 text-sm font-sans text-re-stone">per month</span>
-              </p>
-
-              <p className="mt-5 text-re-stone leading-relaxed">
-                Your agency&apos;s whole social presence — planned, filmed, edited and scheduled by one team.
-              </p>
-
-              <div className="mt-7">
-                <ServiceIncludes
-                  items={[
-                    { label: "8 social media videos per month", examples: ["vertical", "testimonial", "agency"] },
-                    { label: "6 social media posts per month", examples: ["carousel"] },
-                    { label: "6 stories per month", examples: ["detail"] },
-                    { label: "Planning, editing, captions & scheduling" },
-                  ]}
-                />
-              </div>
-
-              <div className="mt-7 flex flex-wrap items-center gap-5">
-                <CTAButton href="/agencies">See the agency offer</CTAButton>
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-2 text-sm text-re-blue hover:text-re-blue-accent transition-colors"
-                >
-                  Enquire now
-                  <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">→</span>
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </Container>
-      </Section>
-
       {/* ADD-ONS */}
-      <Section>
+      <Section id="add-ons">
         <Container>
           <Reveal>
             <div className="max-w-3xl mx-auto text-center">
-              <Eyebrow>Add-ons</Eyebrow>
-              <H2 className="mt-3">Add depth to any listing.</H2>
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>Add depth to any listing.</H2>
               <p className="mt-5 text-re-stone leading-relaxed text-lg">
-                Twilight, aerial, virtual staging, 3D tours and more — priced individually from {ADD_ONS_FROM}, so you scale presentation to the property.
+                Twilight, aerial, virtual staging, 3D tours and more, priced individually from {ADD_ONS_FROM} so you scale presentation to the property.
               </p>
-              <div className="mt-8 flex justify-center">
-                <AddOnsDialog label="See all add-ons & prices" />
-              </div>
             </div>
+          </Reveal>
+
+          <Reveal delay={0.1} className="mt-10">
+            <AddOnsPanel label="See all add-ons & prices" />
           </Reveal>
         </Container>
       </Section>
@@ -203,12 +146,12 @@ export default function ServicesPage() {
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
             <Reveal className="md:col-span-7">
-              <Eyebrow light>Beyond the monthly system</Eyebrow>
-              <H2 light className="mt-3">
+              <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+              <H2 light>
                 More volume, more channels, paid distribution.
               </H2>
               <p className="mt-5 text-white/85 leading-relaxed text-lg">
-                Higher content velocity, paid social behind the creative that&apos;s working, or the full solution with listing media rolled in — scoped against your listing volume and goals.
+                Higher content velocity, paid social behind the creative that&apos;s working, or the full solution with listing media rolled in. All scoped against your listing volume and goals.
               </p>
             </Reveal>
             <Reveal className="md:col-span-5" delay={0.12}>
@@ -216,7 +159,7 @@ export default function ServicesPage() {
                 <p className="label-eyebrow !text-white/85">Tailored</p>
                 <p className="mt-3 font-serif text-4xl text-white">On request</p>
                 <p className="mt-4 text-white/85 text-sm leading-relaxed">
-                  Tell us your listing volume, current content, and where you want to be in 90 days — we&apos;ll come back with a scope and a number.
+                  Tell us your listing volume, current content, and where you want to be in 90 days. We&apos;ll come back with a scope and a number.
                 </p>
                 <div className="mt-7">
                   <CTAButton href="/contact" variant="white">
@@ -234,8 +177,8 @@ export default function ServicesPage() {
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
             <Reveal direction="up" className="md:col-span-4">
-              <Eyebrow light>FAQ</Eyebrow>
-              <H2 light className="mt-3">
+              <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+              <H2 light>
                 Common questions, answered.
               </H2>
               <p className="mt-5 text-white/85 leading-relaxed">
@@ -254,10 +197,10 @@ export default function ServicesPage() {
         <Container>
           <Reveal>
             <div className="max-w-3xl mx-auto text-center">
-              <Eyebrow>Next step</Eyebrow>
-              <H2 className="mt-3">Find the right package for you.</H2>
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>Find the right package for you.</H2>
               <p className="mt-5 text-re-stone text-lg">
-                We&apos;ll review your current content, your goals, and where the highest-leverage move is right now — before you commit to anything.
+                We&apos;ll review your current content, your goals, and where the highest-leverage move is right now, before you commit to anything.
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
                 <CTAButton href="/contact">Book a strategy call</CTAButton>

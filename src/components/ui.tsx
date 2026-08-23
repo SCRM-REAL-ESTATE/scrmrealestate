@@ -25,15 +25,27 @@ export function H2({
   children,
   light = false,
   className = "",
+  rule = false,
 }: {
   children: React.ReactNode;
   light?: boolean;
   className?: string;
+  /** Gold dash above the heading. Marks the section without a second label. */
+  rule?: boolean;
 }) {
-  return (
-    <h2 className={`h-display text-4xl md:text-6xl ${light ? "text-white" : "text-re-ink"} ${className}`}>
+  const heading = (
+    <h2 className={`h-display text-4xl md:text-6xl ${light ? "text-white" : "text-re-ink"} ${rule ? "" : className}`}>
       {children}
     </h2>
+  );
+
+  if (!rule) return heading;
+
+  return (
+    <div className={className}>
+      <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+      {heading}
+    </div>
   );
 }
 

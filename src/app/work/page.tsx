@@ -6,7 +6,7 @@ import WorkGallery from "@/components/WorkGallery";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "A look at recent SCRM Media Real Estate work — listing photography, vertical video, social content, and brand stories.",
+    "A look at recent SCRM Media Real Estate work: listing photography, vertical video, social content and brand stories.",
 };
 
 export default function WorkPage() {
@@ -17,8 +17,8 @@ export default function WorkPage() {
       <div className="blue-fade text-white rounded-[2rem] md:rounded-[2.5rem]">
         <Container className="py-20 md:py-28">
           <Reveal>
-            <Eyebrow light>Selected work</Eyebrow>
-            <h1 className="mt-3 h-display text-5xl md:text-6xl text-white max-w-3xl">
+            <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+            <h1 className=" h-display text-5xl md:text-6xl text-white max-w-3xl">
               Work that earns trust before the call.
             </h1>
             <p className="mt-5 text-white/80 max-w-2xl text-lg">
@@ -36,10 +36,10 @@ export default function WorkPage() {
         <Container>
           <Reveal>
             <div className="max-w-3xl mx-auto bg-white border border-re-stone-light rounded-[2rem] p-8 md:p-12 text-center">
-              <Eyebrow>A note on this gallery</Eyebrow>
-              <H2 className="mt-3">More than fits on one page.</H2>
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>More than fits on one page.</H2>
               <p className="mt-5 text-re-stone leading-relaxed text-lg">
-                The strongest examples of our work — full account dashboards, results, vertical reels, and live campaigns — are best shown on a call. We'll walk you through what worked, what didn't, and what we'd do for your agency.
+                The strongest examples of our work, including full account dashboards, results, vertical reels and live campaigns, are best shown on a call. We'll walk you through what worked, what didn't, and what we'd do for your agency.
               </p>
               <div className="mt-8 flex justify-center">
                 <CTAButton href="/contact">Book a walk-through</CTAButton>

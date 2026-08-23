@@ -17,8 +17,8 @@ export default function ContactPage() {
       <div className="blue-fade text-white rounded-[2rem] md:rounded-[2.5rem]">
         <Container className="py-20 md:py-24">
           <Reveal>
-            <Eyebrow light>Contact</Eyebrow>
-            <h1 className="mt-3 h-display text-5xl md:text-6xl text-white max-w-3xl">
+            <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+            <h1 className=" h-display text-5xl md:text-6xl text-white max-w-3xl">
               Let's talk about how your agency shows up online.
             </h1>
             <p className="mt-5 text-white/80 max-w-2xl text-lg">

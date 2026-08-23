@@ -28,10 +28,8 @@ export default function AboutPage() {
         </div>
         <Container className="relative w-full pb-16 md:pb-24">
           <Reveal>
-            <Eyebrow>
-              <span className="!text-white/85">About</span>
-            </Eyebrow>
-            <h1 className="mt-3 h-display text-5xl md:text-6xl text-white max-w-3xl">
+            <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+            <h1 className=" h-display text-5xl md:text-6xl text-white max-w-3xl">
               A specialist content studio for premium real estate.
             </h1>
           </Reveal>
@@ -44,12 +42,11 @@ export default function AboutPage() {
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
             <Reveal direction="left" className="md:col-span-5">
-              <Eyebrow>Who we are</Eyebrow>
-              <H2 className="mt-3">Built only for real estate.</H2>
+              <H2 rule>Built only for real estate.</H2>
             </Reveal>
             <Reveal direction="right" className="md:col-span-7 space-y-5 text-lg text-re-stone leading-relaxed" delay={0.1}>
               <p>
-                SCRM Media Real Estate is the real estate division of SCRM Media — an Australian content and marketing studio working specifically with real estate agencies, top-performing agents, and boutique developers.
+                SCRM Media Real Estate is the real estate division of SCRM Media, an Australian content and marketing studio working specifically with real estate agencies, top-performing agents, and boutique developers.
               </p>
               <p>
                 We are not a generalist agency that "also does real estate." Every system, every workflow, and every piece of creative we produce is built around how property actually sells: trust before the call, presentation before the listing, and consistency before the campaign.
@@ -64,8 +61,7 @@ export default function AboutPage() {
         <Container>
           <Reveal>
             <div className="max-w-2xl">
-              <Eyebrow>What we believe</Eyebrow>
-              <H2 className="mt-3">Three principles guide every account we run.</H2>
+              <H2 rule>Three principles guide every account we run.</H2>
             </div>
           </Reveal>
 
@@ -110,10 +106,9 @@ export default function AboutPage() {
               </div>
             </Reveal>
             <Reveal direction="right" className="md:col-span-6" delay={0.1}>
-              <Eyebrow>How we work</Eyebrow>
-              <H2 className="mt-3">A small senior team. End-to-end production.</H2>
+              <H2 rule>A small senior team. End-to-end production.</H2>
               <p className="mt-5 text-re-stone leading-relaxed">
-                Strategy, planning, filming, editing, scheduling, and listing media — handled by a tight, senior team rather than handed off through a chain of juniors. That's how we keep voice consistent and turnaround fast.
+                Strategy, planning, filming, editing, scheduling and listing media, all handled by a tight senior team rather than handed off through a chain of juniors. That's how we keep voice consistent and turnaround fast.
               </p>
               <ul className="mt-6 space-y-3 text-re-ink">
                 {[
@@ -138,12 +133,12 @@ export default function AboutPage() {
         <Container>
           <Reveal>
             <div className="max-w-3xl">
-              <Eyebrow light>Work with us</Eyebrow>
-              <H2 light className="mt-3">
+              <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
+              <H2 light>
                 The right partner if your brand should look better than it currently does.
               </H2>
               <p className="mt-5 text-white/85 text-lg max-w-2xl">
-                We don't onboard everyone — we work best with agencies that take their reputation seriously and want a real partner. Tell us about your goals.
+                We don't onboard everyone. We work best with agencies that take their reputation seriously and want a real partner. Tell us about your goals.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <CTAButton href="/contact" variant="white">Book a strategy call</CTAButton>
