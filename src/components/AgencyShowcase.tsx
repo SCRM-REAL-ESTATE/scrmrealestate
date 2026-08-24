@@ -88,17 +88,25 @@ export default function AgencyShowcase() {
   const carousels = useMemo(() => mediaSets("carousel").slice(0, 3), []);
 
   /**
-   * Stories run two client testimonials beside two interior detail shots.
-   * `detail/` also holds street-front shots of the house, which belong with
-   * the listing work rather than here, and consecutive frames are often two
-   * angles of the same room, so we skip the exteriors and step through the
-   * rest rather than taking the first few.
+   * Stories lead with the property frames, then the client testimonials.
+   * Named rather than sliced, so the two testimonials come from different
+   * agencies instead of both from MGM Martin, and the two details are the
+   * house and a room rather than two angles of the same bathroom.
    */
   const stories = useMemo(() => {
-    const EXTERIORS = ["detail/envesta-2.jpg"];
-    const details = mediaByCategory("detail").filter((i) => !EXTERIORS.includes(i.src));
-    const spaced = details.filter((_, i) => i % 3 === 0).slice(0, 2);
-    return [...mediaByCategory("testimonial").slice(0, 2), ...spaced];
+    const WANTED = [
+      "detail/envesta-2.jpg", // street front
+      "detail/envesta-6.jpg", // kitchen
+      "testimonials/chris-van-zyl-peter.jpg", // MGM Martin
+      "testimonials/khalen-hussein.jpg", // Envesta
+    ];
+    const pool = mediaByCategory("detail", "testimonial");
+    const picked = WANTED.map((src) => pool.find((i) => i.src === src)).filter(
+      (i): i is MediaItem => Boolean(i)
+    );
+    // If a file is ever renamed, top up rather than render a short row.
+    const filler = pool.filter((i) => !picked.includes(i));
+    return [...picked, ...filler].slice(0, 4);
   }, []);
 
   const [lightbox, setLightbox] = useState<LightboxState>(null);
