@@ -10,6 +10,8 @@ export type ListingPackage = {
   turnaround: string;
   includes: string[];
   note: string;
+  /** What this tier adds over the one below it, so the ladder reads at a glance. */
+  step: string;
   featured?: boolean;
 };
 
@@ -26,6 +28,7 @@ export const LISTING_PACKAGES: ListingPackage[] = [
       "Branded and unbranded exports, portal-ready",
     ],
     note: "Everything you need to get a listing live.",
+    step: "The three things a listing can't go live without.",
   },
   {
     name: "Signature",
@@ -40,6 +43,7 @@ export const LISTING_PACKAGES: ListingPackage[] = [
       "Branded and unbranded exports, portal-ready",
     ],
     note: "The listing sells the property. The agent video sells you.",
+    step: "Everything in Listing, plus a vertical video with you on camera. That video is why most agents pick this one.",
     featured: true,
   },
   {
@@ -56,6 +60,7 @@ export const LISTING_PACKAGES: ListingPackage[] = [
       "Branded and unbranded exports, portal-ready",
     ],
     note: "The full campaign, filmed properly.",
+    step: "Everything in Signature, plus a filmed property film and aerial.",
   },
 ];
 

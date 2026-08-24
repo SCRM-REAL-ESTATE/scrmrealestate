@@ -46,7 +46,7 @@ const faqs = [
   },
   {
     q: "Where are you based and how far do you travel?",
-    a: "We're Australia-based and service Australia-wide. Most production happens in Sydney metro; for regional or interstate work we plan filming in batches to keep it efficient.",
+    a: "We're mainly based in Melbourne and shoot right across Melbourne metro, with production in Sydney metro as well. We service Australia-wide, and for regional or interstate work we plan filming in batches to keep it efficient.",
   },
   {
     q: "Can you handle paid social as well?",
@@ -140,7 +140,7 @@ export default function ServicesPage() {
           </Reveal>
 
           <Reveal delay={0.1} className="mt-10">
-            <AddOnsPanel label="See all add-ons & prices" />
+            <AddOnsPanel />
           </Reveal>
         </Container>
       </Section>

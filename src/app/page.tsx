@@ -18,13 +18,13 @@ export default function HomePage() {
         <Container className="relative w-full pb-16 md:pb-24">
           <Reveal direction="up">
             <div className="max-w-3xl">
-              <span className="label-eyebrow !text-white/85">SCRM Media · Real Estate</span>
-              <h1 className="mt-4 h-display text-5xl md:text-7xl text-white">
+              <h1 className="h-display text-5xl md:text-7xl text-white">
                 Every listing, shot properly.
               </h1>
               <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
-                We shoot your listings, put your agents on camera, and run your
-                agency&apos;s social media.
+                Photos, floor plan and video on every listing, for what most agents
+                pay for photos alone. Plus a vertical video with you on camera,
+                shot on the same visit.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <CTAButton href="/contact">Book a strategy call</CTAButton>

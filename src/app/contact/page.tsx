@@ -94,7 +94,7 @@ export default function ContactPage() {
                 <hr className="my-8 border-re-stone-light" />
 
                 <p className="text-sm text-re-stone leading-relaxed">
-                  We service agencies Australia-wide. Most production happens in Sydney metro; for regional/interstate clients, filming is planned in batches.
+                  We're mainly based in Melbourne, with production in Sydney metro as well, and we service agencies Australia-wide. For regional and interstate clients, filming is planned in batches.
                 </p>
               </div>
             </Reveal>

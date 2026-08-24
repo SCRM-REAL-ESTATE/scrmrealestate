@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { CTAButton } from "./ui";
 import { Stagger, StaggerChild } from "./Reveal";
 import TiltCard from "./TiltCard";
@@ -9,12 +8,11 @@ import { useCentredCarousel } from "@/lib/useCentredCarousel";
 
 /**
  * The three listing packages as individual cards. Shared by the home page and
- * Services so the two can never show different inclusions. Inclusions sit
- * behind a "What's included" toggle so the three cards stay short on screen.
+ * Services so the two can never show different inclusions. Everything is on the
+ * face of the card: the tiers only make sense next to each other, and a toggle
+ * meant nobody compared them.
  */
 export default function ListingPackages({ className = "" }: { className?: string }) {
-  const [open, setOpen] = useState<string | null>(null);
-
   // On mobile the row opens on the featured package rather than the cheapest,
   // so the one most people take is the one they land on.
   const featuredIndex = Math.max(
@@ -30,7 +28,6 @@ export default function ListingPackages({ className = "" }: { className?: string
       staggerChildren={0.1}
     >
       {LISTING_PACKAGES.map((pkg) => {
-        const isOpen = open === pkg.name;
         return (
           <StaggerChild key={pkg.name} className="snap-center shrink-0 w-[86%] sm:w-[64%] md:w-auto">
             <TiltCard
@@ -62,46 +59,29 @@ export default function ListingPackages({ className = "" }: { className?: string
                 {pkg.note}
               </p>
 
-              <button
-                type="button"
-                onClick={() => setOpen(isOpen ? null : pkg.name)}
-                aria-expanded={isOpen}
-                className={`mt-6 w-full flex items-center justify-between gap-3 rounded-full border px-5 py-3 text-xs tracking-[0.16em] uppercase transition-colors duration-300 ${
-                  pkg.featured
-                    ? "border-white/30 text-white hover:bg-white/10"
-                    : "border-re-stone-light text-re-ink hover:border-re-blue hover:text-re-blue"
+              <p
+                className={`mt-5 text-sm leading-relaxed ${
+                  pkg.featured ? "text-white" : "text-re-stone"
                 }`}
               >
-                <span>What&apos;s included</span>
-                <span
-                  aria-hidden
-                  className={`inline-flex h-6 w-6 items-center justify-center rounded-full border transition-transform duration-300 ${
-                    pkg.featured ? "border-white/40" : "border-re-stone-light"
-                  } ${isOpen ? "rotate-45" : ""}`}
-                >
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                    <line x1="12" y1="5" x2="12" y2="19" />
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                  </svg>
-                </span>
-              </button>
+                {pkg.step}
+              </p>
 
-              <div
-                className={`grid transition-all duration-300 ${
-                  isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                }`}
-              >
-                <div className="overflow-hidden">
-                  <ul className={`pt-6 space-y-3 text-sm ${pkg.featured ? "text-white/90" : "text-re-ink"}`}>
-                    {pkg.includes.map((line) => (
-                      <li key={line} className="flex gap-3">
-                        <span className={`mt-2 h-1 w-3 shrink-0 rounded-full ${pkg.featured ? "bg-white/60" : "bg-re-blue-accent"}`} />
-                        <span className="leading-relaxed">{line}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <ul className={`mt-6 pt-6 border-t space-y-3 text-sm ${
+                pkg.featured ? "border-white/20 text-white/90" : "border-re-stone-light text-re-ink"
+              }`}>
+                {pkg.includes.map((line) => (
+                  <li key={line} className="flex gap-3">
+                    <span
+                      aria-hidden
+                      className={`mt-2 h-1 w-3 shrink-0 rounded-full ${
+                        pkg.featured ? "bg-white/60" : "bg-re-blue-accent"
+                      }`}
+                    />
+                    <span className="leading-relaxed">{line}</span>
+                  </li>
+                ))}
+              </ul>
 
               <div className="mt-7 flex-grow flex items-end">
                 <CTAButton href="/contact" variant={pkg.featured ? "outline-light" : "solid"}>
