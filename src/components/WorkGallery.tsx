@@ -16,6 +16,7 @@ import {
   type MediaItem,
 } from "@/lib/media";
 import Lightbox, { type LightboxState } from "./VideoLightbox";
+import { useHideOnScroll } from "@/lib/useHideOnScroll";
 
 type TabId = "all" | GalleryFilter["id"];
 
@@ -159,6 +160,9 @@ export default function WorkGallery() {
     setVisible(PAGE_SIZE);
   };
 
+  // Same signal the header uses, so the two move as one.
+  const chromeHidden = useHideOnScroll();
+
   /** Arrows in the lightbox walk the whole tab, not just what's loaded. */
   const openItem = (item: MediaItem) => {
     setLightbox({ items: items.map(toLightboxItem), index: items.indexOf(item) });
@@ -166,8 +170,15 @@ export default function WorkGallery() {
 
   return (
     <>
-      {/* Sticky filter bar */}
-      <div className="sticky top-[var(--shell-h)] z-20 bg-re-ivory/95 backdrop-blur-sm border-b border-re-stone-light">
+      {/*
+        Sticky filter bar. It parks below the site chrome while that chrome is
+        on screen, then rides up to the very top once the header has slid away,
+        so there's no dead strip between the two.
+      */}
+      <div
+        style={{ top: chromeHidden ? 0 : "var(--shell-h)" }}
+        className="sticky z-20 bg-re-ivory/95 backdrop-blur-sm border-b border-re-stone-light transition-[top] duration-500 ease-out"
+      >
         <div className="mx-auto max-w-7xl px-5 md:px-8">
           <div className="flex gap-2 md:gap-3 overflow-x-auto no-scrollbar py-4">
             {tabs.map((t) => {
