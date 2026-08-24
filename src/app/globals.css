@@ -161,6 +161,45 @@ button, a {
   animation: goldShimmer 2.4s linear infinite;
 }
 
+/* ── Chromatic sweep ────────────────────────────────────────────────────────
+   A band of gold with faint prism edges drifting across a card. Each card
+   sets its own --sweep-angle and --sweep-delay so the light arrives from a
+   different direction rather than three cards flashing in unison. Needs a
+   rounded, overflow-hidden host. */
+
+.gold-sweep { position: relative; overflow: hidden; }
+.gold-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    var(--sweep-angle, 115deg),
+    transparent 38%,
+    rgba(196, 169, 108, 0.14) 44%,
+    rgba(170, 200, 245, 0.18) 47%,
+    rgba(253, 246, 227, 0.42) 50%,
+    rgba(240, 170, 160, 0.18) 53%,
+    rgba(196, 169, 108, 0.14) 56%,
+    transparent 62%
+  );
+  background-size: 300% 300%;
+  animation: goldSweepPass 7s ease-in-out infinite;
+  animation-delay: var(--sweep-delay, 0s);
+}
+
+@keyframes goldSweepPass {
+  0%, 6%    { background-position: 140% 140%; opacity: 0; }
+  22%       { opacity: 1; }
+  72%       { opacity: 1; }
+  94%, 100% { background-position: -40% -40%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gold-sweep::after { animation: none !important; opacity: 0; }
+}
+
 /* Metallic gold text for chips and small labels. */
 .gold-text {
   background: linear-gradient(110deg, #8a7040 0%, #c4a96c 30%, #f7edd0 50%, #c4a96c 70%, #8a7040 100%);

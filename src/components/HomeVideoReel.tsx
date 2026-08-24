@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { mediaByCategory, mediaUrl, toLightboxItem, type MediaItem } from "@/lib/media";
 import Lightbox, { type LightboxState } from "./VideoLightbox";
+import { useCentredCarousel } from "@/lib/useCentredCarousel";
 
 /** Plays only while on screen, so the page doesn't fetch every clip at once. */
 function ReelVideo({ item }: { item: MediaItem }) {
@@ -43,19 +44,26 @@ function ReelVideo({ item }: { item: MediaItem }) {
  */
 export default function HomeVideoReel() {
   // Listing video only. Brand, team and testimonial clips are agency work and
-  // belong with the agency offer, not here.
+  // belong with the agency offer, not here. Room for five across; the row
+  // centres itself, so it stays balanced until a fifth clip is uploaded.
   const items = useMemo(
-    () => mediaByCategory("vertical").filter((i) => i.type === "video").slice(0, 4),
+    () => mediaByCategory("vertical").filter((i) => i.type === "video").slice(0, 5),
     []
   );
 
   const [lightbox, setLightbox] = useState<LightboxState>(null);
 
+  // Opens mid-row on mobile, so there is work to flick to on both sides.
+  const trackRef = useCentredCarousel<HTMLDivElement>(Math.floor(items.length / 2));
+
   if (items.length === 0) return null;
 
   return (
     <>
-      <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto no-scrollbar -mx-5 px-5 pb-2 md:mx-0 md:grid md:grid-cols-4 md:overflow-visible md:px-0 md:pb-0">
+      <div
+        ref={trackRef}
+        className="flex snap-x snap-mandatory gap-3 md:gap-4 overflow-x-auto no-scrollbar -mx-5 px-5 pb-2 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:px-0 md:pb-0"
+      >
         {items.map((item, idx) => (
           <motion.button
             key={item.src}
@@ -66,7 +74,7 @@ export default function HomeVideoReel() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, delay: Math.min(idx * 0.07, 0.4), ease: [0.22, 1, 0.36, 1] }}
             aria-label="Play video"
-            className="group relative aspect-[9/16] w-[72%] shrink-0 snap-center overflow-hidden rounded-2xl bg-re-stone-light sm:w-[46%] md:w-auto"
+            className="group relative aspect-[9/16] w-[72%] shrink-0 snap-center overflow-hidden rounded-2xl bg-re-stone-light sm:w-[46%] md:w-[calc(20%-0.8rem)]"
           >
             <ReelVideo item={item} />
             <span className="pointer-events-none absolute inset-0 flex items-end p-3 md:p-4">

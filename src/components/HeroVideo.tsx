@@ -4,17 +4,40 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { mediaByCategory, mediaUrl } from "@/lib/media";
 
-// First listing video in the manifest — follows wherever the media lives.
-const hero = mediaByCategory("landscape").find((item) => item.type === "video");
-const VIDEO_SRC = hero ? mediaUrl(hero.src) : null;
+/*
+ * Two sources, picked by shape of screen. A phone hero is a tall portrait
+ * box: filling it with the 16:9 listing video throws away most of the frame
+ * and blows the rest up well past its real resolution, which is what made it
+ * look soft. The vertical highlight is already the right shape, so on a phone
+ * it plays close to one-to-one. Wide screens keep the landscape cut.
+ */
+const wide = mediaByCategory("landscape").find((item) => item.type === "video");
+const tall = mediaByCategory("vertical").find((item) => item.type === "video");
+
+const source = (item?: typeof wide) =>
+  item ? { src: mediaUrl(item.src), poster: item.poster ? mediaUrl(item.poster) : undefined } : null;
+
+const WIDE = source(wide);
+const TALL = source(tall);
 const POSTER_SRC = "/media/listings/listing-01.png";
 
 export default function HeroVideo() {
   const [videoReady, setVideoReady] = useState(false);
+  const [portrait, setPortrait] = useState<boolean | null>(null);
 
   useEffect(() => {
     setVideoReady(true);
   }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const apply = () => setPortrait(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  const clip = portrait === null ? null : (portrait ? TALL : WIDE) ?? WIDE;
 
   return (
     <div className="absolute inset-0 overflow-hidden">
@@ -32,10 +55,11 @@ export default function HeroVideo() {
       />
 
       {/* Background video */}
-      {videoReady && VIDEO_SRC && (
+      {videoReady && clip && (
         <video
-          src={VIDEO_SRC}
-          poster={POSTER_SRC}
+          key={clip.src}
+          src={clip.src}
+          poster={clip.poster ?? POSTER_SRC}
           autoPlay
           muted
           loop

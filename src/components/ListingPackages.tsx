@@ -5,6 +5,7 @@ import { CTAButton } from "./ui";
 import { Stagger, StaggerChild } from "./Reveal";
 import TiltCard from "./TiltCard";
 import { LISTING_PACKAGES } from "@/lib/pricing";
+import { useCentredCarousel } from "@/lib/useCentredCarousel";
 
 /**
  * The three listing packages as individual cards. Shared by the home page and
@@ -14,8 +15,17 @@ import { LISTING_PACKAGES } from "@/lib/pricing";
 export default function ListingPackages({ className = "" }: { className?: string }) {
   const [open, setOpen] = useState<string | null>(null);
 
+  // On mobile the row opens on the featured package rather than the cheapest,
+  // so the one most people take is the one they land on.
+  const featuredIndex = Math.max(
+    LISTING_PACKAGES.findIndex((p) => p.featured),
+    0
+  );
+  const trackRef = useCentredCarousel<HTMLDivElement>(featuredIndex);
+
   return (
     <Stagger
+      ref={trackRef}
       className={`flex overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-5 px-5 pb-2 md:pb-0 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible gap-6 md:gap-8 items-stretch md:items-start ${className}`}
       staggerChildren={0.1}
     >

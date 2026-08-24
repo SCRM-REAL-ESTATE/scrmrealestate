@@ -115,6 +115,7 @@ export default function HomePage() {
                 i: "01",
                 href: "/services",
                 cta: "See the packages",
+                sweep: { angle: "115deg", delay: "0s" },
               },
               {
                 t: "Agent content",
@@ -124,6 +125,7 @@ export default function HomePage() {
                 i: "02",
                 href: "/services#agent",
                 cta: "How it works",
+                sweep: { angle: "245deg", delay: "2.4s" },
               },
               {
                 t: "Agency management",
@@ -133,12 +135,19 @@ export default function HomePage() {
                 i: "03",
                 href: "/agencies",
                 cta: "For agencies",
+                sweep: { angle: "20deg", delay: "4.6s" },
               },
             ].map((p) => (
               <StaggerChild key={p.t}>
                 <Link
                   href={p.href}
-                  className="group flex flex-col h-full rounded-[1.75rem] border border-re-stone-light bg-white p-8 md:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-re-blue-accent/40 hover:shadow-[0_24px_60px_rgba(30,98,224,0.12)]"
+                  style={
+                    {
+                      "--sweep-angle": p.sweep.angle,
+                      "--sweep-delay": p.sweep.delay,
+                    } as React.CSSProperties
+                  }
+                  className="gold-sweep group flex flex-col h-full rounded-[1.75rem] border border-re-stone-light bg-white p-8 md:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-re-blue-accent/40 hover:shadow-[0_24px_60px_rgba(30,98,224,0.12)]"
                 >
                   <span className="font-serif gold-text text-2xl">{p.i}</span>
                   <h3 className="mt-5 font-serif text-2xl md:text-3xl text-re-ink">{p.t}</h3>

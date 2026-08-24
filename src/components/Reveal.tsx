@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { ReactNode } from "react";
+import { forwardRef, ReactNode } from "react";
 
 type Direction = "up" | "down" | "left" | "right" | "none";
 
@@ -68,20 +68,22 @@ export function Reveal({
 /**
  * Stagger children. Each direct child should be a `<RevealChild>`.
  */
-export function Stagger({
-  children,
-  delayChildren = 0,
-  staggerChildren = 0.07,
-  className = "",
-}: {
-  children: ReactNode;
-  delayChildren?: number;
-  staggerChildren?: number;
-  className?: string;
-}) {
+export const Stagger = forwardRef<
+  HTMLDivElement,
+  {
+    children: ReactNode;
+    delayChildren?: number;
+    staggerChildren?: number;
+    className?: string;
+  }
+>(function Stagger(
+  { children, delayChildren = 0, staggerChildren = 0.07, className = "" },
+  ref
+) {
   const reduce = useReducedMotion() ?? false;
   return (
     <motion.div
+      ref={ref}
       className={className}
       initial="hidden"
       whileInView="show"
@@ -99,7 +101,7 @@ export function Stagger({
       {children}
     </motion.div>
   );
-}
+});
 
 export function StaggerChild({
   children,
