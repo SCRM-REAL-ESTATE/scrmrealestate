@@ -59,29 +59,47 @@ function Row({
         <p className="text-sm text-re-stone">{hint}</p>
       </div>
       {/* Flex, not grid: a row with only two sets in it stays centred. */}
-      <div className="mt-5 flex flex-wrap justify-center gap-3 md:gap-5">{children}</div>
+      <div className="mt-5 flex flex-wrap justify-center gap-3 md:gap-4">{children}</div>
     </div>
   );
 }
 
-const tileClass =
-  "group relative overflow-hidden rounded-2xl bg-re-stone-light cursor-pointer block transition-shadow duration-500 hover:shadow-[0_20px_50px_rgba(30,98,224,0.16)] w-[calc(33.333%-0.5rem)] md:w-[calc(33.333%-0.834rem)]";
+const tileBase =
+  "group relative overflow-hidden rounded-2xl bg-re-stone-light cursor-pointer block transition-shadow duration-500 hover:shadow-[0_20px_50px_rgba(30,98,224,0.16)]";
+
+const WIDTH = {
+  3: "w-[calc(33.333%-0.5rem)] md:w-[calc(33.333%-0.667rem)]",
+  4: "w-[calc(50%-0.375rem)] sm:w-[calc(25%-0.563rem)] md:w-[calc(25%-0.75rem)]",
+} as const;
 
 /**
  * What an agency actually receives each month, shown rather than described:
- * three videos, three carousel posts you can flick through, three stories.
+ * four agent reels, the carousel posts you can flick through, four stories.
  */
 export default function AgencyShowcase() {
-  const videos = useMemo(
-    () =>
-      [
-        ...mediaByCategory("agency").filter((i) => i.type === "video"),
-        ...mediaByCategory("testimonial").filter((i) => i.type === "video"),
-      ].slice(0, 3),
-    []
-  );
+  // Four agent-led reels, with the Tony interview always among them.
+  const videos = useMemo(() => {
+    const clips = mediaByCategory("agency").filter((i) => i.type === "video");
+    const tony = clips.find((i) => i.src.includes("tony"));
+    const rest = clips.filter((i) => i !== tony);
+    return tony ? [...rest.slice(0, 3), tony] : rest.slice(0, 4);
+  }, []);
+
   const carousels = useMemo(() => mediaSets("carousel").slice(0, 3), []);
-  const stories = useMemo(() => mediaByCategory("detail").slice(0, 3), []);
+
+  /**
+   * Stories run two client testimonials beside two interior detail shots.
+   * `detail/` also holds street-front shots of the house, which belong with
+   * the listing work rather than here, and consecutive frames are often two
+   * angles of the same room, so we skip the exteriors and step through the
+   * rest rather than taking the first few.
+   */
+  const stories = useMemo(() => {
+    const EXTERIORS = ["detail/envesta-2.jpg"];
+    const details = mediaByCategory("detail").filter((i) => !EXTERIORS.includes(i.src));
+    const spaced = details.filter((_, i) => i % 3 === 0).slice(0, 2);
+    return [...mediaByCategory("testimonial").slice(0, 2), ...spaced];
+  }, []);
 
   const [lightbox, setLightbox] = useState<LightboxState>(null);
 
@@ -94,7 +112,7 @@ export default function AgencyShowcase() {
 
   return (
     <>
-      <div className="mx-auto max-w-3xl space-y-14 md:space-y-16">
+      <div className="mx-auto max-w-4xl space-y-14 md:space-y-16">
         {videos.length > 0 && (
           <Row label="Videos" hint="Tap to play with sound">
             {videos.map((item, i) => (
@@ -104,7 +122,7 @@ export default function AgencyShowcase() {
                 {...fade(i)}
                 onClick={() => setLightbox({ items: videos.map(toLightboxItem), index: i })}
                 aria-label="Play video"
-                className={`${tileClass} aspect-[9/16]`}
+                className={`${tileBase} ${WIDTH[4]} aspect-[9/16]`}
               >
                 <TileVideo item={item} />
                 <span className="pointer-events-none absolute inset-0 flex items-end p-3">
@@ -128,7 +146,7 @@ export default function AgencyShowcase() {
                 {...fade(i)}
                 onClick={() => setLightbox({ items: set.items.map(toLightboxItem), index: 0 })}
                 aria-label={`Open carousel, ${set.items.length} slides`}
-                className={`${tileClass} aspect-[4/5]`}
+                className={`${tileBase} ${WIDTH[3]} aspect-[4/5]`}
               >
                 <Image
                   src={mediaUrl(set.cover.src)}
@@ -154,13 +172,13 @@ export default function AgencyShowcase() {
                 {...fade(i)}
                 onClick={() => setLightbox({ items: stories.map(toLightboxItem), index: i })}
                 aria-label="Open story"
-                className={`${tileClass} aspect-[9/16]`}
+                className={`${tileBase} ${WIDTH[4]} aspect-[9/16]`}
               >
                 <Image
                   src={mediaUrl(item.src)}
                   alt={item.alt ?? "Story frame"}
                   fill
-                  sizes="(min-width: 768px) 30vw, 33vw"
+                  sizes="(min-width: 768px) 22vw, 50vw"
                   className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
                 />
               </motion.button>
