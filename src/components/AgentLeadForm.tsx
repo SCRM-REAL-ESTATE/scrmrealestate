@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
 /**
- * Short form for the agents landing page — ad traffic doesn't fill in the long
- * one. It writes to the same contact_submissions table as the contact page,
- * tagged so Signature enquiries are obvious in the dashboard.
+ * Short form for the agents landing page: ad traffic doesn't fill in the long
+ * one. It posts to the same /api/contact route as the contact page, tagged so
+ * Signature enquiries are obvious in the inbox.
  */
 export default function AgentLeadForm() {
   const [status, setStatus] = useState<Status>("idle");
@@ -22,6 +21,7 @@ export default function AgentLeadForm() {
     const fd = new FormData(e.currentTarget);
     const listing = String(fd.get("listing") || "").trim();
     const payload = {
+      website: String(fd.get("website") || ""),
       name: String(fd.get("name") || "").trim(),
       email: String(fd.get("email") || "").trim(),
       phone: String(fd.get("phone") || "").trim(),
@@ -39,18 +39,23 @@ export default function AgentLeadForm() {
     }
 
     try {
-      if (isSupabaseConfigured && supabase) {
-        const { error } = await supabase.from("contact_submissions").insert([payload]);
-        if (error) throw error;
-      } else {
-        console.warn("Supabase not configured. Submission preview:", payload);
-        await new Promise((r) => setTimeout(r, 600));
-      }
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      // An ad lead that quietly goes nowhere is the worst outcome here.
+      if (!res.ok) throw new Error(data?.error || "Request failed");
       setStatus("success");
     } catch (err) {
       console.error(err);
       setStatus("error");
-      setErrorMsg("That didn't send. Try again, or call us on 0490 036 289.");
+      setErrorMsg(
+        err instanceof Error && err.message !== "Request failed"
+          ? err.message
+          : "That didn't send. Try again, or call us on 0490 036 289."
+      );
     }
   };
 
@@ -113,6 +118,15 @@ export default function AgentLeadForm() {
           placeholder="Suburb, or the address if you have it"
         />
       </div>
+
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+        className="hidden"
+      />
 
       {status === "error" && errorMsg && (
         <p className="rounded-2xl border border-white/30 bg-white/15 px-4 py-3 text-sm text-white">

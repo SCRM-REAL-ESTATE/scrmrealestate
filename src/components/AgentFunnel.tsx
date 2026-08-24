@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { LISTING_PACKAGES } from "@/lib/pricing";
 
 const SIGNATURE = LISTING_PACKAGES.find((p) => p.name === "Signature") ?? LISTING_PACKAGES[1];
@@ -46,6 +45,7 @@ export default function AgentFunnel() {
 
     const fd = new FormData(e.currentTarget);
     const payload = {
+      website: String(fd.get("website") || ""),
       name: String(fd.get("name") || "").trim(),
       email: String(fd.get("email") || "").trim(),
       phone: String(fd.get("phone") || "").trim(),
@@ -67,18 +67,23 @@ export default function AgentFunnel() {
     }
 
     try {
-      if (isSupabaseConfigured && supabase) {
-        const { error } = await supabase.from("contact_submissions").insert([payload]);
-        if (error) throw error;
-      } else {
-        console.warn("Supabase not configured. Submission preview:", payload);
-        await new Promise((r) => setTimeout(r, 600));
-      }
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      // An ad lead that quietly goes nowhere is the worst outcome here.
+      if (!res.ok) throw new Error(data?.error || "Request failed");
       setDone(true);
     } catch (err) {
       console.error(err);
       setStatus("error");
-      setErrorMsg("That didn't send. Try again, or call us on 0490 036 289.");
+      setErrorMsg(
+        err instanceof Error && err.message !== "Request failed"
+          ? err.message
+          : "That didn't send. Try again, or call us on 0490 036 289."
+      );
     }
   };
 
@@ -221,6 +226,14 @@ export default function AgentFunnel() {
                 <input name="email" type="email" required placeholder="Email *" className={inputCls} />
               </div>
               <input name="agency" type="text" placeholder="Agency" className={inputCls} />
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden
+                className="hidden"
+              />
             </div>
 
             {status === "error" && errorMsg && (
