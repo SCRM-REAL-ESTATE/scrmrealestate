@@ -24,6 +24,7 @@ export const SITE = {
   phone: "0490 036 289",
   phoneIntl: "+61490036289",
   whatsappIntl: "61490036289",
+  /** Also the default inbox for contact form enquiries (see api/contact). */
   email: "sales@scrmmedia.com.au",
   automotiveUrl: "https://scrmmedia.com.au",
   socials: {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { Eyebrow } from "@/components/ui";
 
 /** Mirrors what is actually sold: the three listing packages, the two
@@ -41,6 +40,7 @@ export default function ContactForm() {
       phone: String(fd.get("phone") || "").trim(),
       agency: String(fd.get("agency") || "").trim(),
       message: String(fd.get("message") || "").trim(),
+      website: String(fd.get("website") || ""),
       services,
     };
 
@@ -51,20 +51,25 @@ export default function ContactForm() {
     }
 
     try {
-      if (isSupabaseConfigured && supabase) {
-        const { error } = await supabase.from("contact_submissions").insert([payload]);
-        if (error) throw error;
-      } else {
-        // Fallback: log payload locally during local dev when Supabase isn't configured
-        console.warn("Supabase not configured. Submission preview:", payload);
-        await new Promise((r) => setTimeout(r, 600));
-      }
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      // Never report success on a request that failed: an enquiry that
+      // quietly goes nowhere is worse than one that asks to be resent.
+      if (!res.ok) throw new Error(data?.error || "Request failed");
+
       setStatus("success");
     } catch (err) {
       console.error(err);
       setStatus("error");
       setErrorMsg(
-        "Something went wrong sending your message. Please try again, or email us directly."
+        err instanceof Error && err.message !== "Request failed"
+          ? err.message
+          : "Something went wrong sending your message. Please try again, or email us directly."
       );
     }
   };
@@ -94,6 +99,16 @@ export default function ContactForm() {
           Send us a message.
         </h2>
       </div>
+
+      {/* Spam trap. Off-screen and skipped by keyboard and screen readers. */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] h-px w-px opacity-0"
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
