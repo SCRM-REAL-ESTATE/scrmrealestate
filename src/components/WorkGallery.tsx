@@ -23,6 +23,13 @@ type TabId = "all" | GalleryFilter["id"];
 /** Tiles rendered before the "Load more" button appears. */
 const PAGE_SIZE = 28;
 
+/** One column of the four-across grid, matching the gap either side of it. */
+const COLUMN_WIDTH =
+  "w-[calc(50%-0.375rem)] md:w-[calc(33.333%-0.667rem)] lg:w-[calc(25%-0.75rem)]";
+
+/** Below this a tab cannot fill the columns, so it is centred instead. */
+const SPARSE_LIMIT = 8;
+
 /**
  * Grid videos play only while on screen — a large library would otherwise
  * download every clip at once the moment the page loads.
@@ -163,6 +170,8 @@ export default function WorkGallery() {
   // Same signal the header uses, so the two move as one.
   const chromeHidden = useHideOnScroll();
 
+  const sparse = shown.length < SPARSE_LIMIT;
+
   /** Arrows in the lightbox walk the whole tab, not just what's loaded. */
   const openItem = (item: MediaItem) => {
     setLightbox({ items: items.map(toLightboxItem), index: items.indexOf(item) });
@@ -205,20 +214,35 @@ export default function WorkGallery() {
         <div className="mx-auto max-w-7xl px-5 md:px-8">
           {isGrouped ? (
             /* One tile per post/ad — click steps through its files in order */
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 items-start">
+            <div className={`flex flex-wrap justify-center gap-3 md:gap-4 items-start`}>
               <AnimatePresence mode="popLayout">
                 {sets.map((set, idx) => (
-                  <Tile
-                    key={set.key}
-                    item={set.cover}
-                    index={idx}
-                    badge={
-                      set.items.length > 1
-                        ? `${set.items.length} ${active === "ads" ? "versions" : "slides"}`
-                        : undefined
-                    }
-                    onOpen={() => setLightbox({ items: set.items.map(toLightboxItem), index: 0 })}
-                  />
+                  <div key={set.key} className={COLUMN_WIDTH}>
+                    <Tile
+                      item={set.cover}
+                      index={idx}
+                      badge={
+                        set.items.length > 1
+                          ? `${set.items.length} ${active === "ads" ? "versions" : "slides"}`
+                          : undefined
+                      }
+                      onOpen={() => setLightbox({ items: set.items.map(toLightboxItem), index: 0 })}
+                    />
+                  </div>
+                ))}
+              </AnimatePresence>
+            </div>
+          ) : sparse ? (
+            /*
+              Too few tiles to fill the columns. Masonry would pack them to the
+              left and leave the last column empty, so lay them out centred.
+            */
+            <div className="flex flex-wrap justify-center gap-3 md:gap-4 items-start">
+              <AnimatePresence mode="popLayout">
+                {shown.map((item, idx) => (
+                  <div key={item.src} className={COLUMN_WIDTH}>
+                    <Tile item={item} index={idx} onOpen={() => openItem(item)} />
+                  </div>
                 ))}
               </AnimatePresence>
             </div>

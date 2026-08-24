@@ -20,10 +20,12 @@ export default function HomePage() {
             <div className="max-w-3xl">
               <span className="label-eyebrow !text-white/85">SCRM Media · Real Estate</span>
               <h1 className="mt-4 h-display text-5xl md:text-7xl text-white">
-                Premium content systems for real estate.
+                Photography, video and social media for real estate.
               </h1>
               <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
-                Listing media, agent videos and full social management. Filmed, edited and delivered for you.
+                We shoot your listings, put your agents on camera, and run your
+                agency&apos;s social media. Listing packages from $349. Agent videos
+                $800 a month. Full management from $1,800.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <CTAButton href="/contact">Book a strategy call</CTAButton>
@@ -50,17 +52,17 @@ export default function HomePage() {
         <div className="flex animate-[marquee_38s_linear_infinite] py-4 whitespace-nowrap label-eyebrow !text-white">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="flex items-center gap-10 px-5 shrink-0">
-              <span>Boutique Agencies</span>
+              <span>Listing Photography</span>
               <span className="text-re-gold-thin">◆</span>
-              <span>Top-Performing Agents</span>
+              <span>Branded Floor Plans</span>
               <span className="text-re-gold-thin">◆</span>
-              <span>Property Developers</span>
+              <span>Listing Video</span>
               <span className="text-re-gold-thin">◆</span>
-              <span>Premium Listings</span>
+              <span>Agent Videos</span>
               <span className="text-re-gold-thin">◆</span>
-              <span>Editorial Content</span>
+              <span>Carousels &amp; Stories</span>
               <span className="text-re-gold-thin">◆</span>
-              <span>Australia-Wide</span>
+              <span>Delivered Next Business Day</span>
               <span className="text-re-gold-thin">◆</span>
             </div>
           ))}

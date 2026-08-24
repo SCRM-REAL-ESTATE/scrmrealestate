@@ -25,6 +25,7 @@ export default function Logo({
           width={3120}
           height={1779}
           priority
+          sizes="220px"
           className="h-12 md:h-14 w-auto"
         />
       </Link>
@@ -44,6 +45,7 @@ export default function Logo({
         width={2726}
         height={1245}
         priority
+        sizes="200px"
         className="h-10 md:h-11 w-auto"
       />
     </Link>
