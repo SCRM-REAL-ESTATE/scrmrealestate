@@ -43,7 +43,7 @@ const faqs = [
   },
   {
     q: "What if I want more than one video a month?",
-    a: "Listing media covers you on the properties you're already shooting. If you want a run of videos regardless of stock, we film four pieces to camera in one sitting each month for $800, separate from listing media.",
+    a: "Signature covers you on the properties you're already shooting. If you want videos that don't depend on stock, we film four a month about you rather than a property, plan the month around them and post them for you. That's $800 a month, separate from listing media.",
   },
 ];
 
@@ -421,8 +421,8 @@ export default function AgentsPage() {
               </ul>
 
               <p className="mt-10 border-t border-white/20 pt-6 text-sm text-white/70">
-                Want videos every month regardless of what you've got listed? We film four pieces to
-                camera in one sitting for $800 a month.{" "}
+                Want videos that don't depend on having stock? We film four a month about you rather
+                than a property, and post them for you, for $800 a month.{" "}
                 <Link href="/services#agent" className="underline decoration-white/40 underline-offset-4 hover:decoration-white">
                   See how that works
                 </Link>

@@ -36,7 +36,7 @@ export const LISTING_PACKAGES: ListingPackage[] = [
       "18 professionally edited DSLR photos",
       "2D colour floor plan with your agency branding",
       "Landscape listing video",
-      "Vertical agent-led video. You on camera, branded to you, cut for Reels and TikTok",
+      "Vertical agent-led video at the property. You on camera, branded to you, cut for Reels and TikTok",
       "Branded and unbranded exports, portal-ready",
     ],
     note: "The listing sells the property. The agent video sells you.",
@@ -60,22 +60,27 @@ export const LISTING_PACKAGES: ListingPackage[] = [
 ];
 
 /**
- * Agent monthly content — sold to individual agents, separate from agency
- * media management. Deliberately not framed as a management package.
+ * Agent monthly content, sold to the individual agent rather than the agency.
+ * None of the four videos is about a property, which is the whole line between
+ * this and the agent video inside a Signature listing. Copy anywhere this is
+ * sold has to hold that line or the two read as the same thing twice.
  */
 export const AGENT_CONTENT = {
   name: "Everything But The House",
   price: "$800",
   priceSub: "per month",
-  headline: "Four videos a month. One hour of your time.",
+  headline: "Four videos about you. No listing required.",
   pitch:
-    "Your listings sell the property. These sell you. Once a month we sit you down and film four pieces to camera, so when a vendor looks you up before they call, they find someone worth calling.",
+    "Listing content only exists while you have stock. This doesn't. Four pieces to camera about who you are, how you work and what you know about your area, planned and posted for you.",
   includes: [
-    "Four pieces to camera every month",
-    "The questions vendors actually ask",
-    "We plan, film, edit and post them for you",
+    "Four agent-led videos a month, none of them about a property",
+    "A content plan for the month, so the four have a point",
+    "We film, edit, caption and post them for you",
     "You turn up for an hour",
   ],
+  /** Answers "isn't this the Signature agent video again?" wherever it's sold. */
+  vsListing:
+    "Signature puts you on camera at the property. This puts you on camera when you haven't got one.",
 };
 
 export type AddOn = {

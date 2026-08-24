@@ -44,6 +44,14 @@ export default function AgentContentCard({ dark = false }: { dark?: boolean }) {
         ))}
       </ul>
 
+      <p
+        className={`mt-7 border-t pt-6 font-serif text-lg leading-snug ${
+          dark ? "border-white/20 text-white" : "border-re-stone-light text-re-ink"
+        }`}
+      >
+        {AGENT_CONTENT.vsListing}
+      </p>
+
       <div className="mt-7 flex justify-center">
         <CTAButton href="/contact" variant={dark ? "outline-light" : "solid"}>
           Book a filming day

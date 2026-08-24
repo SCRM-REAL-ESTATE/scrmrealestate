@@ -123,7 +123,7 @@ export default function HomePage() {
                 t: "Agent content",
                 price: "$800",
                 priceSub: "per month",
-                d: "Four videos a month that sell you, not the house. One hour of your time.",
+                d: "Four videos a month about you, not a property. Planned, filmed and posted for you.",
                 i: "02",
                 href: "/services#agent",
                 cta: "How it works",
