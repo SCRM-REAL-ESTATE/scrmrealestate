@@ -18,9 +18,6 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-4">
             <Logo variant="light" />
-            <p className="mt-6 text-sm text-white/65 leading-relaxed max-w-sm">
-              Premium content systems for real estate agencies, top-performing agents, and boutique developers across Australia.
-            </p>
             <div className="mt-6 flex items-center gap-3">
               <a
                 href={SITE.socials.instagram}
