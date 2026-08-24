@@ -20,12 +20,11 @@ export default function HomePage() {
             <div className="max-w-3xl">
               <span className="label-eyebrow !text-white/85">SCRM Media · Real Estate</span>
               <h1 className="mt-4 h-display text-5xl md:text-7xl text-white">
-                Photography, video and social media for real estate.
+                Every listing, shot properly.
               </h1>
               <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
                 We shoot your listings, put your agents on camera, and run your
-                agency&apos;s social media. Listing packages from $349. Agent videos
-                $800 a month. Full management from $1,800.
+                agency&apos;s social media.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <CTAButton href="/contact">Book a strategy call</CTAButton>
