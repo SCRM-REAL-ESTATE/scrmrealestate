@@ -130,7 +130,7 @@ export const AGENT_CONTENT = {
     "Four agent-led videos a month, none of them about a property",
     "A content plan for the month, so the four have a point",
     "We film, edit, caption and post them for you",
-    "You turn up for an hour",
+    "You turn up for an hour and a half",
   ],
   /** Answers "isn't this the Signature agent video again?" wherever it's sold. */
   vsListing:
@@ -148,11 +148,44 @@ export const ADD_ONS: AddOn[] = [
   { name: "Twilight & dusk images", price: "$40" },
   { name: "3D virtual tour", price: "$179" },
   { name: "Aerial photography", price: "$149", detail: "Listing & Signature. Included in Premiere" },
-  { name: "Virtual staging", price: "$45", detail: "per image" },
+  { name: "Virtual staging", price: "$200", detail: "5 virtually staged rooms" },
+  { name: "Listing video", price: "$200", detail: "Listing video built from your photos" },
+  { name: "Vacant property pack", price: "$349", detail: "5 staged rooms and a listing video. Individually $400" },
   { name: "Open home video", price: "$129" },
   { name: "Express floor plan", price: "$40", detail: "6 hours" },
   { name: "Extra images", price: "$49", detail: "per 5" },
 ];
+
+/**
+ * Vacant property. Sold alongside a listing package rather than instead of
+ * one, so it has its own section on Services and is offered again next to
+ * the packages.
+ */
+export const VACANT_PROPERTY = {
+  heading: "Vacant property",
+  intro:
+    "An empty house makes a poor listing video. We stage the rooms that need it and build the video from your photos.",
+  options: [
+    {
+      name: "Virtual staging",
+      price: "$200",
+      includes: ["5 virtually staged rooms"],
+    },
+    {
+      name: "Listing video",
+      price: "$200",
+      includes: ["Listing video built from your photos"],
+    },
+    {
+      name: "Vacant property pack",
+      price: "$349",
+      includes: ["5 virtually staged rooms", "Listing video built from your photos"],
+      note: "Individually $400",
+      featured: true,
+    },
+  ],
+  smallPrint: "All virtually staged images and video are labelled as virtually staged.",
+};
 
 /** Cheapest add-on, quoted on the package cards. */
 export const ADD_ONS_FROM = "$40";

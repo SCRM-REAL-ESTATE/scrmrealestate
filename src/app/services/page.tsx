@@ -7,7 +7,8 @@ import FAQAccordion from "@/components/FAQAccordion";
 import AddOnsPanel from "@/components/AddOnsPanel";
 import ListingPackages from "@/components/ListingPackages";
 import AgentContentCard from "@/components/AgentContentCard";
-import { ADD_ONS_FROM } from "@/lib/pricing";
+import PairsWellWith from "@/components/PairsWellWith";
+import { ADD_ONS_FROM, VACANT_PROPERTY } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -107,6 +108,79 @@ export default function ServicesPage() {
           </Reveal>
 
           <ListingPackages />
+          <PairsWellWith />
+        </Container>
+      </Section>
+
+      {/* VACANT PROPERTY */}
+      <Section id="vacant-property">
+        <Container>
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>{VACANT_PROPERTY.heading}</H2>
+              <p className="mt-6 text-lg text-re-stone leading-relaxed">
+                {VACANT_PROPERTY.intro}
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="mt-14 flex flex-wrap justify-center gap-5 md:gap-6 items-stretch">
+            {VACANT_PROPERTY.options.map((option, i) => (
+              <Reveal
+                key={option.name}
+                delay={0.08 * i}
+                className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
+              >
+                <div
+                  className={`flex h-full flex-col rounded-[1.75rem] border p-8 md:p-9 transition-shadow duration-500 ${
+                    option.featured
+                      ? "gold-ring blue-fade text-white border-re-blue hover:shadow-[0_30px_70px_rgba(30,98,224,0.35)]"
+                      : "bg-white border-re-stone-light hover:shadow-[0_24px_60px_rgba(30,98,224,0.12)]"
+                  }`}
+                >
+                  <p className={`label-eyebrow ${option.featured ? "!text-white/85" : ""}`}>
+                    {option.name}
+                  </p>
+                  <p className={`mt-3 font-serif text-5xl ${option.featured ? "text-white" : "text-re-ink"}`}>
+                    {option.price}
+                  </p>
+
+                  <ul
+                    className={`mt-6 space-y-3 text-sm ${option.featured ? "text-white/90" : "text-re-ink"}`}
+                  >
+                    {option.includes.map((line) => (
+                      <li key={line} className="flex gap-3">
+                        <span
+                          className={`mt-2 h-1 w-3 shrink-0 rounded-full ${
+                            option.featured ? "bg-white/60" : "bg-re-blue-accent"
+                          }`}
+                        />
+                        <span className="leading-relaxed">{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto pt-7">
+                    {option.note && (
+                      <p className={`mb-5 text-sm ${option.featured ? "text-white/85" : "text-re-stone"}`}>
+                        {option.note}
+                      </p>
+                    )}
+                    <CTAButton href="/contact" variant={option.featured ? "white" : "solid"}>
+                      Enquire now
+                    </CTAButton>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal delay={0.2}>
+            <p className="mt-10 text-center text-sm text-re-stone">
+              {VACANT_PROPERTY.smallPrint}
+            </p>
+          </Reveal>
         </Container>
       </Section>
 

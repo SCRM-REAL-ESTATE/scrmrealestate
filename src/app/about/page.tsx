@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
+import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "SCRM Media Real Estate is a specialist content and marketing studio for premium agencies, agents, and developers across Australia.",
+    "SCRM Media Real Estate is the property side of SCRM Media, an Australian content and marketing studio.",
 };
 
 export default function AboutPage() {
@@ -18,7 +18,7 @@ export default function AboutPage() {
         <div className="absolute inset-0">
           <Image
             src="/media/listings/listing-04.png"
-            alt="Editorial real estate brand"
+            alt="Listing media"
             fill
             priority
             sizes="100vw"
@@ -30,54 +30,54 @@ export default function AboutPage() {
           <Reveal>
             <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
             <h1 className=" h-display text-5xl md:text-6xl text-white max-w-3xl">
-              A specialist content studio for premium real estate.
+              Built for real estate.
             </h1>
           </Reveal>
         </Container>
       </div>
       </section>
 
-      {/* INTRO */}
+      {/* WHO WE ARE */}
       <Section>
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
             <Reveal direction="left" className="md:col-span-5">
-              <H2 rule>Built only for real estate.</H2>
+              <H2 rule>Who we are</H2>
             </Reveal>
             <Reveal direction="right" className="md:col-span-7 space-y-5 text-lg text-re-stone leading-relaxed" delay={0.1}>
               <p>
-                SCRM Media Real Estate is the real estate division of SCRM Media, an Australian content and marketing studio working specifically with real estate agencies, top-performing agents, and boutique developers.
+                SCRM Media Real Estate is the property side of SCRM Media, an Australian content and marketing studio.
               </p>
               <p>
-                We are not a generalist agency that "also does real estate." Every system, every workflow, and every piece of creative we produce is built around how property actually sells: trust before the call, presentation before the listing, and consistency before the campaign.
+                We produce listing media, agent video and social content for agencies and agents. Everything is produced in house. Planning, filming, editing and delivery are handled by the same people, so the work stays consistent.
               </p>
             </Reveal>
           </div>
         </Container>
       </Section>
 
-      {/* PRINCIPLES */}
+      {/* WHAT WE DO */}
       <Section panel="white">
         <Container>
           <Reveal>
             <div className="max-w-2xl">
-              <H2 rule>Three principles guide every account we run.</H2>
+              <H2 rule>What we do</H2>
             </div>
           </Reveal>
 
           <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6" staggerChildren={0.1}>
             {[
               {
-                t: "Systems beat sprints",
-                d: "One brilliant video can't carry a brand. A consistent monthly system, properly planned and produced, will outperform random posting every time.",
+                t: "Listing media",
+                d: "Photography, floor plans and video in every package. Shot on professional camera and branded to your agency.",
               },
               {
-                t: "Trust is earned visually",
-                d: "Sellers, buyers, landlords and investors decide who to call long before they call. Listing photography, agent presence, and editorial restraint do that quiet, important work.",
+                t: "Agent video",
+                d: "Vertical video that puts the agent on camera, plus the social assets that go with a campaign. Branded to the agent, not just the agency.",
               },
               {
-                t: "Specialists, not generalists",
-                d: "Real estate has its own pace, language, compliance, and audience. A studio focused only on real estate compounds that knowledge into every asset we produce.",
+                t: "Social management",
+                d: "Content planned monthly, filmed on site, scheduled and posted. You turn up for the shoot and we handle the rest.",
               },
             ].map((p, i) => (
               <StaggerChild key={p.t} className="rounded-[1.75rem] border border-re-stone-light bg-re-ivory p-8 md:p-10 transition-all duration-500 hover:bg-white hover:shadow-[0_24px_60px_rgba(30,98,224,0.1)]">
@@ -98,7 +98,7 @@ export default function AboutPage() {
               <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-re-stone-light group">
                 <Image
                   src="/media/listings/listing-08.png"
-                  alt="SCRM Media production"
+                  alt="Filming on site"
                   fill
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
@@ -106,16 +106,16 @@ export default function AboutPage() {
               </div>
             </Reveal>
             <Reveal direction="right" className="md:col-span-6" delay={0.1}>
-              <H2 rule>A small senior team. End-to-end production.</H2>
+              <H2 rule>One team, start to finish.</H2>
               <p className="mt-5 text-re-stone leading-relaxed">
-                Strategy, planning, filming, editing, scheduling and listing media, all handled by a tight senior team rather than handed off through a chain of juniors. That's how we keep voice consistent and turnaround fast.
+                Planning, filming, editing, scheduling and listing media all handled in house. Nothing gets handed down a chain, which is why the look stays consistent across everything we make for you.
               </p>
               <ul className="mt-6 space-y-3 text-re-ink">
                 {[
-                  "Direct relationships with agents and principals",
-                  "Monthly content batched on-site",
-                  "Listing media planned around release schedule",
-                  "Editorial-grade output, not template content",
+                  "Direct contact with the people doing the work",
+                  "Content batched on site, not shot piecemeal",
+                  "Listing media planned around your campaign dates",
+                  "Everything branded to you, ready to post",
                 ].map((line) => (
                   <li key={line} className="flex gap-3">
                     <span className="mt-2 h-1 w-3 rounded-full bg-re-blue-accent shrink-0" />
@@ -128,22 +128,22 @@ export default function AboutPage() {
         </Container>
       </Section>
 
-      {/* CTA */}
+      {/* CLOSE */}
       <Section panel="blue">
         <Container>
           <Reveal>
             <div className="max-w-3xl">
               <span aria-hidden className="gold-chrome-bg mb-5 block h-[3px] w-12 rounded-full" />
               <H2 light>
-                The right partner if your brand should look better than it currently does.
+                Let&apos;s talk about your listings.
               </H2>
               <p className="mt-5 text-white/85 text-lg max-w-2xl">
-                We don't onboard everyone. We work best with agencies that take their reputation seriously and want a real partner. Tell us about your goals.
+                Tell us what you&apos;re running and we&apos;ll show you what it would look like.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
-                <CTAButton href="/contact" variant="white">Book a strategy call</CTAButton>
-                <CTAButton href="/work" variant="outline-light">
-                  See our work
+                <CTAButton href="/services" variant="white">See packages</CTAButton>
+                <CTAButton href="/contact" variant="outline-light">
+                  Get in touch
                 </CTAButton>
               </div>
             </div>
