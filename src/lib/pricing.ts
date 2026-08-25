@@ -99,7 +99,6 @@ export const ADD_ONS: AddOn[] = [
   { name: "Twilight & dusk images", price: "$40" },
   { name: "3D virtual tour", price: "$179" },
   { name: "Aerial photography", price: "$149", detail: "Listing & Signature. Included in Premiere" },
-  { name: "Virtual staging", price: "$45", detail: "per image" },
   { name: "Virtual staging", price: "$200", detail: "5 virtually staged rooms" },
   { name: "Listing video", price: "$200", detail: "Listing video built from your photos" },
   { name: "Vacant property pack", price: "$349", detail: "5 staged rooms and a listing video. Individually $400" },
