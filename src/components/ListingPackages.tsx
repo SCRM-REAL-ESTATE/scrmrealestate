@@ -3,7 +3,7 @@
 import { CTAButton } from "./ui";
 import { Stagger, StaggerChild } from "./Reveal";
 import TiltCard from "./TiltCard";
-import { LISTING_PACKAGES } from "@/lib/pricing";
+import { LISTING_PACKAGES, type ListingPackage } from "@/lib/pricing";
 import { useCentredCarousel } from "@/lib/useCentredCarousel";
 
 /**
@@ -12,11 +12,18 @@ import { useCentredCarousel } from "@/lib/useCentredCarousel";
  * face of the card: the tiers only make sense next to each other, and a toggle
  * meant nobody compared them.
  */
-export default function ListingPackages({ className = "" }: { className?: string }) {
+export default function ListingPackages({
+  className = "",
+  packages = LISTING_PACKAGES,
+}: {
+  className?: string;
+  /** Commercial passes its own two tiers; residential takes the default three. */
+  packages?: ListingPackage[];
+}) {
   // On mobile the row opens on the featured package rather than the cheapest,
   // so the one most people take is the one they land on.
   const featuredIndex = Math.max(
-    LISTING_PACKAGES.findIndex((p) => p.featured),
+    packages.findIndex((p) => p.featured),
     0
   );
   const trackRef = useCentredCarousel<HTMLDivElement>(featuredIndex);
@@ -24,10 +31,10 @@ export default function ListingPackages({ className = "" }: { className?: string
   return (
     <Stagger
       ref={trackRef}
-      className={`flex overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-5 px-5 pb-2 md:pb-0 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible gap-6 md:gap-8 items-stretch md:items-start ${className}`}
+      className={`flex overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-5 px-5 pb-2 md:pb-0 md:mx-0 md:px-0 ${packages.length === 2 ? "md:grid md:grid-cols-2" : "md:grid md:grid-cols-3"} md:overflow-visible gap-6 md:gap-8 items-stretch md:items-start ${className}`}
       staggerChildren={0.1}
     >
-      {LISTING_PACKAGES.map((pkg) => {
+      {packages.map((pkg) => {
         return (
           <StaggerChild key={pkg.name} className="snap-center shrink-0 w-[86%] sm:w-[64%] md:w-auto">
             <TiltCard

@@ -65,6 +65,55 @@ export const LISTING_PACKAGES: ListingPackage[] = [
 ];
 
 /**
+ * Commercial campaigns. Office and warehouse at a normal campaign scale is most
+ * of the work, so those get a published price the way residential does; a full
+ * project is quoted instead. Priced $50 over the residential equivalents, and
+ * aerial is in the top tier because commercial sells on site context.
+ */
+export const COMMERCIAL_PACKAGES: ListingPackage[] = [
+  {
+    name: "Asset",
+    price: "$399",
+    products: "3 products included",
+    turnaround: "Next business day",
+    includes: [
+      "15 professionally edited DSLR photos",
+      "2D floor plan with your agency branding",
+      "Landscape property video",
+      "Branded and unbranded exports, portal and IM ready",
+    ],
+    note: "Enough to take an asset to market.",
+    step: "The three things a campaign can't launch without.",
+  },
+  {
+    name: "Campaign",
+    price: "$549",
+    products: "5 products included",
+    turnaround: "Next business day",
+    includes: [
+      "18 professionally edited DSLR photos",
+      "2D floor plan with your agency branding",
+      "Landscape property video",
+      "Vertical agent-led video at the asset, cut for LinkedIn",
+      "Aerial photography and footage",
+      "Branded and unbranded exports, portal and IM ready",
+    ],
+    note: "The campaign sells the asset. The agent video sells you.",
+    step: "Everything in Asset, plus aerial for site context and a piece to camera from you.",
+    featured: true,
+  },
+];
+
+/** Cheapest published commercial package, quoted in summary lines. */
+export const COMMERCIAL_FROM = "$399";
+
+/**
+ * Add-ons offered against a commercial campaign. Twilight is a residential
+ * product and doesn't belong on an industrial estate, so it isn't offered here.
+ */
+export const COMMERCIAL_ADD_ONS_EXCLUDED = ["Twilight & dusk images"];
+
+/**
  * Agent monthly content, sold to the individual agent rather than the agency.
  * None of the four videos is about a property, which is the whole line between
  * this and the agent video inside a Signature listing. Copy anywhere this is
