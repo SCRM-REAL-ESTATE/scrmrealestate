@@ -13,7 +13,7 @@ import { ADD_ONS_FROM, VACANT_PROPERTY } from "@/lib/pricing";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Listing packages from $349 with photos, floor plan and video, agent content at $800 a month, and monthly social media management from $1,800, built specifically for real estate.",
+    "Listing packages from $349 with photos, floor plan and video, agent content from $800 a month, and monthly social media management from $1,800, built specifically for real estate.",
 };
 
 const faqs = [
@@ -26,7 +26,7 @@ const faqs = [
     a: "No long-term lock-ins. We work to a quarterly cadence so the system has time to compound, but you're not locked into multi-year contracts.",
   },
   {
-    q: "I already get an agent video with Signature. Why pay $800 a month?",
+    q: "I already get an agent video with Signature. Why pay from $800 a month?",
     a: "They do different jobs. The Signature video is shot at the property and sells that listing. None of the four monthly videos is about a property: who you are, how you work, what you know about your area. Listing content only exists while you have stock, so it stops the month you go quiet. The monthly four run either way, and we plan and post them for you.",
   },
   {

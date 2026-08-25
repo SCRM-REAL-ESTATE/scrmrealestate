@@ -116,7 +116,7 @@ export const COMMERCIAL_FROM = "$399";
 export const AGENT_CONTENT = {
   name: "Everything But The House",
   price: "$800",
-  priceSub: "per month",
+  priceSub: "from, per month",
   headline: "Four videos about you. No listing required.",
   pitch:
     "Listing content only exists while you have stock. This doesn't. Four pieces to camera about who you are, how you work and what you know about your area, planned and posted for you.",
