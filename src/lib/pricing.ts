@@ -81,7 +81,7 @@ export const AGENT_CONTENT = {
     "Four agent-led videos a month, none of them about a property",
     "A content plan for the month, so the four have a point",
     "We film, edit, caption and post them for you",
-    "You turn up for an hour",
+    "You turn up for an hour and a half",
   ],
   /** Answers "isn't this the Signature agent video again?" wherever it's sold. */
   vsListing:

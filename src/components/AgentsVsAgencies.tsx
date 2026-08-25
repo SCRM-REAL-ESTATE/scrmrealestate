@@ -28,7 +28,7 @@ export default function AgentsVsAgencies() {
       title: "For agents",
       price: AGENT_CONTENT.price,
       priceSub: "per month",
-      body: "Four videos a month about you, not a property. We plan them, film them and post them. You turn up for an hour.",
+      body: "Four videos a month about you, not a property. We plan them, film them and post them. You turn up for an hour and a half.",
       href: "/services#agent",
       cta: "See agent content",
       dark: true,
