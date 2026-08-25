@@ -4,7 +4,7 @@ import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import FAQAccordion from "@/components/FAQAccordion";
 import ListingPackages from "@/components/ListingPackages";
-import { ADD_ONS, COMMERCIAL_ADD_ONS_EXCLUDED, COMMERCIAL_FROM, COMMERCIAL_PACKAGES, LISTING_PACKAGES } from "@/lib/pricing";
+import { COMMERCIAL_ADD_ONS, COMMERCIAL_FROM, COMMERCIAL_PACKAGES, LISTING_PACKAGES } from "@/lib/pricing";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -15,12 +15,6 @@ export const metadata: Metadata = {
 };
 
 const ENTRY_PRICE = LISTING_PACKAGES[0].price;
-
-/* Twilight is a residential product and isn't offered against an industrial
-   estate, so it never reaches this page. */
-const COMMERCIAL_ADD_ONS = ADD_ONS.filter(
-  (a) => !COMMERCIAL_ADD_ONS_EXCLUDED.includes(a.name)
-);
 
 /* Deliberately no photography on this page yet. Every frame in the library is
    residential, and a warehouse campaign sold with apartment interiors argues
@@ -345,7 +339,12 @@ export default function CommercialPage() {
                   <ul className="mt-5 space-y-2.5 text-sm text-re-ink">
                     {COMMERCIAL_ADD_ONS.map((a) => (
                       <li key={a.name} className="flex justify-between gap-4 border-b border-re-stone-light pb-2.5">
-                        <span>{a.name}</span>
+                        <span>
+                          {a.name}
+                          {a.detail && (
+                            <span className="block text-xs text-re-stone">{a.detail}</span>
+                          )}
+                        </span>
                         <span className="shrink-0 font-medium text-re-blue">{a.price}</span>
                       </li>
                     ))}

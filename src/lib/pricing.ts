@@ -107,11 +107,6 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = [
 /** Cheapest published commercial package, quoted in summary lines. */
 export const COMMERCIAL_FROM = "$399";
 
-/**
- * Add-ons offered against a commercial campaign. Twilight is a residential
- * product and doesn't belong on an industrial estate, so it isn't offered here.
- */
-export const COMMERCIAL_ADD_ONS_EXCLUDED = ["Twilight & dusk images"];
 
 /**
  * Agent monthly content, sold to the individual agent rather than the agency.
@@ -144,6 +139,19 @@ export type AddOn = {
   detail?: string;
 };
 
+
+/**
+ * Add-ons offered against a commercial campaign. Listed out rather than
+ * filtered from ADD_ONS: that list is residential and grows, and twilight,
+ * room staging and open homes have no meaning on an industrial estate. Aerial
+ * carries a commercial tier note rather than the residential one.
+ */
+export const COMMERCIAL_ADD_ONS: AddOn[] = [
+  { name: "3D virtual tour", price: "$179" },
+  { name: "Aerial photography", price: "$149", detail: "Asset tier. Included in Campaign" },
+  { name: "Express floor plan", price: "$40", detail: "6 hours" },
+  { name: "Extra images", price: "$49", detail: "per 5" },
+];
 export const ADD_ONS: AddOn[] = [
   { name: "Twilight & dusk images", price: "$40" },
   { name: "3D virtual tour", price: "$179" },
