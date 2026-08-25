@@ -150,7 +150,6 @@ export const COMMERCIAL_ADD_ONS: AddOn[] = [
   { name: "Aerial photography", price: "$150" },
   { name: "Aerial video", price: "$150" },
   { name: "Aerial pack", price: "$200", detail: "Aerial photography and aerial video. Individually $300" },
-  { name: "Express floor plan", price: "$40", detail: "6 hours" },
   { name: "Extra images", price: "$49", detail: "per 5" },
 ];
 export const ADD_ONS: AddOn[] = [
@@ -171,7 +170,6 @@ export const ADD_ONS: AddOn[] = [
   { name: "Listing video", price: "$200", detail: "Listing video built from your photos" },
   { name: "Vacant property pack", price: "$349", detail: "5 staged rooms and a listing video. Individually $400" },
   { name: "Open home video", price: "$129" },
-  { name: "Express floor plan", price: "$40", detail: "6 hours" },
   { name: "Extra images", price: "$49", detail: "per 5" },
 ];
 
