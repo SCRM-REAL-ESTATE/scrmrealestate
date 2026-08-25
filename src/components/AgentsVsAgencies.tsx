@@ -49,6 +49,21 @@ export default function AgentsVsAgencies() {
   return (
     <section className="py-6 md:py-10">
       <div className="mx-auto max-w-[1440px] px-3 md:px-6">
+        {/* Names the pair, so the two halves read as one offer split by who
+            it is sold to rather than as two unrelated prices. */}
+        <motion.div
+          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto mb-10 max-w-2xl px-2 text-center md:mb-14"
+        >
+          <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+          <h2 className="h-display text-4xl md:text-6xl text-re-ink">
+            Social media management.
+          </h2>
+        </motion.div>
+
         {/* The blue half runs wider so the section reads as blue-led. */}
         <div className="grid grid-cols-1 md:grid-cols-[1.25fr_1fr] gap-4 md:gap-0 overflow-hidden md:rounded-[3rem]">
           {sides.map((s) => (
