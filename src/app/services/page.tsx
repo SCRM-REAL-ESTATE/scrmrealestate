@@ -35,7 +35,7 @@ const faqs = [
   },
   {
     q: "How does aerial work?",
-    a: "Aerial photography and footage is included in Premiere. On Listing and Signature it's a $149 add-on, adjusted to suit the property: front elevation, location and context, top-of-building.",
+    a: "Aerial photography and footage is included in Premiere. On Listing and Signature it's a $150 add-on, adjusted to suit the property: front elevation, location and context, top-of-building.",
   },
   {
     q: "How does invoicing work?",
@@ -112,7 +112,42 @@ export default function ServicesPage() {
         </Container>
       </Section>
 
-      {/* VACANT PROPERTY */}
+      {/* AGENT PACKAGE */}
+      <Section id="agent">
+        <Container>
+          <Reveal>
+            <div className="max-w-3xl mx-auto text-center">
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>What every agent is missing.</H2>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.12} className="mt-10">
+            <AgentContentCard />
+          </Reveal>
+        </Container>
+      </Section>
+
+      {/* ADD-ONS */}
+      <Section id="add-ons">
+        <Container>
+          <Reveal>
+            <div className="max-w-3xl mx-auto text-center">
+              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
+              <H2>Add depth to any listing.</H2>
+              <p className="mt-5 text-re-stone leading-relaxed text-lg">
+                Twilight, aerial, virtual staging, 3D tours and more, priced individually from {ADD_ONS_FROM} so you scale presentation to the property.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.1} className="mt-10">
+            <AddOnsPanel />
+          </Reveal>
+        </Container>
+      </Section>
+
+      {/* ALREADY HAVE PHOTOS */}
       <Section id="vacant-property">
         <Container>
           <Reveal>
@@ -180,41 +215,6 @@ export default function ServicesPage() {
             <p className="mt-10 text-center text-sm text-re-stone">
               {VACANT_PROPERTY.smallPrint}
             </p>
-          </Reveal>
-        </Container>
-      </Section>
-
-      {/* AGENT PACKAGE */}
-      <Section id="agent">
-        <Container>
-          <Reveal>
-            <div className="max-w-3xl mx-auto text-center">
-              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
-              <H2>What every agent is missing.</H2>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.12} className="mt-10">
-            <AgentContentCard />
-          </Reveal>
-        </Container>
-      </Section>
-
-      {/* ADD-ONS */}
-      <Section id="add-ons">
-        <Container>
-          <Reveal>
-            <div className="max-w-3xl mx-auto text-center">
-              <span aria-hidden className="gold-chrome-bg mx-auto mb-5 block h-[3px] w-12 rounded-full" />
-              <H2>Add depth to any listing.</H2>
-              <p className="mt-5 text-re-stone leading-relaxed text-lg">
-                Twilight, aerial, virtual staging, 3D tours and more, priced individually from {ADD_ONS_FROM} so you scale presentation to the property.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.1} className="mt-10">
-            <AddOnsPanel />
           </Reveal>
         </Container>
       </Section>

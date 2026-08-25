@@ -48,10 +48,9 @@ export default function PairsWellWith() {
               open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
             }`}
           >
-            <p className="label-eyebrow">{VACANT_PROPERTY.heading}</p>
+            <p className="label-eyebrow">{pack.name}</p>
             <p className="mt-4 font-serif text-5xl text-re-ink">
               {pack.price}
-              <span className="ml-2 text-sm font-sans text-re-stone">{pack.name}</span>
             </p>
             <ul className="mt-6 mx-auto inline-block space-y-2 text-left text-sm text-re-ink">
               {pack.includes.map((line) => (
