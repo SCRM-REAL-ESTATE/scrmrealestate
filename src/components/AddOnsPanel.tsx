@@ -11,7 +11,7 @@ export default function AddOnsPanel() {
     <ul className="flex flex-wrap justify-center gap-5 text-left">
       {ADD_ONS.map((addOn) => (
         <li
-          key={addOn.name}
+          key={`${addOn.name} ${addOn.price}`}
           className="w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.834rem)] rounded-2xl border border-re-stone-light bg-white p-6 transition-all duration-500 hover:border-re-blue-accent/40 hover:shadow-[0_18px_44px_rgba(30,98,224,0.1)]"
         >
           <p className="font-serif text-3xl text-re-blue">{addOn.price}</p>

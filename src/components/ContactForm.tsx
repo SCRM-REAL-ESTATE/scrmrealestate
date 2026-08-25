@@ -11,6 +11,7 @@ const serviceOptions = [
   "Premiere $899",
   "Agent content $800/mo",
   "Agency management from $1,800/mo",
+  "Vacant property pack $349",
   "Add-ons",
   "Not sure yet",
 ];
