@@ -63,13 +63,21 @@ create table if not exists public.bookings (
   extra_add_ons jsonb not null default '[]'::jsonb,
   total_aud integer,
 
+  -- Taken in the funnel itself: the address is how a shoot is identified, and
+  -- the preference is what the confirming call is actually about.
+  address text,
+  preferred_when text,
+  preferred_time text,
+  notes text,
+
   name text not null,
   email text not null,
   phone text,
   agency text,
 
-  -- The optional half: address, dates, access, notes. Shape varies by stream,
-  -- so it's stored as the answers keyed by question id.
+  -- The operational half, asked once the booking is already safe: access,
+  -- occupancy, close date, NDA. Shape varies by stream, so it's stored as the
+  -- answers keyed by question id.
   details jsonb,
   qualified_at timestamptz,
 
@@ -84,3 +92,9 @@ alter table public.bookings enable row level security;
 
 create index if not exists bookings_created_at_idx on public.bookings (created_at desc);
 create index if not exists bookings_status_idx on public.bookings (status);
+
+-- Safe to re-run over an earlier version of this table.
+alter table if exists public.bookings add column if not exists address text;
+alter table if exists public.bookings add column if not exists preferred_when text;
+alter table if exists public.bookings add column if not exists preferred_time text;
+alter table if exists public.bookings add column if not exists notes text;

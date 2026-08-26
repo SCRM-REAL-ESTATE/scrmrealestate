@@ -9,12 +9,14 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import { emailShell, table } from "@/lib/email";
 
 /**
- * Stage one of the booking funnel: the lead.
+ * The booking itself: address, package, extras, when they want it, who to call.
  *
- * Name, email and phone is all this asks for, and once it returns the lead is
- * safe — emailed and stored. Everything about the property comes afterwards
- * through /api/book/details, so an abandoned form still leaves us someone to
- * call.
+ * Everything needed to put a shoot in the diary arrives in one request. What
+ * doesn't arrive here is the operational detail — who lets us in, whether the
+ * place is empty, what the close date is — which /api/book/details collects
+ * afterwards and sends as the second, louder email. Splitting it that way keeps
+ * the booking itself down to four steps without losing the answers that stop us
+ * having to ring twice.
  *
  * The total is recomputed here from the catalogue. The browser sends ids, never
  * prices: the number in the email has to be one we'd honour.
@@ -36,6 +38,11 @@ export type BookPayload = {
   offerId?: string;
   addOns?: string[];
   quantities?: Record<string, number>;
+  address?: string;
+  /** "As soon as possible", "Tomorrow", or an ISO date they picked. */
+  when?: string;
+  timeSlot?: string;
+  notes?: string;
   name?: string;
   email?: string;
   phone?: string;
@@ -60,6 +67,10 @@ export async function POST(request: Request) {
   const email = clean(body.email, 200);
   const phone = clean(body.phone, 60);
   const agency = clean(body.agency, 160);
+  const address = clean(body.address, 240);
+  const when = clean(body.when, 60);
+  const timeSlot = clean(body.timeSlot, 40);
+  const notes = clean(body.notes, 4000);
 
   if (!name || !email || !phone) {
     return NextResponse.json(
@@ -99,6 +110,10 @@ export async function POST(request: Request) {
     offer_name: offer.name,
     add_ons: q.lines,
     total_aud: q.quoteOnly ? null : q.total,
+    address: address || null,
+    preferred_when: when || null,
+    preferred_time: timeSlot || null,
+    notes: notes || null,
     name,
     email,
     phone,
@@ -120,6 +135,8 @@ export async function POST(request: Request) {
 
   const lineRows: [string, string][] = [
     ["Reference", ref],
+    ["Address", address],
+    ["Preferred", [when, timeSlot].filter(Boolean).join(" · ")],
     ["Package", `${offer.name}${q.quoteOnly ? " (quote)" : ` — ${offer.price}`}`],
     ...q.lines.map(
       (l): [string, string] => [
@@ -133,6 +150,7 @@ export async function POST(request: Request) {
     ["Agency", agency],
     ["Email", email],
     ["Phone", phone],
+    ["Notes", notes],
   ].filter(([, v]) => v) as [string, string][];
 
   try {
@@ -142,13 +160,11 @@ export async function POST(request: Request) {
       from: FROM,
       to: [TO],
       replyTo: email,
-      subject: `New booking — ${offer.name}${
-        q.lines.length ? ` + ${q.lines.length} add-on${q.lines.length > 1 ? "s" : ""}` : ""
-      }, ${totalLabel(q)} — ${name}`,
+      subject: `New booking — ${address || name} — ${offer.name}, ${totalLabel(q)}`,
       text: [
         ...lineRows.map(([k, v]) => `${k}: ${v}`),
         "",
-        "Property details not supplied yet — they were invited to add them straight after booking.",
+        "Access and property details not supplied yet — they were invited to add them straight after booking.",
         stored ? "" : "NOTE: not written to the bookings table (store not configured).",
       ]
         .filter(Boolean)
@@ -156,7 +172,7 @@ export async function POST(request: Request) {
       html: emailShell(
         "New booking request",
         table(lineRows),
-        `<p style="margin:18px 0 0;color:#514d46">Property details not supplied yet — they were invited to add them straight after booking. A second email lands if they do.</p>${
+        `<p style="margin:18px 0 0;color:#514d46">Access and property details not supplied yet — they were invited to add them straight after booking. A second email lands if they do.</p>${
           stored
             ? ""
             : `<p style="margin:10px 0 0;color:#9e4a32">Not written to the bookings table — the store isn't configured.</p>`
@@ -182,12 +198,13 @@ export async function POST(request: Request) {
         text: [
           `Thanks ${name.split(" ")[0]}, your request is in.`,
           "",
+          address,
           `${offer.name}${q.quoteOnly ? "" : ` — ${totalLabel(q)}`}`,
           ...q.lines.map((l) => `+ ${l.name}${l.units > 1 ? ` ×${l.units}` : ""} ${money(l.amount)}`),
           "",
           "We'll call within one business day to lock in a time.",
           "",
-          "Want to skip the back and forth? Add the address and a few details here:",
+          "Save us a phone call — tell us about access and the property here:",
           resumeUrl,
           "",
           `Reference ${ref} · ${SITE.phone}`,
@@ -199,6 +216,8 @@ export async function POST(request: Request) {
           )} — we'll call within one business day to lock in a time.</p>` +
             table([
               ["Reference", ref],
+              ["Address", address],
+              ["Requested", [when, timeSlot].filter(Boolean).join(" · ")],
               ["Package", offer.name],
               ...q.lines.map(
                 (l): [string, string] => [
@@ -208,8 +227,8 @@ export async function POST(request: Request) {
               ),
               ["Total", totalLabel(q)],
             ]),
-          `<p style="margin:22px 0 8px;color:#1a1a1a"><strong>Want it faster?</strong></p>
-           <p style="margin:0 0 16px;color:#514d46">Add the address and a few details and the call becomes about locking a time rather than gathering information.</p>
+          `<p style="margin:22px 0 8px;color:#1a1a1a"><strong>Save us a phone call</strong></p>
+           <p style="margin:0 0 16px;color:#514d46">Tell us who lets us in and a couple of things about the property, and the call becomes about confirming a time rather than gathering information.</p>
            <p style="margin:0"><a href="${resumeUrl}" style="display:inline-block;background:#1E62E0;color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px">Add the details</a></p>
            <p style="margin:20px 0 0;color:#514d46;font-size:13px">Or call us on ${SITE.phone} and quote ${ref}.</p>`
         ),

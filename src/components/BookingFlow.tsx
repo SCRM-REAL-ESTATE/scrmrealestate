@@ -1,140 +1,170 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import AddressField from "./AddressField";
 import BookingDetails from "./BookingDetails";
 import {
   STREAMS,
-  getAddOn,
   getOffer,
   money,
   offersForStream,
+  type BookableAddOn,
   type BookableOffer,
   type Stream,
 } from "@/lib/catalogue";
-import { availableAddOns, quote, totalLabel } from "@/lib/booking-rules";
+import { groupedAddOns, quote, totalLabel, upgradeOffer, type Quote } from "@/lib/booking-rules";
 import { SITE } from "@/lib/site";
 
 /**
- * The booking funnel.
+ * The booking funnel, built as a checkout rather than a form.
  *
- * Three things shape it. It starts wherever the visitor clicked, so a Book
- * button on a commercial card never asks "is this commercial?" — the answer
- * arrived with them. The step after the package is the selling step, because a
- * tier upgrade next to the thing it upgrades is an easier yes than an add-on
- * list on a pricing page. And the lead is captured before anything is asked
- * about the property: name, email, phone and it's ours, with the address and
- * the date offered afterwards as a way to skip the phone tag.
+ * Property → Package → Extras → Details, and every screen answers the same
+ * three questions without being read: what am I choosing, what have I picked,
+ * what do I press next. The primary button never moves, never changes colour
+ * and always says what happens next, so an agent booking their fourth property
+ * this month stops reading it entirely and just goes.
+ *
+ * Selecting is the only interaction. There is no checkbox beside a card, no
+ * confirm step, no modal — a tap selects and arms the button, and the running
+ * total moves in the summary so the consequence is visible without scrolling.
  */
 
-type StepId = "stream" | "offer" | "upsell" | "you";
+type StepId = "property" | "package" | "extras" | "details";
 type Status = "idle" | "submitting" | "error";
 
-type Props = {
-  /** From ?p= — the package the Book button they clicked was attached to. */
-  initialOfferId?: string;
-  /** From ?stream= — the pricing page they came from, tier not yet chosen. */
-  initialStream?: Stream;
+const STEP_LABEL: Record<StepId, string> = {
+  property: "Property",
+  package: "Package",
+  extras: "Extras",
+  details: "Details",
 };
 
-export default function BookingFlow({ initialOfferId, initialStream }: Props) {
+const WHEN_OPTIONS = ["As soon as possible", "Tomorrow", "Pick a date"];
+const TIME_OPTIONS = ["Morning", "Midday", "Afternoon", "Flexible"];
+
+/** Repeat bookers shouldn't retype their own name every week. */
+const CONTACT_KEY = "scrm-booking-contact";
+type Contact = { name: string; phone: string; email: string; agency: string };
+const EMPTY_CONTACT: Contact = { name: "", phone: "", email: "", agency: "" };
+
+export default function BookingFlow({
+  initialOfferId,
+  initialStream,
+}: {
+  initialOfferId?: string;
+  initialStream?: Stream;
+}) {
   const seedOffer = getOffer(initialOfferId);
   const seedStream = seedOffer?.stream ?? initialStream;
 
   const [stream, setStream] = useState<Stream | undefined>(seedStream);
+  const [address, setAddress] = useState("");
   const [offerId, setOfferId] = useState<string | undefined>(seedOffer?.id);
   const [selected, setSelected] = useState<string[]>([]);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
-  const [dismissedStepUp, setDismissedStepUp] = useState<string[]>([]);
+
+  const [when, setWhen] = useState("");
+  const [exactDate, setExactDate] = useState("");
+  const [timeSlot, setTimeSlot] = useState("");
+  const [notes, setNotes] = useState("");
+  const [contact, setContact] = useState<Contact>(EMPTY_CONTACT);
+  const [remembered, setRemembered] = useState(false);
 
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [booked, setBooked] = useState<{ reference: string; token: string } | null>(null);
 
   const offer = getOffer(offerId);
-  const sellsAddOns = Boolean(offer && !offer.quote && !offer.recurring);
-  const askStream = !seedStream;
+  const q = quote(offerId, selected, quantities);
+  const needsProperty = stream !== "monthly";
+  const sellsExtras = Boolean(offer && !offer.quote && !offer.recurring);
 
   const steps = useMemo<StepId[]>(
-    () => [
-      ...(askStream ? (["stream"] as StepId[]) : []),
-      "offer",
-      ...(sellsAddOns ? (["upsell"] as StepId[]) : []),
-      "you",
-    ],
-    [askStream, sellsAddOns]
+    () => ["property", "package", ...(sellsExtras ? (["extras"] as StepId[]) : []), "details"],
+    [sellsExtras]
   );
 
-  const [step, setStep] = useState<StepId>(
-    seedOffer
-      ? seedOffer.quote || seedOffer.recurring
-        ? "you"
-        : "upsell"
-      : askStream
-        ? "stream"
-        : "offer"
-  );
-
+  const [step, setStep] = useState<StepId>(seedOffer ? "property" : "property");
   const index = Math.max(steps.indexOf(step), 0);
-  const q = quote(offerId, selected, quantities);
-  const rows = availableAddOns(offerId);
-  const featuredRows = rows.filter((r) => !r.addOn.compact && !r.included);
-  const compactRows = rows.filter((r) => r.addOn.compact || r.included);
-  const stepUp = offer?.stepUpTo ? getOffer(offer.stepUpTo) : undefined;
+
+  // Fill the contact details back in for anyone who has booked before.
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(CONTACT_KEY);
+      if (!saved) return;
+      const parsed = JSON.parse(saved) as Partial<Contact>;
+      if (!parsed?.name && !parsed?.email) return;
+      setContact({ ...EMPTY_CONTACT, ...parsed });
+      setRemembered(true);
+    } catch {
+      // A private window or blocked storage just means typing it again.
+    }
+  }, []);
 
   const go = (delta: number) => {
     const next = steps[index + delta];
-    if (next) setStep(next);
+    if (next) {
+      setStep(next);
+      if (typeof window !== "undefined") window.scrollTo({ top: 0 });
+    }
   };
 
   const chooseStream = (next: Stream) => {
+    if (next === stream) return;
     setStream(next);
     setOfferId(undefined);
     setSelected([]);
-    setStep("offer");
+    if (next === "monthly") setAddress("");
   };
 
   const chooseOffer = (next: BookableOffer) => {
     setOfferId(next.id);
-    // Anything the new package already contains stops being an add-on.
     setSelected((prev) => prev.filter((id) => !next.contains.includes(id)));
-    setStep(next.quote || next.recurring ? "you" : "upsell");
   };
 
   const toggle = (id: string) =>
     setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
-  const setUnits = (id: string, units: number) =>
-    setQuantities((prev) => ({ ...prev, [id]: units }));
+  const upgrade = upgradeOffer(offerId, selected, quantities);
 
-  const takeStepUp = () => {
-    if (!stepUp) return;
-    setOfferId(stepUp.id);
-    setSelected((prev) => prev.filter((id) => !stepUp.contains.includes(id)));
-  };
+  const canContinue =
+    (step === "property" && Boolean(stream) && (!needsProperty || address.trim().length > 4)) ||
+    (step === "package" && Boolean(offerId)) ||
+    step === "extras" ||
+    (step === "details" &&
+      Boolean(contact.name.trim() && contact.phone.trim() && contact.email.trim()));
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const ctaLabel =
+    step === "property"
+      ? "Continue to packages"
+      : step === "package"
+        ? offer
+          ? `Continue with ${offer.name}`
+          : "Choose a package"
+        : step === "extras"
+          ? "Continue to booking details"
+          : offer?.quote
+            ? "Request quote"
+            : "Request booking";
+
+  const submit = async () => {
     setStatus("submitting");
     setErrorMsg("");
 
-    const fd = new FormData(e.currentTarget);
     const payload = {
       offerId,
       addOns: q.lines.map((l) => l.id),
       quantities,
-      name: String(fd.get("name") || "").trim(),
-      email: String(fd.get("email") || "").trim(),
-      phone: String(fd.get("phone") || "").trim(),
-      agency: String(fd.get("agency") || "").trim(),
-      website: String(fd.get("website") || ""),
+      address: address.trim(),
+      when: when === "Pick a date" ? exactDate : when,
+      timeSlot,
+      notes: notes.trim(),
+      name: contact.name.trim(),
+      email: contact.email.trim(),
+      phone: contact.phone.trim(),
+      agency: contact.agency.trim(),
+      website: "",
     };
-
-    if (!payload.name || !payload.email || !payload.phone) {
-      setStatus("error");
-      setErrorMsg("Please add your name, email and phone so we can call you back.");
-      return;
-    }
 
     try {
       const res = await fetch("/api/book", {
@@ -144,7 +174,14 @@ export default function BookingFlow({ initialOfferId, initialStream }: Props) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.error || "Request failed");
+
+      try {
+        localStorage.setItem(CONTACT_KEY, JSON.stringify(contact));
+      } catch {
+        // Not being able to remember them is not a failed booking.
+      }
       setBooked({ reference: data.reference, token: data.token });
+      if (typeof window !== "undefined") window.scrollTo({ top: 0 });
     } catch (err) {
       console.error(err);
       setStatus("error");
@@ -156,37 +193,44 @@ export default function BookingFlow({ initialOfferId, initialStream }: Props) {
     }
   };
 
-  /* ── Booked: the lead is safe, now ask for the rest ─────────────── */
+  const advance = () => (step === "details" ? submit() : go(1));
+
+  /* ── Booked ───────────────────────────────────────────────────── */
   if (booked && stream) {
     return (
       <div className="mx-auto max-w-2xl">
-        <div className="rounded-[1.75rem] blue-fade gold-ring p-8 text-white md:p-10">
-          <p className="label-eyebrow !text-white/85">Booking request received</p>
+        <div className="gold-ring blue-fade rounded-[1.5rem] p-7 text-white md:p-9">
+          <p className="label-eyebrow !text-white/85">Booking requested</p>
           <h2 className="mt-3 h-display text-3xl text-white md:text-4xl">You&apos;re in.</h2>
           <p className="mt-4 leading-relaxed text-white/85">
-            We&apos;ll call within one business day to lock in a time. Your reference is{" "}
+            We&apos;ll confirm the time within one business day. Reference{" "}
             <span className="font-medium text-white">{booked.reference}</span>.
           </p>
-          {offer && (
-            <p className="mt-6 border-t border-white/20 pt-5 text-sm text-white/85">
-              {offer.name}
-              {q.lines.length > 0 && ` + ${q.lines.length} add-on${q.lines.length > 1 ? "s" : ""}`} ·{" "}
+          <div className="mt-6 space-y-1 border-t border-white/20 pt-5 text-sm text-white/85">
+            {address && <p className="text-white">{address}</p>}
+            <p>
+              {offer?.name}
+              {q.lines.length > 0 && ` + ${q.lines.length} extra${q.lines.length > 1 ? "s" : ""}`} ·{" "}
               <span className="text-white">{totalLabel(q)}</span>
             </p>
-          )}
+            {(when || timeSlot) && (
+              <p>
+                {[when === "Pick a date" ? exactDate : when, timeSlot].filter(Boolean).join(" · ")}
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className="mt-8 rounded-[1.75rem] border border-re-stone-light bg-white p-7 md:p-9">
-          <p className="label-eyebrow">Want it faster?</p>
-          <h3 className="mt-3 font-serif text-2xl text-re-ink md:text-3xl">
-            Tell us about the property now and skip the phone tag.
+        <div className="mt-6 rounded-[1.5rem] border border-re-stone-light bg-white p-6 md:p-8">
+          <p className="label-eyebrow">Save us a phone call</p>
+          <h3 className="mt-2.5 font-serif text-2xl text-re-ink">
+            A few things about the property.
           </h3>
-          <p className="mt-3 text-re-stone leading-relaxed">
-            Every answer here is one less question on the call. None of it is required — we ring you
-            either way.
+          <p className="mt-2.5 text-re-stone leading-relaxed">
+            Answer these and the call is about confirming a time, not gathering information. None of
+            it is required.
           </p>
-
-          <div className="mt-8">
+          <div className="mt-7">
             <BookingDetails
               reference={booked.reference}
               token={booked.token}
@@ -202,82 +246,57 @@ export default function BookingFlow({ initialOfferId, initialStream }: Props) {
     );
   }
 
-  /* ── The funnel ─────────────────────────────────────────────────── */
-  const canContinue =
-    (step === "stream" && Boolean(stream)) ||
-    (step === "offer" && Boolean(offerId)) ||
-    step === "upsell";
-
+  /* ── The funnel ───────────────────────────────────────────────── */
   return (
-    <div className="pb-28 lg:pb-0">
-      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-12">
-        <div>
-          {/* Progress */}
-          <div className="mb-8">
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-re-stone-light">
-              <span
-                className="block h-full rounded-full bg-re-blue transition-all duration-500"
-                style={{ width: `${((index + 1) / steps.length) * 100}%` }}
-              />
-            </div>
-            <div className="mt-3 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.18em]">
-              <span className="text-re-stone">
-                Step {index + 1} of {steps.length}
-              </span>
-              <span className="text-re-blue-accent">No payment today</span>
-            </div>
-          </div>
+    <div className="pb-24 lg:pb-0">
+      <StepRail steps={steps} current={step} onJump={(s) => setStep(s)} reachedTo={index} />
 
-          {step === "stream" && (
-            <StepShell
-              title="What are we booking?"
-              sub="Pick the one that fits and we'll show you the right prices."
-            >
-              <div className="grid gap-3">
+      <div className="mt-7 grid items-start gap-8 lg:mt-9 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-10">
+        <div>
+          {step === "property" && (
+            <Step title="What are we shooting?">
+              <div className="grid gap-3 sm:grid-cols-3">
                 {STREAMS.map((s) => (
-                  <button
+                  <SelectCard
                     key={s.id}
-                    type="button"
-                    aria-pressed={stream === s.id}
-                    onClick={() => chooseStream(s.id)}
-                    className={`group flex items-center gap-4 rounded-2xl border p-5 text-left transition-all duration-300 min-h-[76px] ${
-                      stream === s.id
-                        ? "border-re-blue bg-re-blue-light"
-                        : "border-re-stone-light bg-white hover:border-re-blue hover:-translate-y-0.5"
-                    }`}
-                  >
-                    <span className="flex-1">
-                      <span className="block font-serif text-xl text-re-ink">{s.label}</span>
-                      <span className="mt-1 block text-sm leading-relaxed text-re-stone">
-                        {s.blurb}
-                      </span>
-                    </span>
-                    <span
-                      aria-hidden
-                      className="shrink-0 text-re-blue transition-transform duration-300 group-hover:translate-x-1"
-                    >
-                      →
-                    </span>
-                  </button>
+                    selected={stream === s.id}
+                    onSelect={() => chooseStream(s.id)}
+                    title={s.label}
+                    body={s.blurb}
+                  />
                 ))}
               </div>
-            </StepShell>
+
+              {needsProperty && stream && (
+                <div className="mt-7">
+                  <AddressField
+                    value={address}
+                    onChange={setAddress}
+                    autoFocus
+                    label={stream === "commercial" ? "Asset address" : "Property address"}
+                    placeholder={
+                      stream === "commercial"
+                        ? "45 Fitzgerald Road, Laverton North VIC"
+                        : "14 Smith Street, Brighton VIC"
+                    }
+                  />
+                </div>
+              )}
+            </Step>
           )}
 
-          {step === "offer" && stream && (
-            <StepShell
-              title={
-                stream === "monthly" ? "Which monthly package?" : "Pick your package."
-              }
+          {step === "package" && stream && (
+            <Step
+              title={stream === "monthly" ? "Which monthly package?" : "Pick your package."}
               sub={
                 stream === "monthly"
-                  ? "Sold per month. Nothing is locked in — we work to a quarterly cadence."
-                  : "Every package is delivered the next business day. You can add to it on the next step."
+                  ? "Billed monthly. No lock-in."
+                  : "Every one is delivered the next business day."
               }
             >
               <div className="grid gap-3">
                 {offersForStream(stream).map((o) => (
-                  <OfferCard
+                  <PackageCard
                     key={o.id}
                     offer={o}
                     selected={offerId === o.id}
@@ -285,210 +304,211 @@ export default function BookingFlow({ initialOfferId, initialStream }: Props) {
                   />
                 ))}
               </div>
-            </StepShell>
+            </Step>
           )}
 
-          {step === "upsell" && offer && (
-            <StepShell
-              title="Make it land harder."
-              sub={`${offer.name} covers the essentials. These are what agents add when the property deserves it.`}
-            >
-              {stepUp && !dismissedStepUp.includes(stepUp.id) && (
-                <StepUpCard
-                  from={offer}
-                  to={stepUp}
-                  onTake={takeStepUp}
-                  onDismiss={() => setDismissedStepUp((prev) => [...prev, stepUp.id])}
+          {step === "extras" && offer && (
+            <Step title="Anything else?" sub={`${offer.name} covers the essentials. These are optional.`}>
+              {upgrade && (
+                <UpgradeCard
+                  upgrade={upgrade}
+                  onTake={() => chooseOffer(upgrade.to)}
                 />
               )}
 
               {q.saved > 0 && (
-                <div className="mb-5 flex items-start gap-3 rounded-2xl border border-re-gold-thin/50 bg-white px-5 py-4">
-                  <span aria-hidden className="mt-0.5 text-re-gold-thin">◆</span>
-                  <p className="text-sm text-re-ink">
-                    Bundled for you — that&apos;s{" "}
-                    <span className="font-medium">{money(q.saved)} less</span> than buying those
-                    separately.
-                  </p>
-                </div>
+                <p className="mb-5 rounded-2xl border border-re-gold-thin/50 bg-white px-5 py-3.5 text-sm text-re-ink">
+                  Bundled for you — <span className="font-medium">{money(q.saved)} less</span> than
+                  buying those separately.
+                </p>
               )}
 
-              {/* The four worth arguing for get the room to argue. */}
-              <div className="grid gap-3 sm:grid-cols-2">
-                {featuredRows.map(({ addOn, included, includedReason }) => (
-                  <AddOnCard
-                    key={addOn.id}
-                    addOn={addOn}
-                    included={included}
-                    includedReason={includedReason}
-                    selected={q.lines.some((l) => l.id === addOn.id)}
-                    units={quantities[addOn.id] ?? 1}
-                    onToggle={() => toggle(addOn.id)}
-                    onUnits={(u) => setUnits(addOn.id, u)}
-                  />
+              <div className="space-y-7">
+                {groupedAddOns(offerId).map((group) => (
+                  <div key={group.id}>
+                    <p className="label-eyebrow mb-3">{group.label}</p>
+                    <div className="grid gap-2.5">
+                      {group.rows.map(({ addOn, included, includedReason }) => (
+                        <ExtraRow
+                          key={addOn.id}
+                          addOn={addOn}
+                          included={included}
+                          includedReason={includedReason}
+                          added={q.lines.some((l) => l.id === addOn.id)}
+                          units={quantities[addOn.id] ?? 1}
+                          onToggle={() => toggle(addOn.id)}
+                          onUnits={(u) => setQuantities((prev) => ({ ...prev, [addOn.id]: u }))}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
+            </Step>
+          )}
 
-              {/* Everything else as tiles, two across even on the smallest
-                  phone. These are things people either want or they don't, and
-                  a paragraph each turned the step into a long scroll. */}
-              {compactRows.length > 0 && (
-                <div className="mt-6">
-                  <p className="label-eyebrow mb-3">Also available</p>
-                  <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
-                    {compactRows.map(({ addOn, included, includedReason }) => (
-                      <AddOnCard
-                        key={addOn.id}
-                        addOn={addOn}
-                        compact
-                        included={included}
-                        includedReason={includedReason}
-                        selected={q.lines.some((l) => l.id === addOn.id)}
-                        units={quantities[addOn.id] ?? 1}
-                        onToggle={() => toggle(addOn.id)}
-                        onUnits={(u) => setUnits(addOn.id, u)}
-                      />
-                    ))}
-                  </div>
-                </div>
+          {step === "details" && (
+            <Step title={offer?.quote ? "Where do we send the quote?" : "Last step."}>
+              {!offer?.recurring && !offer?.quote && (
+                <fieldset className="mb-8">
+                  <legend className="label-eyebrow mb-3">When would you like the shoot?</legend>
+                  <ChipRow options={WHEN_OPTIONS} value={when} onChange={setWhen} />
+                  {when === "Pick a date" && (
+                    <input
+                      type="date"
+                      value={exactDate}
+                      onChange={(e) => setExactDate(e.target.value)}
+                      className={`${inputCls} mt-3`}
+                    />
+                  )}
+
+                  <p className="label-eyebrow mb-3 mt-6">Preferred time</p>
+                  <ChipRow options={TIME_OPTIONS} value={timeSlot} onChange={setTimeSlot} />
+                </fieldset>
               )}
 
-              <p className="mt-6 text-sm text-re-stone">
-                Not sure? Skip it. We go through the property on the call and you can add anything
-                then.
-              </p>
-            </StepShell>
-          )}
-
-          {step === "you" && (
-            <StepShell
-              title={offer?.quote ? "Tell us where to send the quote." : "Where do we call you?"}
-              sub={
-                offer?.quote
-                  ? "We'll come back with a scope and a number, not a pitch."
-                  : "One call to confirm the time. No payment now — listing media is invoiced after it's delivered."
-              }
-            >
-              <form id="booking-form" onSubmit={onSubmit} noValidate className="space-y-3">
-                <input name="name" type="text" required placeholder="Your name *" className={inputCls} />
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <input name="phone" type="tel" required placeholder="Phone *" className={inputCls} />
-                  <input name="email" type="email" required placeholder="Email *" className={inputCls} />
+              <fieldset>
+                <div className="mb-3 flex items-baseline justify-between gap-3">
+                  <legend className="label-eyebrow">Your details</legend>
+                  {remembered && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setContact(EMPTY_CONTACT);
+                        setRemembered(false);
+                        try {
+                          localStorage.removeItem(CONTACT_KEY);
+                        } catch {
+                          /* nothing to clear */
+                        }
+                      }}
+                      className="text-xs text-re-stone underline underline-offset-4 hover:text-re-blue"
+                    >
+                      Not you?
+                    </button>
+                  )}
                 </div>
-                <input name="agency" type="text" placeholder="Agency" className={inputCls} />
-                <input
-                  type="text"
-                  name="website"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  aria-hidden="true"
-                  className="absolute left-[-9999px] h-px w-px opacity-0"
+
+                <div className="grid gap-3">
+                  <input
+                    type="text"
+                    value={contact.name}
+                    onChange={(e) => setContact((c) => ({ ...c, name: e.target.value }))}
+                    placeholder="Your name *"
+                    autoComplete="name"
+                    className={inputCls}
+                  />
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <input
+                      type="tel"
+                      value={contact.phone}
+                      onChange={(e) => setContact((c) => ({ ...c, phone: e.target.value }))}
+                      placeholder="Mobile *"
+                      autoComplete="tel"
+                      className={inputCls}
+                    />
+                    <input
+                      type="email"
+                      value={contact.email}
+                      onChange={(e) => setContact((c) => ({ ...c, email: e.target.value }))}
+                      placeholder="Email *"
+                      autoComplete="email"
+                      className={inputCls}
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    value={contact.agency}
+                    onChange={(e) => setContact((c) => ({ ...c, agency: e.target.value }))}
+                    placeholder="Agency"
+                    autoComplete="organization"
+                    className={inputCls}
+                  />
+                </div>
+              </fieldset>
+
+              <div className="mt-6">
+                <label htmlFor="booking-notes" className="label-eyebrow mb-2.5 block">
+                  Anything we should know?
+                </label>
+                <textarea
+                  id="booking-notes"
+                  rows={3}
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Access instructions, tenants, keys, parking, styling arriving…"
+                  className={inputCls}
                 />
+              </div>
 
-                {status === "error" && errorMsg && (
-                  <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
-                    {errorMsg}
-                  </p>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={status === "submitting"}
-                  className="inline-flex min-h-[56px] w-full items-center justify-center gap-2 rounded-full bg-re-blue px-8 text-base font-medium text-white transition-all duration-300 hover:bg-re-blue-accent hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
-                >
-                  {status === "submitting"
-                    ? "Sending…"
-                    : offer?.quote
-                      ? "Request my quote"
-                      : "Request my booking"}
-                  <span aria-hidden>→</span>
-                </button>
-
-                <p className="pt-1 text-xs text-re-stone">
-                  We&apos;ll ask for the address on the next screen — it takes a minute and saves the
-                  back and forth. Prefer to talk?{" "}
-                  <a href={`tel:${SITE.phoneIntl}`} className="text-re-blue underline underline-offset-4">
-                    {SITE.phone}
-                  </a>
+              {status === "error" && errorMsg && (
+                <p className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                  {errorMsg}
                 </p>
-              </form>
-            </StepShell>
+              )}
+            </Step>
           )}
 
-          {/* Step nav */}
-          <div className="mt-8 flex items-center justify-between gap-4 border-t border-re-stone-light pt-6">
-            {index > 0 ? (
-              <button
-                type="button"
-                onClick={() => go(-1)}
-                className="text-sm text-re-stone underline underline-offset-4 transition-colors hover:text-re-blue"
-              >
-                Back
-              </button>
-            ) : (
-              <Link
-                href="/services"
-                className="text-sm text-re-stone underline underline-offset-4 transition-colors hover:text-re-blue"
-              >
-                See all packages
-              </Link>
-            )}
-
-            {step !== "you" && (
-              <button
-                type="button"
-                onClick={() => go(1)}
-                disabled={!canContinue}
-                className="hidden min-h-[52px] items-center gap-2 rounded-full bg-re-blue px-8 text-sm font-medium text-white transition-all duration-300 hover:bg-re-blue-accent hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 lg:inline-flex"
-              >
-                Continue <span aria-hidden>→</span>
-              </button>
-            )}
+          {/* The primary action. Same size, same colour, same place, every step. */}
+          <div className="mt-8">
+            <PrimaryButton
+              label={status === "submitting" ? "Sending…" : ctaLabel}
+              disabled={!canContinue || status === "submitting"}
+              onClick={advance}
+            />
+            <div className="mt-4 flex items-center justify-between gap-4">
+              {index > 0 ? (
+                <button
+                  type="button"
+                  onClick={() => go(-1)}
+                  className="text-sm text-re-stone underline underline-offset-4 transition-colors hover:text-re-blue"
+                >
+                  Back
+                </button>
+              ) : (
+                <span />
+              )}
+              <p className="text-xs text-re-stone">
+                No payment today · or call{" "}
+                <a href={`tel:${SITE.phoneIntl}`} className="text-re-blue underline underline-offset-4">
+                  {SITE.phone}
+                </a>
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Desktop summary rail */}
-        <aside className="hidden lg:block lg:sticky lg:top-28">
-          <Summary offer={offer} q={q} />
+        <aside className="hidden lg:block lg:sticky lg:top-24">
+          <Summary
+            offer={offer}
+            q={q}
+            address={address}
+            when={when === "Pick a date" ? exactDate : when}
+            timeSlot={timeSlot}
+            ctaLabel={status === "submitting" ? "Sending…" : ctaLabel}
+            canContinue={canContinue && status !== "submitting"}
+            onContinue={advance}
+          />
         </aside>
       </div>
 
-      {/* Mobile summary bar. Right padding clears the WhatsApp button. */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-white/15 blue-fade px-4 pb-3 pt-3 pr-[4.75rem] lg:hidden">
-        <div className="flex items-center justify-between gap-3">
-          <div className="leading-tight">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-white/70">
-              {offer ? offer.name : "Your booking"}
+      {/* Checkout bar. The way forward is always one thumb-reach away. */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-re-stone-light bg-white/95 px-4 pb-3 pr-[4.75rem] pt-3 shadow-[0_-8px_30px_rgba(26,26,26,0.08)] backdrop-blur-md lg:hidden">
+        <div className="flex items-center gap-3">
+          <div className="min-w-0 leading-tight">
+            <p className="text-[10px] uppercase tracking-[0.16em] text-re-stone">
+              {offer ? offer.name : "Total"}
             </p>
-            <p className="font-serif text-2xl text-white">
-              {offer ? totalLabel(q) : "—"}
-              {q.saved > 0 && (
-                <span className="ml-2 align-middle text-[10px] uppercase tracking-[0.14em] text-re-gold-thin">
-                  saved {money(q.saved)}
-                </span>
-              )}
-            </p>
+            <p className="font-serif text-xl text-re-ink">{offer ? totalLabel(q) : "—"}</p>
           </div>
-
-          {step === "you" ? (
-            <button
-              type="submit"
-              form="booking-form"
-              disabled={status === "submitting"}
-              className="inline-flex min-h-[46px] shrink-0 items-center gap-2 rounded-full bg-white px-5 text-sm font-medium text-re-blue disabled:opacity-60"
-            >
-              {status === "submitting" ? "Sending…" : "Send"} <span aria-hidden>→</span>
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => go(1)}
-              disabled={!canContinue}
-              className="inline-flex min-h-[46px] shrink-0 items-center gap-2 rounded-full bg-white px-5 text-sm font-medium text-re-blue disabled:opacity-40"
-            >
-              Continue <span aria-hidden>→</span>
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={advance}
+            disabled={!canContinue || status === "submitting"}
+            className="inline-flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-full bg-re-blue px-4 text-sm font-medium text-white transition-colors disabled:opacity-40"
+          >
+            {status === "submitting" ? "Sending…" : ctaLabel} <span aria-hidden>→</span>
+          </button>
         </div>
       </div>
     </div>
@@ -496,27 +516,133 @@ export default function BookingFlow({ initialOfferId, initialStream }: Props) {
 }
 
 const inputCls =
-  "w-full rounded-2xl border border-re-stone-light bg-white px-4 py-3.5 text-re-ink placeholder:text-re-stone/50 focus:outline-none focus:border-re-blue focus:ring-2 focus:ring-re-blue/15 transition-colors min-h-[54px]";
+  "w-full rounded-2xl border border-re-stone-light bg-white px-4 py-3.5 text-base text-re-ink placeholder:text-re-stone/50 transition-colors focus:border-re-blue focus:outline-none focus:ring-2 focus:ring-re-blue/15";
 
-function StepShell({
+/* ── Chrome ─────────────────────────────────────────────────────── */
+
+function StepRail({
+  steps,
+  current,
+  onJump,
+  reachedTo,
+}: {
+  steps: StepId[];
+  current: StepId;
+  onJump: (step: StepId) => void;
+  reachedTo: number;
+}) {
+  return (
+    <ol className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm">
+      {steps.map((s, i) => {
+        const done = i < reachedTo;
+        const active = s === current;
+        return (
+          <li key={s} className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => done && onJump(s)}
+              disabled={!done && !active}
+              aria-current={active ? "step" : undefined}
+              className={`rounded-full px-3 py-1.5 transition-colors ${
+                active
+                  ? "bg-re-blue text-white"
+                  : done
+                    ? "text-re-blue hover:bg-re-blue-light"
+                    : "text-re-stone"
+              }`}
+            >
+              {done && <span aria-hidden className="mr-1">✓</span>}
+              {STEP_LABEL[s]}
+            </button>
+            {i < steps.length - 1 && (
+              <span aria-hidden className="text-re-stone-light">
+                →
+              </span>
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function Step({
   title,
   sub,
   children,
 }: {
   title: string;
-  sub: string;
+  sub?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <h2 className="h-display text-3xl text-re-ink md:text-4xl">{title}</h2>
-      <p className="mt-3 max-w-xl leading-relaxed text-re-stone">{sub}</p>
-      <div className="mt-8">{children}</div>
-    </div>
+    <section>
+      <h2 className="h-display text-2xl text-re-ink md:text-3xl">{title}</h2>
+      {sub && <p className="mt-2 text-re-stone">{sub}</p>}
+      <div className="mt-6">{children}</div>
+    </section>
   );
 }
 
-function OfferCard({
+function PrimaryButton({
+  label,
+  disabled,
+  onClick,
+}: {
+  label: string;
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className="inline-flex min-h-[60px] w-full items-center justify-center gap-2.5 rounded-2xl bg-re-blue px-8 text-base font-medium text-white shadow-[0_12px_30px_rgba(30,98,224,0.28)] transition-all duration-200 hover:bg-re-blue-accent hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-35 disabled:shadow-none disabled:hover:translate-y-0"
+    >
+      {label} <span aria-hidden>→</span>
+    </button>
+  );
+}
+
+/** Selected has to be unmistakable: border, ground, tick and a word. */
+function SelectCard({
+  selected,
+  onSelect,
+  title,
+  body,
+}: {
+  selected: boolean;
+  onSelect: () => void;
+  title: string;
+  body: string;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={selected}
+      onClick={onSelect}
+      className={`flex h-full flex-col rounded-2xl border-2 p-5 text-left transition-all duration-200 ${
+        selected
+          ? "border-re-blue bg-re-blue-light"
+          : "border-re-stone-light bg-white hover:-translate-y-0.5 hover:border-re-blue/50"
+      }`}
+    >
+      <span className="flex items-start justify-between gap-3">
+        <span className="font-serif text-xl text-re-ink">{title}</span>
+        <Tick selected={selected} />
+      </span>
+      <span className="mt-2 text-sm leading-relaxed text-re-stone">{body}</span>
+      {selected && (
+        <span className="mt-3 text-xs font-medium uppercase tracking-[0.14em] text-re-blue">
+          ✓ Selected
+        </span>
+      )}
+    </button>
+  );
+}
+
+function PackageCard({
   offer,
   selected,
   onSelect,
@@ -525,240 +651,192 @@ function OfferCard({
   selected: boolean;
   onSelect: () => void;
 }) {
+  const base = getOffer(offer.buildsOn);
+
   return (
     <button
       type="button"
       aria-pressed={selected}
       onClick={onSelect}
-      className={`relative w-full rounded-2xl border p-5 text-left transition-all duration-300 md:p-6 ${
+      className={`relative w-full rounded-2xl border-2 p-5 text-left transition-all duration-200 md:p-6 ${
         selected
           ? "border-re-blue bg-re-blue-light"
-          : "border-re-stone-light bg-white hover:-translate-y-0.5 hover:border-re-blue"
+          : offer.featured
+            ? "border-re-blue/40 bg-white shadow-[0_16px_40px_rgba(30,98,224,0.14)] hover:-translate-y-0.5 hover:border-re-blue"
+            : "border-re-stone-light bg-white hover:-translate-y-0.5 hover:border-re-blue/50"
       }`}
     >
       {offer.featured && (
-        <span className="gold-chrome-bg absolute -top-2.5 left-5 rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-re-ink shadow-[0_4px_14px_rgba(196,169,108,0.4)]">
+        <span className="gold-chrome-bg absolute -top-3 left-5 rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-re-ink shadow-[0_4px_14px_rgba(196,169,108,0.4)]">
           Most popular
         </span>
       )}
 
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <p className="font-serif text-2xl text-re-ink">{offer.name}</p>
-          {offer.note && <p className="mt-1.5 text-sm leading-relaxed text-re-stone">{offer.note}</p>}
+          <p className={`font-serif text-re-ink ${offer.featured ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"}`}>
+            {offer.name}
+          </p>
+          {offer.tagline && <p className="mt-1 text-sm text-re-stone">{offer.tagline}</p>}
         </div>
         <div className="shrink-0 text-right">
-          <p className="font-serif text-3xl text-re-blue">{offer.price}</p>
+          <p className={`font-serif text-re-blue ${offer.featured ? "text-3xl md:text-4xl" : "text-2xl md:text-3xl"}`}>
+            {offer.price}
+          </p>
           {offer.priceSub && <p className="text-[11px] text-re-stone">{offer.priceSub}</p>}
-          {!offer.priceSub && offer.products && (
-            <p className="text-[11px] text-re-stone">{offer.products}</p>
-          )}
         </div>
       </div>
 
-      <ul className="mt-4 grid gap-2 border-t border-re-stone-light/70 pt-4 text-sm text-re-ink sm:grid-cols-2">
-        {offer.includes.map((line) => (
-          <li key={line} className="flex gap-2.5">
-            <span aria-hidden className="mt-2 h-1 w-2.5 shrink-0 rounded-full bg-re-blue-accent" />
-            <span className="leading-relaxed">{line}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-4 border-t border-re-stone-light/80 pt-4">
+        {base ? (
+          <>
+            <p className="text-sm font-medium text-re-ink">
+              Everything in {base.name}, plus:
+            </p>
+            <ul className="mt-2 grid gap-1.5 text-sm text-re-ink sm:grid-cols-2">
+              {(offer.plus ?? []).map((line) => (
+                <li key={line} className="flex gap-2">
+                  <span aria-hidden className="text-re-blue">
+                    +
+                  </span>
+                  <span className="leading-relaxed">{line}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <ul className="grid gap-1.5 text-sm text-re-ink sm:grid-cols-3">
+            {(offer.highlights ?? offer.includes).map((line) => (
+              <li key={line} className="flex gap-2">
+                <span aria-hidden className="mt-2 h-1 w-2 shrink-0 rounded-full bg-re-blue-accent" />
+                <span className="leading-relaxed">{line}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {selected && (
+        <p className="mt-4 text-xs font-medium uppercase tracking-[0.14em] text-re-blue">
+          ✓ {offer.name} selected
+        </p>
+      )}
     </button>
   );
 }
 
-/** The tier upgrade, sold next to the thing it upgrades. */
-function StepUpCard({
-  from,
-  to,
+/** Priced against what's in the cart, not against the sticker gap. */
+function UpgradeCard({
+  upgrade,
   onTake,
-  onDismiss,
 }: {
-  from: BookableOffer;
-  to: BookableOffer;
+  upgrade: NonNullable<ReturnType<typeof upgradeOffer>>;
   onTake: () => void;
-  onDismiss: () => void;
 }) {
-  const delta = to.amount - from.amount;
+  const { to, delta, covered, plus } = upgrade;
 
   return (
-    <div className="gold-ring blue-fade mb-6 overflow-hidden rounded-[1.5rem] p-6 text-white md:p-8">
-      <span className="gold-chrome-bg inline-block rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-re-ink">
-        Worth the jump
-      </span>
-
-      <div className="mt-4 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-        <div className="max-w-lg">
-          <h3 className="font-serif text-2xl text-white md:text-3xl">
-            Move up to {to.name}
-          </h3>
-          <p className="mt-3 leading-relaxed text-white/85">{to.stepUpPitch ?? to.step}</p>
+    <div className="gold-ring blue-fade mb-6 rounded-2xl p-5 text-white md:p-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="max-w-md">
+          <p className="font-serif text-xl text-white md:text-2xl">
+            Upgrade to {to.name} for another {money(delta)}
+          </p>
+          {covered.length > 0 && (
+            <p className="mt-1.5 text-sm text-white/85">
+              {to.name} already includes {covered.map((c) => c.name.toLowerCase()).join(" and ")}, so
+              you stop paying for it separately.
+            </p>
+          )}
+          <ul className="mt-3 space-y-1 text-sm text-white/90">
+            {plus.map((line) => (
+              <li key={line} className="flex gap-2">
+                <span aria-hidden>+</span>
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="shrink-0 text-left md:text-right">
-          <p className="font-serif text-4xl text-white">+{money(delta)}</p>
-          <p className="text-xs text-white/70">on top of {from.name}</p>
-        </div>
-      </div>
-
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
         <button
           type="button"
           onClick={onTake}
-          className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-medium text-re-blue transition-transform duration-300 hover:-translate-y-0.5"
+          className="inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-re-blue transition-transform duration-200 hover:-translate-y-0.5"
         >
-          Upgrade to {to.name} <span aria-hidden>→</span>
-        </button>
-        <button
-          type="button"
-          onClick={onDismiss}
-          className="text-sm text-white/70 underline underline-offset-4 transition-colors hover:text-white"
-        >
-          No thanks, stay on {from.name}
+          Upgrade <span aria-hidden>→</span>
         </button>
       </div>
     </div>
   );
 }
 
-function AddOnCard({
+function ExtraRow({
   addOn,
   included,
   includedReason,
-  selected,
+  added,
   units,
-  compact = false,
   onToggle,
   onUnits,
 }: {
-  addOn: ReturnType<typeof getAddOn> & {};
+  addOn: BookableAddOn;
   included: boolean;
   includedReason?: string;
-  selected: boolean;
+  added: boolean;
   units: number;
-  /** Tile rather than card: no pitch, two across on a phone. */
-  compact?: boolean;
   onToggle: () => void;
   onUnits: (units: number) => void;
 }) {
-  if (!addOn) return null;
-
-  const isBundle = Boolean(addOn.bundleOf);
-  const savesOnBundle = isBundle
-    ? (addOn.bundleOf ?? []).reduce((sum, id) => sum + (getAddOn(id)?.amount ?? 0), 0) - addOn.amount
-    : 0;
-
   if (included) {
     return (
-      <div className="flex h-full flex-col rounded-2xl border border-re-stone-light bg-re-ivory p-3.5 opacity-70">
-        <p className="text-sm font-medium leading-snug text-re-ink line-through decoration-re-stone/50">
-          {addOn.name}
+      <div className="flex items-center gap-3 rounded-2xl border border-re-stone-light bg-re-ivory px-4 py-3.5">
+        <span aria-hidden className="text-re-blue">
+          ✓
+        </span>
+        <p className="text-sm text-re-stone">
+          <span className="text-re-ink">{addOn.name}</span>{" "}
+          {includedReason?.replace(/^Already in/, "included with")}
         </p>
-        <p className="mt-1 font-serif text-lg text-re-stone line-through">{addOn.price}</p>
-        <p className="mt-auto pt-2 text-[10px] uppercase leading-tight tracking-[0.12em] text-re-blue">
-          {includedReason}
-        </p>
-      </div>
-    );
-  }
-
-  if (compact) {
-    return (
-      <div
-        className={`flex h-full flex-col rounded-2xl border p-3.5 transition-colors duration-300 ${
-          selected ? "border-re-blue bg-re-blue-light" : "border-re-stone-light bg-white hover:border-re-blue"
-        }`}
-      >
-        <button
-          type="button"
-          aria-pressed={selected}
-          onClick={onToggle}
-          className="flex flex-1 flex-col text-left"
-        >
-          <span className="flex items-start justify-between gap-2">
-            <span className="text-sm font-medium leading-snug text-re-ink">{addOn.name}</span>
-            <Tick selected={selected} small />
-          </span>
-          <span className="mt-1 font-serif text-lg text-re-blue">
-            {addOn.price}
-            {addOn.quantity && (
-              <span className="ml-0.5 font-sans text-[10px] text-re-stone">
-                /{addOn.quantity.step}
-              </span>
-            )}
-          </span>
-        </button>
-
-        {selected && addOn.quantity && (
-          <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-re-blue/15 pt-3">
-            <Stepper
-              units={units}
-              max={addOn.quantity.max}
-              onChange={onUnits}
-              label={`${addOn.name} quantity`}
-              small
-            />
-            <p className="text-xs text-re-ink">{money(addOn.amount * units)}</p>
-          </div>
-        )}
       </div>
     );
   }
 
   return (
     <div
-      className={`rounded-2xl border p-5 transition-all duration-300 ${
-        selected
-          ? "border-re-blue bg-re-blue-light"
-          : "border-re-stone-light bg-white hover:border-re-blue"
+      className={`rounded-2xl border-2 px-4 py-3.5 transition-colors duration-200 ${
+        added ? "border-re-blue bg-re-blue-light" : "border-re-stone-light bg-white"
       }`}
     >
-      <button
-        type="button"
-        aria-pressed={selected}
-        onClick={onToggle}
-        className="w-full text-left"
-      >
-        <div className="flex items-start gap-3">
-          <span className="mt-0.5 shrink-0">
-            <Tick selected={selected} />
-          </span>
-
-          <span className="min-w-0 flex-1">
-            <span className="flex items-baseline justify-between gap-3">
-              <span className="font-medium text-re-ink">{addOn.name}</span>
-              <span className="shrink-0 font-serif text-xl text-re-blue">
-                {addOn.price}
-                {addOn.quantity && (
-                  <span className="ml-1 text-[11px] font-sans text-re-stone">
-                    /{addOn.quantity.step}
-                  </span>
-                )}
-              </span>
-            </span>
-
-            {savesOnBundle > 0 && (
-              <span className="gold-chrome-bg mt-2 inline-block rounded-full px-2.5 py-0.5 text-[10px] uppercase tracking-[0.14em] text-re-ink">
-                Save {money(savesOnBundle)}
-              </span>
-            )}
-
-            {addOn.pitch && (
-              <span className="mt-2 block text-sm leading-relaxed text-re-stone">{addOn.pitch}</span>
-            )}
-          </span>
+      <div className="flex items-center gap-3">
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-medium text-re-ink">
+            {addOn.name}
+            {addOn.quantity && <span className="text-re-stone"> · per {addOn.quantity.step}</span>}
+          </p>
+          {addOn.pitch && !added && (
+            <p className="mt-0.5 text-xs leading-relaxed text-re-stone">{addOn.pitch}</p>
+          )}
         </div>
-      </button>
 
-      {selected && addOn.quantity && (
-        <div className="mt-4 flex items-center gap-3 border-t border-re-blue/15 pt-4">
-          <Stepper
-            units={units}
-            max={addOn.quantity.max}
-            onChange={onUnits}
-            label={`${addOn.name} quantity`}
-          />
-          <p className="text-sm text-re-stone">
+        <p className="shrink-0 font-serif text-lg text-re-blue">{addOn.price}</p>
+
+        <button
+          type="button"
+          aria-pressed={added}
+          onClick={onToggle}
+          className={`inline-flex min-h-[44px] shrink-0 items-center justify-center gap-1.5 rounded-full px-4 text-sm font-medium transition-colors ${
+            added
+              ? "bg-re-blue text-white"
+              : "border border-re-ink text-re-ink hover:bg-re-ink hover:text-white"
+          }`}
+        >
+          {added ? "✓ Added" : "+ Add"}
+        </button>
+      </div>
+
+      {added && addOn.quantity && (
+        <div className="mt-3 flex items-center gap-3 border-t border-re-blue/15 pt-3">
+          <Stepper units={units} max={addOn.quantity.max} onChange={onUnits} label={addOn.name} />
+          <p className="text-xs text-re-stone">
             {units * addOn.quantity.step} {addOn.quantity.unit} ·{" "}
             <span className="text-re-ink">{money(addOn.amount * units)}</span>
           </p>
@@ -768,24 +846,49 @@ function AddOnCard({
   );
 }
 
-function Tick({ selected, small = false }: { selected: boolean; small?: boolean }) {
-  const size = small ? "h-5 w-5" : "h-6 w-6";
+function ChipRow({
+  options,
+  value,
+  onChange,
+}: {
+  options: string[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {options.map((option) => {
+        const on = value === option;
+        return (
+          <button
+            key={option}
+            type="button"
+            aria-pressed={on}
+            onClick={() => onChange(on ? "" : option)}
+            className={`min-h-[48px] rounded-full border-2 px-5 text-sm transition-colors ${
+              on
+                ? "border-re-blue bg-re-blue text-white"
+                : "border-re-stone-light bg-white text-re-ink hover:border-re-blue"
+            }`}
+          >
+            {option}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function Tick({ selected }: { selected: boolean }) {
   return (
     <span
       aria-hidden
-      className={`inline-flex ${size} shrink-0 items-center justify-center rounded-full border transition-colors ${
+      className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
         selected ? "border-re-blue bg-re-blue text-white" : "border-re-stone-light bg-white"
       }`}
     >
       {selected && (
-        <svg
-          width={small ? "10" : "12"}
-          height={small ? "10" : "12"}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-        >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
           <polyline points="20 6 9 17 4 12" />
         </svg>
       )}
@@ -798,97 +901,96 @@ function Stepper({
   max,
   onChange,
   label,
-  small = false,
 }: {
   units: number;
   max: number;
   onChange: (units: number) => void;
   label: string;
-  small?: boolean;
 }) {
-  const size = small ? "h-9 w-9 text-base" : "h-10 w-10 text-lg";
   const btn =
-    `inline-flex ${size} items-center justify-center rounded-full border border-re-stone-light bg-white text-re-ink transition-colors hover:border-re-blue hover:text-re-blue disabled:opacity-40 disabled:hover:border-re-stone-light disabled:hover:text-re-ink`;
-
+    "inline-flex h-9 w-9 items-center justify-center rounded-full border border-re-stone-light bg-white text-base text-re-ink transition-colors hover:border-re-blue hover:text-re-blue disabled:opacity-40";
   return (
-    <div className="flex items-center gap-2" role="group" aria-label={label}>
-      <button
-        type="button"
-        className={btn}
-        onClick={() => onChange(Math.max(1, units - 1))}
-        disabled={units <= 1}
-        aria-label="Fewer"
-      >
+    <div className="flex items-center gap-2" role="group" aria-label={`${label} quantity`}>
+      <button type="button" className={btn} onClick={() => onChange(Math.max(1, units - 1))} disabled={units <= 1} aria-label="Fewer">
         −
       </button>
-      <span className="w-6 text-center font-medium tabular-nums text-re-ink">{units}</span>
-      <button
-        type="button"
-        className={btn}
-        onClick={() => onChange(Math.min(max, units + 1))}
-        disabled={units >= max}
-        aria-label="More"
-      >
+      <span className="w-5 text-center text-sm font-medium tabular-nums text-re-ink">{units}</span>
+      <button type="button" className={btn} onClick={() => onChange(Math.min(max, units + 1))} disabled={units >= max} aria-label="More">
         +
       </button>
     </div>
   );
 }
 
-function Summary({ offer, q }: { offer?: BookableOffer; q: ReturnType<typeof quote> }) {
+function Summary({
+  offer,
+  q,
+  address,
+  when,
+  timeSlot,
+  ctaLabel,
+  canContinue,
+  onContinue,
+}: {
+  offer?: BookableOffer;
+  q: Quote;
+  address: string;
+  when: string;
+  timeSlot: string;
+  ctaLabel: string;
+  canContinue: boolean;
+  onContinue: () => void;
+}) {
   return (
-    <div className="rounded-[1.5rem] border border-re-stone-light bg-white p-6 shadow-[0_20px_50px_rgba(30,98,224,0.08)]">
-      <p className="label-eyebrow">Your booking</p>
+    <div className="rounded-2xl border border-re-stone-light bg-white p-5 shadow-[0_16px_40px_rgba(30,98,224,0.08)]">
+      <p className="label-eyebrow">Your shoot</p>
+
+      {address && <p className="mt-3 font-medium leading-snug text-re-ink">{address}</p>}
 
       {!offer ? (
-        <p className="mt-4 text-sm leading-relaxed text-re-stone">
-          Pick a package and the price builds here as you go.
+        <p className="mt-3 text-sm leading-relaxed text-re-stone">
+          The price builds here as you go.
         </p>
       ) : (
         <>
-          <div className="mt-4 flex items-baseline justify-between gap-3">
-            <p className="font-serif text-xl text-re-ink">{offer.name}</p>
-            <p className="shrink-0 font-medium text-re-ink tabular-nums">
+          <div className="mt-3 flex items-baseline justify-between gap-3 text-sm">
+            <span className="text-re-ink">{offer.name}</span>
+            <span className="shrink-0 tabular-nums text-re-ink">
               {offer.quote ? "—" : offer.price}
-            </p>
+            </span>
           </div>
 
-          {q.lines.length > 0 && (
-            <ul className="mt-4 space-y-2.5 border-t border-re-stone-light pt-4 text-sm">
-              {q.lines.map((line) => (
-                <li key={line.id} className="flex justify-between gap-3">
-                  <span className="text-re-stone">
-                    {line.name}
-                    {line.units > 1 && ` ×${line.units}`}
-                  </span>
-                  <span className="shrink-0 text-re-ink tabular-nums">{money(line.amount)}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+          {q.lines.map((line) => (
+            <div key={line.id} className="mt-1.5 flex justify-between gap-3 text-sm">
+              <span className="text-re-stone">
+                {line.name}
+                {line.units > 1 && ` ×${line.units}`}
+              </span>
+              <span className="shrink-0 tabular-nums text-re-ink">{money(line.amount)}</span>
+            </div>
+          ))}
 
-          {q.saved > 0 && (
-            <p className="mt-4 rounded-xl bg-re-blue-light px-3 py-2 text-xs text-re-blue">
-              Bundled — {money(q.saved)} less than buying separately.
-            </p>
-          )}
-
-          <div className="mt-5 flex items-baseline justify-between gap-3 border-t border-re-stone-light pt-5">
-            <p className="text-sm uppercase tracking-[0.14em] text-re-stone">
-              {q.quoteOnly ? "Estimate" : "Total"}
-            </p>
-            <p className="font-serif text-3xl text-re-blue tabular-nums">{totalLabel(q)}</p>
+          <div className="mt-4 flex items-baseline justify-between gap-3 border-t border-re-stone-light pt-4">
+            <span className="text-xs uppercase tracking-[0.14em] text-re-stone">Total</span>
+            <span className="font-serif text-2xl tabular-nums text-re-blue">{totalLabel(q)}</span>
           </div>
-
-          <p className="mt-4 text-xs leading-relaxed text-re-stone">
-            {q.quoteOnly
-              ? "Quoted against the asset once we've seen it. No obligation."
-              : q.recurring
-                ? "Invoiced at the start of each cycle. No long-term lock-in."
-                : "Delivered the next business day. Invoiced after it's delivered, not now."}
-          </p>
         </>
       )}
+
+      {(when || timeSlot) && (
+        <p className="mt-3 text-sm text-re-stone">{[when, timeSlot].filter(Boolean).join(" · ")}</p>
+      )}
+
+      <p className="mt-1 text-xs text-re-stone">No payment today</p>
+
+      <button
+        type="button"
+        onClick={onContinue}
+        disabled={!canContinue}
+        className="mt-5 inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-re-blue px-5 text-sm font-medium text-white transition-colors hover:bg-re-blue-accent disabled:cursor-not-allowed disabled:opacity-35"
+      >
+        {ctaLabel} <span aria-hidden>→</span>
+      </button>
     </div>
   );
 }

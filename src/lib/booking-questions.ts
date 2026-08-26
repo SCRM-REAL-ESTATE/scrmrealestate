@@ -27,18 +27,6 @@ export type Question = {
 export const DETAIL_QUESTIONS: Record<Stream, Question[]> = {
   residential: [
     {
-      id: "address",
-      label: "Property address",
-      type: "text",
-      placeholder: "12 Smith Street, Brighton VIC 3186",
-    },
-    {
-      id: "live_date",
-      label: "When does it need to be live?",
-      type: "date",
-      hint: "Shot one day, delivered the next business day.",
-    },
-    {
       id: "access",
       label: "Who lets us in?",
       type: "choice",
@@ -66,26 +54,14 @@ export const DETAIL_QUESTIONS: Record<Stream, Question[]> = {
         line: "A home that size usually runs past the photo count in the package. Extra images are $49 per 5.",
       },
     },
-    {
-      id: "notes",
-      label: "Anything we should know?",
-      type: "textarea",
-      placeholder: "Parking, pets, styling arriving Tuesday, a room that has to be shot first…",
-    },
   ],
 
   commercial: [
     {
-      id: "address",
-      label: "Asset address",
-      type: "text",
-      placeholder: "45 Fitzgerald Road, Laverton North VIC",
-    },
-    {
       id: "close_date",
       label: "EOI or auction close",
       type: "date",
-      hint: "Tell us the close date and we schedule backwards from it.",
+      hint: "Tell us the close date and we schedule the shoot backwards from it.",
     },
     {
       id: "asset_class",
@@ -114,16 +90,9 @@ export const DETAIL_QUESTIONS: Record<Stream, Question[]> = {
       options: ["Yes — we'll send ours", "No", "Not sure yet"],
       hint: "Off-market stays off-market. We sign before anything is shot.",
     },
-    {
-      id: "notes",
-      label: "Anything we should know?",
-      type: "textarea",
-      placeholder: "Site inductions, tenant hours, gate access, what's already been shot…",
-    },
   ],
 
   monthly: [
-    { id: "agency", label: "Agency name", type: "text", placeholder: "Your agency" },
     {
       id: "team_size",
       label: "How many agents would be on camera?",
@@ -135,12 +104,6 @@ export const DETAIL_QUESTIONS: Record<Stream, Question[]> = {
       label: "How many listings a month?",
       type: "choice",
       options: ["1–2", "3–5", "6–10", "10 or more"],
-    },
-    {
-      id: "start",
-      label: "When do you want to start?",
-      type: "choice",
-      options: ["As soon as you can", "Next month", "In a couple of months", "Just pricing it up"],
     },
     {
       id: "channels",

@@ -7,10 +7,13 @@
  */
 
 import {
+  ADD_ON_GROUPS,
   BOOKABLE_ADD_ONS,
+  OFFERS,
   getAddOn,
   getOffer,
   money,
+  type AddOnGroup,
   type BookableAddOn,
   type BookableOffer,
 } from "./catalogue";
@@ -55,6 +58,69 @@ export function availableAddOns(offerId: string | undefined): AddOnRow[] {
   }
 
   return [...rows.filter((r) => !r.included), ...rows.filter((r) => r.included)];
+}
+
+/** The add-ons for one package, split onto their three shelves. */
+export function groupedAddOns(
+  offerId: string | undefined
+): { id: AddOnGroup; label: string; rows: AddOnRow[] }[] {
+  const rows = availableAddOns(offerId);
+  return ADD_ON_GROUPS.map((group) => ({
+    ...group,
+    rows: rows.filter((r) => r.addOn.group === group.id),
+  })).filter((g) => g.rows.length > 0);
+}
+
+export type Upgrade = {
+  to: BookableOffer;
+  /** What moving up actually costs, given what they've already added. */
+  delta: number;
+  /** The headline gap between the two package prices. */
+  rawGap: number;
+  /** Selected add-ons the upgrade absorbs, so they stop being charged. */
+  covered: BookableAddOn[];
+  /** What else the higher tier brings. */
+  plus: string[];
+};
+
+/**
+ * The upgrade worth offering, priced against what's actually in the cart.
+ *
+ * Signature is $499 and Premiere is $899, so the headline gap is $400 — but
+ * someone who has already added the $200 aerial pack is $200 away, not $400,
+ * because Premiere contains it. Quoting the headline number to that person is
+ * both wrong and a worse offer than the truth.
+ *
+ * Only two things earn a banner: the step towards the tier marked most popular,
+ * and any higher tier that costs less than its sticker gap because it absorbs
+ * something already selected. A naked "+$400" for nothing extra is neither.
+ */
+export function upgradeOffer(
+  offerId: string | undefined,
+  selected: string[] = [],
+  quantities: Record<string, number> = {}
+): Upgrade | undefined {
+  const from = getOffer(offerId);
+  if (!from || from.quote || from.recurring) return undefined;
+
+  const current = quote(from.id, selected, quantities).total;
+
+  const candidates = OFFERS.filter(
+    (o) => o.stream === from.stream && !o.quote && !o.recurring && o.amount > from.amount
+  )
+    .map((to) => {
+      const delta = quote(to.id, selected, quantities).total - current;
+      const rawGap = to.amount - from.amount;
+      const covered = quote(from.id, selected, quantities)
+        .lines.filter((l) => to.contains.includes(l.id))
+        .map((l) => getAddOn(l.id))
+        .filter((a): a is BookableAddOn => Boolean(a));
+      return { to, delta, rawGap, covered, plus: to.plus ?? [] };
+    })
+    .filter((c) => c.to.id === from.stepUpTo || c.delta < c.rawGap);
+
+  if (!candidates.length) return undefined;
+  return candidates.sort((a, b) => a.delta - b.delta)[0];
 }
 
 export type Collapse = {
