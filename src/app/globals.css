@@ -75,8 +75,8 @@ button, a {
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-25%); }
+  0%   { transform: translateX(0) translateZ(0); }
+  100% { transform: translateX(-25%) translateZ(0); }
 }
 
 @keyframes scrollHint {
@@ -85,8 +85,16 @@ button, a {
 }
 
 @keyframes heroZoom {
-  0%, 100% { transform: scale(1.03); }
-  50%      { transform: scale(1.10); }
+  0%, 100% { transform: scale(1.03) translateZ(0); }
+  50%      { transform: scale(1.10) translateZ(0); }
+}
+
+/* The hero still and video are screen sized and scale for 24s straight. Left
+   on the main layer that repaints every frame, which strobes on some GPUs. */
+.hero-media {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -176,24 +184,26 @@ button, a {
   pointer-events: none;
   background: linear-gradient(
     var(--sweep-angle, 115deg),
-    transparent 38%,
-    rgba(196, 169, 108, 0.14) 44%,
-    rgba(170, 200, 245, 0.18) 47%,
-    rgba(253, 246, 227, 0.42) 50%,
-    rgba(240, 170, 160, 0.18) 53%,
-    rgba(196, 169, 108, 0.14) 56%,
-    transparent 62%
+    transparent 40%,
+    rgba(196, 169, 108, 0.10) 45%,
+    rgba(170, 200, 245, 0.13) 47.5%,
+    rgba(253, 246, 227, 0.28) 50%,
+    rgba(240, 170, 160, 0.13) 52.5%,
+    rgba(196, 169, 108, 0.10) 55%,
+    transparent 60%
   );
   background-size: 300% 300%;
-  animation: goldSweepPass 7s ease-in-out infinite;
+  animation: goldSweepPass 9s linear infinite;
   animation-delay: var(--sweep-delay, 0s);
 }
 
+/* One pass across the card, then parked off the edge until the next. The
+   band is transparent at both ends, so it fades in and out by travelling
+   rather than by the layer switching on and off. */
 @keyframes goldSweepPass {
-  0%, 6%    { background-position: 140% 140%; opacity: 0; }
-  22%       { opacity: 1; }
-  72%       { opacity: 1; }
-  94%, 100% { background-position: -40% -40%; opacity: 0; }
+  0%        { background-position: 165% 165%; }
+  40%       { background-position: -65% -65%; }
+  100%      { background-position: -65% -65%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
