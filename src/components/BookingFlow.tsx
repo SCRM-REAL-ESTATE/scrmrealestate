@@ -78,6 +78,8 @@ export default function BookingFlow({ initialOfferId, initialStream }: Props) {
   const index = Math.max(steps.indexOf(step), 0);
   const q = quote(offerId, selected, quantities);
   const rows = availableAddOns(offerId);
+  const featuredRows = rows.filter((r) => !r.addOn.compact && !r.included);
+  const compactRows = rows.filter((r) => r.addOn.compact || r.included);
   const stepUp = offer?.stepUpTo ? getOffer(offer.stepUpTo) : undefined;
 
   const go = (delta: number) => {
@@ -311,8 +313,9 @@ export default function BookingFlow({ initialOfferId, initialStream }: Props) {
                 </div>
               )}
 
+              {/* The four worth arguing for get the room to argue. */}
               <div className="grid gap-3 sm:grid-cols-2">
-                {rows.map(({ addOn, included, includedReason }) => (
+                {featuredRows.map(({ addOn, included, includedReason }) => (
                   <AddOnCard
                     key={addOn.id}
                     addOn={addOn}
@@ -325,6 +328,30 @@ export default function BookingFlow({ initialOfferId, initialStream }: Props) {
                   />
                 ))}
               </div>
+
+              {/* Everything else as tiles, two across even on the smallest
+                  phone. These are things people either want or they don't, and
+                  a paragraph each turned the step into a long scroll. */}
+              {compactRows.length > 0 && (
+                <div className="mt-6">
+                  <p className="label-eyebrow mb-3">Also available</p>
+                  <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+                    {compactRows.map(({ addOn, included, includedReason }) => (
+                      <AddOnCard
+                        key={addOn.id}
+                        addOn={addOn}
+                        compact
+                        included={included}
+                        includedReason={includedReason}
+                        selected={q.lines.some((l) => l.id === addOn.id)}
+                        units={quantities[addOn.id] ?? 1}
+                        onToggle={() => toggle(addOn.id)}
+                        onUnits={(u) => setUnits(addOn.id, u)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <p className="mt-6 text-sm text-re-stone">
                 Not sure? Skip it. We go through the property on the call and you can add anything
@@ -600,6 +627,7 @@ function AddOnCard({
   includedReason,
   selected,
   units,
+  compact = false,
   onToggle,
   onUnits,
 }: {
@@ -608,6 +636,8 @@ function AddOnCard({
   includedReason?: string;
   selected: boolean;
   units: number;
+  /** Tile rather than card: no pitch, two across on a phone. */
+  compact?: boolean;
   onToggle: () => void;
   onUnits: (units: number) => void;
 }) {
@@ -620,14 +650,57 @@ function AddOnCard({
 
   if (included) {
     return (
-      <div className="rounded-2xl border border-re-stone-light bg-re-ivory p-5 opacity-70">
-        <div className="flex items-start justify-between gap-3">
-          <p className="font-medium text-re-ink line-through decoration-re-stone/50">{addOn.name}</p>
-          <p className="shrink-0 font-serif text-xl text-re-stone line-through">{addOn.price}</p>
-        </div>
-        <p className="mt-2 inline-block rounded-full bg-white px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-re-blue">
+      <div className="flex h-full flex-col rounded-2xl border border-re-stone-light bg-re-ivory p-3.5 opacity-70">
+        <p className="text-sm font-medium leading-snug text-re-ink line-through decoration-re-stone/50">
+          {addOn.name}
+        </p>
+        <p className="mt-1 font-serif text-lg text-re-stone line-through">{addOn.price}</p>
+        <p className="mt-auto pt-2 text-[10px] uppercase leading-tight tracking-[0.12em] text-re-blue">
           {includedReason}
         </p>
+      </div>
+    );
+  }
+
+  if (compact) {
+    return (
+      <div
+        className={`flex h-full flex-col rounded-2xl border p-3.5 transition-colors duration-300 ${
+          selected ? "border-re-blue bg-re-blue-light" : "border-re-stone-light bg-white hover:border-re-blue"
+        }`}
+      >
+        <button
+          type="button"
+          aria-pressed={selected}
+          onClick={onToggle}
+          className="flex flex-1 flex-col text-left"
+        >
+          <span className="flex items-start justify-between gap-2">
+            <span className="text-sm font-medium leading-snug text-re-ink">{addOn.name}</span>
+            <Tick selected={selected} small />
+          </span>
+          <span className="mt-1 font-serif text-lg text-re-blue">
+            {addOn.price}
+            {addOn.quantity && (
+              <span className="ml-0.5 font-sans text-[10px] text-re-stone">
+                /{addOn.quantity.step}
+              </span>
+            )}
+          </span>
+        </button>
+
+        {selected && addOn.quantity && (
+          <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-re-blue/15 pt-3">
+            <Stepper
+              units={units}
+              max={addOn.quantity.max}
+              onChange={onUnits}
+              label={`${addOn.name} quantity`}
+              small
+            />
+            <p className="text-xs text-re-ink">{money(addOn.amount * units)}</p>
+          </div>
+        )}
       </div>
     );
   }
@@ -647,17 +720,8 @@ function AddOnCard({
         className="w-full text-left"
       >
         <div className="flex items-start gap-3">
-          <span
-            aria-hidden
-            className={`mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-colors ${
-              selected ? "border-re-blue bg-re-blue text-white" : "border-re-stone-light bg-white"
-            }`}
-          >
-            {selected && (
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            )}
+          <span className="mt-0.5 shrink-0">
+            <Tick selected={selected} />
           </span>
 
           <span className="min-w-0 flex-1">
@@ -704,19 +768,47 @@ function AddOnCard({
   );
 }
 
+function Tick({ selected, small = false }: { selected: boolean; small?: boolean }) {
+  const size = small ? "h-5 w-5" : "h-6 w-6";
+  return (
+    <span
+      aria-hidden
+      className={`inline-flex ${size} shrink-0 items-center justify-center rounded-full border transition-colors ${
+        selected ? "border-re-blue bg-re-blue text-white" : "border-re-stone-light bg-white"
+      }`}
+    >
+      {selected && (
+        <svg
+          width={small ? "10" : "12"}
+          height={small ? "10" : "12"}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+        >
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      )}
+    </span>
+  );
+}
+
 function Stepper({
   units,
   max,
   onChange,
   label,
+  small = false,
 }: {
   units: number;
   max: number;
   onChange: (units: number) => void;
   label: string;
+  small?: boolean;
 }) {
+  const size = small ? "h-9 w-9 text-base" : "h-10 w-10 text-lg";
   const btn =
-    "inline-flex h-10 w-10 items-center justify-center rounded-full border border-re-stone-light bg-white text-lg text-re-ink transition-colors hover:border-re-blue hover:text-re-blue disabled:opacity-40 disabled:hover:border-re-stone-light disabled:hover:text-re-ink";
+    `inline-flex ${size} items-center justify-center rounded-full border border-re-stone-light bg-white text-re-ink transition-colors hover:border-re-blue hover:text-re-blue disabled:opacity-40 disabled:hover:border-re-stone-light disabled:hover:text-re-ink`;
 
   return (
     <div className="flex items-center gap-2" role="group" aria-label={label}>
