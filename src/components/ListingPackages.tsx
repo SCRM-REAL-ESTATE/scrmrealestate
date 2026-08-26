@@ -91,7 +91,10 @@ export default function ListingPackages({
               </ul>
 
               <div className="mt-7 flex-grow flex items-end">
-                <CTAButton href="/contact" variant={pkg.featured ? "outline-light" : "solid"}>
+                <CTAButton
+                  href={`/book?p=${pkg.id}`}
+                  variant={pkg.featured ? "outline-light" : "solid"}
+                >
                   Book this package
                 </CTAButton>
               </div>

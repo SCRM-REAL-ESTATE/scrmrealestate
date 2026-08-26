@@ -53,7 +53,7 @@ export default function AgentContentCard({ dark = false }: { dark?: boolean }) {
       </p>
 
       <div className="mt-7 flex justify-center">
-        <CTAButton href="/contact" variant={dark ? "outline-light" : "solid"}>
+        <CTAButton href={`/book?p=${AGENT_CONTENT.id}`} variant={dark ? "outline-light" : "solid"}>
           Book a filming day
         </CTAButton>
       </div>

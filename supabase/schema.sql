@@ -31,3 +31,56 @@ create policy "Public can insert contact submissions"
 -- Helpful index for browsing recent submissions:
 create index if not exists contact_submissions_created_at_idx
   on public.contact_submissions (created_at desc);
+
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Bookings (src/app/book) — the funnel writes these from the server only.
+--
+-- Unlike contact_submissions there is deliberately NO anon policy: the browser
+-- never touches this table. /api/book inserts with the secret key, which means
+-- the total in a row is one the server computed from the catalogue rather than
+-- one a page sent it.
+--
+-- status walks lead → qualified → confirmed → shot → delivered. A row lands as
+-- 'lead' the moment someone gives us a name and a number, and flips to
+-- 'qualified' if they go on to give us the address and the rest.
+-- ─────────────────────────────────────────────────────────────────────────────
+
+create table if not exists public.bookings (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+
+  -- Short, unambiguous, and readable down the phone (no I, L, O, 0 or 1).
+  reference text not null unique,
+  -- Returned to the browser once, so the second half of the funnel can attach
+  -- to this row and no other.
+  token uuid not null,
+
+  stream text not null check (stream in ('residential', 'commercial', 'monthly')),
+  offer_id text,
+  offer_name text,
+  add_ons jsonb not null default '[]'::jsonb,
+  extra_add_ons jsonb not null default '[]'::jsonb,
+  total_aud integer,
+
+  name text not null,
+  email text not null,
+  phone text,
+  agency text,
+
+  -- The optional half: address, dates, access, notes. Shape varies by stream,
+  -- so it's stored as the answers keyed by question id.
+  details jsonb,
+  qualified_at timestamptz,
+
+  status text not null default 'lead'
+    check (status in ('lead', 'qualified', 'confirmed', 'shot', 'delivered', 'cancelled'))
+);
+
+alter table public.bookings enable row level security;
+
+-- No policies at all. The anon key can neither read nor write; the service key
+-- used by the route handlers bypasses RLS.
+
+create index if not exists bookings_created_at_idx on public.bookings (created_at desc);
+create index if not exists bookings_status_idx on public.bookings (status);

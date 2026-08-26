@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { SITE } from "@/lib/site";
+import { clean, escapeHtml, isEmail } from "@/lib/sanitise";
 
 /**
  * Enquiries from the contact form land in the inbox as email.
@@ -24,14 +25,6 @@ type Payload = {
   /** Hidden field. Real people leave it empty; bots fill everything in. */
   website?: string;
 };
-
-const clean = (value: unknown, max = 2000) =>
-  typeof value === "string" ? value.trim().slice(0, max) : "";
-
-const escapeHtml = (value: string) =>
-  value.replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string
-  );
 
 export async function POST(request: Request) {
   let body: Payload;
@@ -59,7 +52,7 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!isEmail(email)) {
     return NextResponse.json({ error: "That email address doesn't look right." }, { status: 400 });
   }
 

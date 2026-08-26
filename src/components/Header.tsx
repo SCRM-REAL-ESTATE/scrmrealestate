@@ -75,10 +75,10 @@ export default function Header() {
 
         <div className="flex items-center gap-3">
           <Link
-            href="/contact"
+            href="/book"
             className="hidden md:inline-flex items-center gap-2 rounded-full bg-re-blue text-white text-sm font-medium px-6 py-2.5 hover:bg-re-blue-accent hover:shadow-[0_10px_28px_rgba(30,98,224,0.35)] hover:-translate-y-0.5 transition-all duration-300"
           >
-            Book a Call
+            Book a Shoot
             <span aria-hidden>→</span>
           </Link>
 
@@ -158,10 +158,11 @@ export default function Header() {
 
           <div className="px-5 mt-2 space-y-3 text-sm">
             <Link
-              href="/contact"
+              href="/book"
+              onClick={() => setOpen(false)}
               className="flex items-center justify-center w-full rounded-full bg-white text-re-blue py-3.5 hover:bg-white/90 transition-colors"
             >
-              Book a Call
+              Book a Shoot
             </Link>
             <a href={`tel:${SITE.phoneIntl}`} className="block text-white/85">
               <span className="label-eyebrow !text-white/55 block mb-1">Call</span>

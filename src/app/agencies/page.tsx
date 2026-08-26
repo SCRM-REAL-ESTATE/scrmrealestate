@@ -4,6 +4,7 @@ import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import ServiceIncludes from "@/components/ServiceIncludes";
 import AgencyShowcase from "@/components/AgencyShowcase";
 import TiltCard from "@/components/TiltCard";
+import { AGENCY_MANAGEMENT } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Agencies",
@@ -91,7 +92,7 @@ export default function AgenciesPage() {
                 your listing volume and quote it. No forced tiers.
               </p>
               <div className="mt-8 flex justify-center">
-                <CTAButton href="/contact">Enquire now</CTAButton>
+                <CTAButton href={`/book?p=${AGENCY_MANAGEMENT.id}`}>Enquire now</CTAButton>
               </div>
             </TiltCard>
           </Reveal>

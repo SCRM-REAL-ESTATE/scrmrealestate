@@ -74,7 +74,7 @@ export default function CommercialPage() {
                   asset.
                 </p>
                 <div className="mt-9 flex flex-wrap items-center gap-4">
-                  <CTAButton href="/contact" variant="white">
+                  <CTAButton href="/book?p=pkg-commercial-project" variant="white">
                     Request a quote
                   </CTAButton>
                   <CTAButton href="#campaign" variant="outline-light">
@@ -330,7 +330,7 @@ export default function CommercialPage() {
                     the asset. Send the address and the close date.
                   </p>
                   <div className="mt-7">
-                    <CTAButton href="/contact">Request a quote</CTAButton>
+                    <CTAButton href="/book?p=pkg-commercial-project">Request a quote</CTAButton>
                   </div>
                 </div>
 
@@ -394,7 +394,7 @@ export default function CommercialPage() {
                 fast, call {SITE.phone}.
               </p>
               <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-                <CTAButton href="/contact" variant="white">
+                <CTAButton href="/book?p=pkg-commercial-project" variant="white">
                   Request a quote
                 </CTAButton>
                 <CTAButton href={`tel:${SITE.phoneIntl}`} variant="outline-light" external>

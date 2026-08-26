@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import { Eyebrow } from "@/components/ui";
+import { OFFERS } from "@/lib/catalogue";
+import { VACANT_PROPERTY } from "@/lib/pricing";
 
-/** Mirrors what is actually sold: the three listing packages, the two
- *  monthly packages, and add-ons. Keep in step with src/lib/pricing.ts. */
+/** Derived from the catalogue rather than retyped, so a price change on a
+ *  package can't leave a stale number sitting in the contact form. */
 const serviceOptions = [
-  "Listing $349",
-  "Signature $499",
-  "Premiere $899",
-  "Agent content from $800/mo",
-  "Agency management from $1,800/mo",
-  "Vacant property pack $349",
+  ...OFFERS.filter((o) => !o.quote).map((o) =>
+    o.recurring ? `${o.name} from ${o.price}/mo` : `${o.name} ${o.price}`
+  ),
+  `Vacant property pack ${VACANT_PROPERTY.options.find((o) => o.featured)?.price ?? ""}`.trim(),
   "Add-ons",
   "Not sure yet",
 ];

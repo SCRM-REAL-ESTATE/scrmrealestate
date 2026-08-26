@@ -1,11 +1,29 @@
 /**
- * Listing packages and add-ons. Single source of truth — the Services page and
- * the home page preview both read from here so prices can't drift apart.
+ * Listing packages and add-ons. Single source of truth — the Services page, the
+ * home page preview and the booking funnel all read from here so prices can't
+ * drift apart.
+ *
+ * `amount` is the number; `price` is derived from it at module load. Author the
+ * amount and the string follows, so a price can never be edited in one place
+ * and missed in the other. Every item also carries a stable `id`: display names
+ * get rewritten, and a booking that stored "Signature" would lose its package
+ * the day that happens.
  */
 
-export type ListingPackage = {
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
+
+type Priced<T> = T & { price: string };
+
+const priced = <T extends { amount: number }>(items: T[]): Priced<T>[] =>
+  items.map((item) => ({ ...item, price: money(item.amount) }));
+
+export { money };
+
+type PackageInput = {
+  id: string;
   name: string;
-  price: string;
+  /** Whole AUD. `price` is derived from this. */
+  amount: number;
   products: string;
   turnaround: string;
   includes: string[];
@@ -15,10 +33,13 @@ export type ListingPackage = {
   featured?: boolean;
 };
 
-export const LISTING_PACKAGES: ListingPackage[] = [
+export type ListingPackage = Priced<PackageInput>;
+
+export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
   {
+    id: "pkg-listing",
     name: "Listing",
-    price: "$349",
+    amount: 349,
     products: "3 products included",
     turnaround: "Next business day",
     includes: [
@@ -31,8 +52,9 @@ export const LISTING_PACKAGES: ListingPackage[] = [
     step: "The three things a listing can't go live without.",
   },
   {
+    id: "pkg-signature",
     name: "Signature",
-    price: "$499",
+    amount: 499,
     products: "4 products included",
     turnaround: "Next business day",
     includes: [
@@ -47,8 +69,9 @@ export const LISTING_PACKAGES: ListingPackage[] = [
     featured: true,
   },
   {
+    id: "pkg-premiere",
     name: "Premiere",
-    price: "$899",
+    amount: 899,
     products: "5 products included",
     turnaround: "Next business day",
     includes: [
@@ -62,7 +85,7 @@ export const LISTING_PACKAGES: ListingPackage[] = [
     note: "The full campaign, filmed properly.",
     step: "Everything in Signature, plus a filmed property film and aerial.",
   },
-];
+]);
 
 /**
  * Commercial campaigns. Office and warehouse at a normal campaign scale is most
@@ -70,10 +93,11 @@ export const LISTING_PACKAGES: ListingPackage[] = [
  * project is quoted instead. Priced $50 over the residential equivalents, and
  * aerial is in the top tier because commercial sells on site context.
  */
-export const COMMERCIAL_PACKAGES: ListingPackage[] = [
+export const COMMERCIAL_PACKAGES: ListingPackage[] = priced<PackageInput>([
   {
+    id: "pkg-asset",
     name: "Asset",
-    price: "$399",
+    amount: 399,
     products: "3 products included",
     turnaround: "Next business day",
     includes: [
@@ -86,8 +110,9 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = [
     step: "The three things a campaign can't launch without.",
   },
   {
+    id: "pkg-campaign",
     name: "Campaign",
-    price: "$549",
+    amount: 549,
     products: "4 products included",
     turnaround: "Next business day",
     includes: [
@@ -101,11 +126,12 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = [
     step: "Everything in Asset, plus a piece to camera from you.",
     featured: true,
   },
-];
+]);
 
 /** Cheapest published commercial package, quoted in summary lines. */
-export const COMMERCIAL_FROM = "$399";
-
+export const COMMERCIAL_FROM = money(
+  Math.min(...COMMERCIAL_PACKAGES.map((p) => p.amount))
+);
 
 /**
  * Agent monthly content, sold to the individual agent rather than the agency.
@@ -114,8 +140,10 @@ export const COMMERCIAL_FROM = "$399";
  * sold has to hold that line or the two read as the same thing twice.
  */
 export const AGENT_CONTENT = {
+  id: "ret-agent-content",
   name: "Everything But The House",
-  price: "$800",
+  amount: 800,
+  price: money(800),
   priceSub: "from, per month",
   headline: "Four videos about you. No listing required.",
   pitch:
@@ -131,81 +159,142 @@ export const AGENT_CONTENT = {
     "Signature puts you on camera at the property. This puts you on camera when you haven't got one.",
 };
 
-export type AddOn = {
+/**
+ * Agency monthly management. Lived in the Agencies page markup until the
+ * booking funnel needed to sell it, which meant the same $1,800 was written out
+ * in five files.
+ */
+export const AGENCY_MANAGEMENT = {
+  id: "ret-agency-management",
+  name: "Monthly Social Media Management",
+  amount: 1800,
+  price: money(1800),
+  priceSub: "from, per month",
+  headline: "Your agency's whole social presence, run for you.",
+  pitch:
+    "We plan the month, film it in one batch, edit it, write the captions and post it. One team, start to finish.",
+  includes: [
+    "8 social media videos per month",
+    "6 social media posts per month",
+    "6 stories per month",
+    "Monthly planning, direction & content coordination",
+    "Editing, captions & scheduling",
+  ],
+};
+
+type AddOnInput = {
+  id: string;
   name: string;
-  price: string;
+  amount: number;
   /** Shown under the name when there's a condition worth stating up front. */
   detail?: string;
 };
 
+export type AddOn = Priced<AddOnInput>;
+
+export const ADD_ONS: AddOn[] = priced<AddOnInput>([
+  { id: "add-twilight", name: "Twilight & dusk images", amount: 40 },
+  { id: "add-3d-tour", name: "3D virtual tour", amount: 179 },
+  { id: "add-aerial-photo", name: "Aerial photography", amount: 150 },
+  { id: "add-aerial-video", name: "Aerial video", amount: 150 },
+  {
+    id: "add-aerial-pack",
+    name: "Aerial pack",
+    amount: 200,
+    detail:
+      "Aerial photography and aerial video. Individually $300. Included in the Premiere package",
+  },
+  {
+    id: "add-virtual-staging",
+    name: "Virtual staging, 5 rooms",
+    amount: 200,
+    detail: "Staged photos appear in your listing video at no extra cost",
+  },
+  {
+    id: "add-listing-video",
+    name: "Listing video",
+    amount: 200,
+    detail: "Listing video built from your photos",
+  },
+  {
+    id: "add-vacant-pack",
+    name: "Vacant property pack",
+    amount: 349,
+    detail: "5 staged rooms and a listing video. Individually $400",
+  },
+  { id: "add-open-home-video", name: "Open home video", amount: 129 },
+  { id: "add-extra-images", name: "Extra images", amount: 49, detail: "per 5" },
+]);
+
+const byId = (id: string): AddOn => {
+  const found = ADD_ONS.find((a) => a.id === id);
+  if (!found) throw new Error(`Unknown add-on: ${id}`);
+  return found;
+};
 
 /**
- * Add-ons offered against a commercial campaign. Listed out rather than
- * filtered from ADD_ONS: that list is residential and grows, and twilight,
+ * Add-ons offered against a commercial campaign. Picked from ADD_ONS rather
+ * than restated: the five that carry across are the same price, and twilight,
  * room staging and open homes have no meaning on an industrial estate. Aerial
  * carries a commercial tier note rather than the residential one.
  */
 export const COMMERCIAL_ADD_ONS: AddOn[] = [
-  { name: "3D virtual tour", price: "$179" },
-  { name: "Aerial photography", price: "$150" },
-  { name: "Aerial video", price: "$150" },
-  { name: "Aerial pack", price: "$200", detail: "Aerial photography and aerial video. Individually $300" },
-  { name: "Extra images", price: "$49", detail: "per 5" },
-];
-export const ADD_ONS: AddOn[] = [
-  { name: "Twilight & dusk images", price: "$40" },
-  { name: "3D virtual tour", price: "$179" },
-  { name: "Aerial photography", price: "$150" },
-  { name: "Aerial video", price: "$150" },
+  byId("add-3d-tour"),
+  byId("add-aerial-photo"),
+  byId("add-aerial-video"),
   {
-    name: "Aerial pack",
-    price: "$200",
-    detail: "Aerial photography and aerial video. Individually $300. Included in the Premiere package",
+    ...byId("add-aerial-pack"),
+    detail: "Aerial photography and aerial video. Individually $300",
   },
-  {
-    name: "Virtual staging, 5 rooms",
-    price: "$200",
-    detail: "Staged photos appear in your listing video at no extra cost",
-  },
-  { name: "Listing video", price: "$200", detail: "Listing video built from your photos" },
-  { name: "Vacant property pack", price: "$349", detail: "5 staged rooms and a listing video. Individually $400" },
-  { name: "Open home video", price: "$129" },
-  { name: "Extra images", price: "$49", detail: "per 5" },
+  byId("add-extra-images"),
 ];
 
 /**
  * Vacant property. Sold alongside a listing package rather than instead of
  * one, so it has its own section on Services and is offered again next to
- * the packages.
+ * the packages. The ids match the add-ons deliberately — these are the same
+ * three products in a different placement, not extra ones.
  */
 export const VACANT_PROPERTY = {
   heading: "Already have photos?",
   intro:
     "For offices and property managers with vacant stock. Send us your photos and we will stage the rooms that need it and build the video.",
-  options: [
+  options: priced([
     {
+      id: "add-virtual-staging",
       name: "Virtual staging",
-      price: "$200",
+      amount: 200,
       includes: ["5 virtually staged rooms"],
     },
     {
+      id: "add-listing-video",
       name: "Listing video",
-      price: "$200",
+      amount: 200,
       includes: ["Built from your photos"],
     },
     {
+      id: "add-vacant-pack",
       name: "Vacant property pack",
-      price: "$349",
+      amount: 349,
       includes: ["5 virtually staged rooms", "Listing video built from your photos"],
       note: "Individually $400",
       featured: true,
     },
-  ],
+  ] as {
+    id: string;
+    name: string;
+    amount: number;
+    includes: string[];
+    note?: string;
+    featured?: boolean;
+  }[]),
   smallPrint: "All virtually staged images and video are labelled as virtually staged.",
 };
 
 /** Cheapest add-on, quoted on the package cards. */
-export const ADD_ONS_FROM = "$40";
+export const ADD_ONS_FROM = money(Math.min(...ADD_ONS.map((a) => a.amount)));
 
 /** Price span across the packages, for summary lines. */
-export const LISTING_PRICE_RANGE = "$349 to $899";
+export const LISTING_PRICE_RANGE = `${money(
+  Math.min(...LISTING_PACKAGES.map((p) => p.amount))
+)} to ${money(Math.max(...LISTING_PACKAGES.map((p) => p.amount)))}`;

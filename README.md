@@ -41,6 +41,10 @@ src/
     layout.tsx              ← root shell, metadata, JSON-LD
     page.tsx                ← Home
     services/page.tsx       ← services + pricing (packages folded in)
+    book/page.tsx           ← the booking funnel (every Book button lands here)
+    book/details/page.tsx   ← resume link from the confirmation email
+    api/book/route.ts       ← stage one: the lead
+    api/book/details/route.ts ← stage two: the hot lead
     work/page.tsx
     about/page.tsx
     contact/page.tsx
@@ -58,6 +62,10 @@ src/
     ui.tsx                  ← Container, Section, CTAButton, Eyebrow, H2
   lib/
     site.ts                 ← brand constants (phone, email, URLs)
+    pricing.ts              ← what things cost and how they're described
+    catalogue.ts            ← what can be sold with what (ids, bundles, tiers)
+    booking-rules.ts        ← totals, bundle collapsing, suppression
+    booking-questions.ts    ← the optional questions asked after a lead lands
     media.ts                ← reads media.json, resolves CDN URLs
     supabase.ts             ← Supabase client (no-op when env missing)
 scripts/
@@ -91,7 +99,9 @@ Doing it by hand instead:
    SUPABASE_SERVICE_ROLE_KEY=sb_secret_...
    ```
 
-   The publishable key can't upload — it only reads. The secret key bypasses every security rule, so it lives in `.env.local` only. Never in Vercel, never committed.
+   The publishable key can't upload — it only reads. The secret key bypasses every security rule, so it is never committed.
+
+   > **It does now belong in Vercel**, unlike earlier versions of this note. The booking funnel writes to the `bookings` table from the server, which needs this key. Add it under **Environment Variables** as `SUPABASE_SERVICE_ROLE_KEY`. It is only ever read inside route handlers (`src/lib/supabase-admin.ts`), never in a client component, so it never reaches the browser. Leave it unset and bookings still email through — they just aren't stored.
 
 **Every time you have new work:**
 
@@ -145,10 +155,46 @@ Changing buckets drops manifest entries that lived in the old one (they'd 404 ot
 
 ---
 
+## The booking funnel
+
+Every **Book** button on the site lands on `/book`, carrying what was clicked:
+
+| Clicked | Lands on |
+| ------- | -------- |
+| A package card on Services or the home page | `/book?p=pkg-signature` — that tier already chosen |
+| A package card on Commercial | `/book?p=pkg-campaign` — commercial pricing |
+| Commercial "Request a quote" | `/book?p=pkg-commercial-project` — skips add-ons |
+| "Book a filming day" on the agent card | `/book?p=ret-agent-content` |
+| "Enquire now" on Agencies | `/book?p=ret-agency-management` |
+| The header CTA | `/book` — the only path that asks what you're booking |
+
+It runs in two halves, and the split is the point:
+
+1. **The lead.** Package, add-ons, then name, email and phone. Submitting emails
+   you and writes a `bookings` row with status `lead` and a reference like
+   `SCRM-KV624`. From here the lead cannot be lost.
+2. **The hot lead.** The success screen then asks for the address, the date, who
+   lets us in and the rest — all optional. Anyone who fills it in fires a second,
+   louder email (`🔥 HOT LEAD`) and flips the row to `qualified`. The
+   confirmation email links back to `/book/details?ref=…&t=…`, so someone who
+   closed the tab can still finish from their inbox.
+
+Prices are never sent by the browser. The page posts add-on **ids**, and
+`src/lib/booking-rules.ts` recomputes the total server-side before anything is
+emailed — the same code the page used to draw it. That's also where the rules
+the catalogue implies get enforced: aerial is struck through on Premiere because
+it's already in it, ticking both aerials collapses to the $200 pack instead of
+charging $300, and commercial only ever sees the five add-ons that mean
+something on an industrial estate.
+
+To change what's sold, edit `src/lib/pricing.ts` (the number and the words) and
+`src/lib/catalogue.ts` (what it can be sold alongside). Nothing else restates a
+price — the contact form's checkboxes are generated from the catalogue too.
+
 ## Supabase setup
 
 1. Create a new Supabase project at [supabase.com](https://supabase.com).
-2. Open the **SQL Editor** and run [`supabase/schema.sql`](./supabase/schema.sql) — this creates the `contact_submissions` table with row-level security and a public-insert policy.
+2. Open the **SQL Editor** and run [`supabase/schema.sql`](./supabase/schema.sql) — this creates the `contact_submissions` table (RLS with a public-insert policy) and the `bookings` table (RLS with **no** policies at all, because only the server touches it).
 3. From **Project Settings → API**, copy the **Project URL** and the **anon public key**.
 4. Add both to `.env.local`:
 
