@@ -5,7 +5,6 @@ import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import FAQAccordion from "@/components/FAQAccordion";
 import ListingPackages from "@/components/ListingPackages";
 import {
-  COMMERCIAL_ADD_ONS,
   COMMERCIAL_FROM,
   COMMERCIAL_PACKAGES,
   COMMERCIAL_PROJECT,
@@ -71,21 +70,21 @@ export default function CommercialPage() {
                   Commercial property, shot for the campaign.
                 </h1>
                 <p className="mt-6 max-w-2xl text-lg md:text-xl text-white/85 leading-relaxed">
-                  Office, industrial, retail, development sites and land. Photography, film, aerial
-                  and agent-led video, scheduled against your EOI or auction close and quoted per
-                  asset.
+                  Photography, film, aerial and agent-led video for office, industrial, retail,
+                  development sites and land. Two fixed packages for an asset of standard size.
+                  Larger and government projects quoted to the brief.
                 </p>
                 <div className="mt-9 flex flex-wrap items-center gap-4">
-                  <CTAButton href="/book?p=pkg-commercial-project" variant="white">
-                    Request a quote
+                  <CTAButton href="#pricing" variant="white">
+                    See pricing
                   </CTAButton>
-                  <CTAButton href="#campaign" variant="outline-light">
-                    How a campaign runs
+                  <CTAButton href="/book?p=pkg-commercial-project" variant="outline-light">
+                    Request a quote
                   </CTAButton>
                 </div>
                 <ul className="mt-10 grid grid-cols-1 sm:flex sm:flex-wrap gap-x-7 gap-y-2.5 text-[11px] uppercase tracking-[0.18em] text-white/70">
                   {[
-                    "From " + COMMERCIAL_FROM + " an asset",
+                    "Packages from " + COMMERCIAL_FROM + ", projects quoted",
                     "Public liability insured",
                     "NDAs signed",
                     "Melbourne and Sydney metro",
@@ -122,79 +121,6 @@ export default function CommercialPage() {
               >
                 <h3 className="font-serif text-xl text-re-ink">{a.t}</h3>
                 <p className="mt-3 text-re-stone leading-relaxed">{a.d}</p>
-              </StaggerChild>
-            ))}
-          </Stagger>
-        </Container>
-      </Section>
-
-      {/* HOW IT'S SHOT */}
-      <Section>
-        <Container>
-          <Reveal>
-            <H2 rule className="max-w-3xl">Scale is the whole problem.</H2>
-          </Reveal>
-
-          <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8" staggerChildren={0.09}>
-            {[
-              {
-                t: "A wide shot of a shed says nothing",
-                d: "Clear height, column spacing and hardstand only read when there's something in frame to measure them against. That's a decision made on the day, not in the edit.",
-              },
-              {
-                t: "Floorplates have to be followable",
-                d: "A buyer holding the plan should be able to place every shot on it. We shoot the sequence in the order someone walks it.",
-              },
-              {
-                t: "Aerial is for context, not spectacle",
-                d: "Where the site sits, how trucks get in, what the boundary backs onto, what's going up next door. The orbit is the least useful thing a drone does here.",
-              },
-              {
-                t: "The asset is usually still working",
-                d: "Tenants trading, staff on site, trucks moving. We plan the run so we're through any one area fast and the business keeps operating around us.",
-              },
-            ].map((b) => (
-              <StaggerChild
-                key={b.t}
-                className="rounded-[1.75rem] border border-re-stone-light bg-white p-8 md:p-9"
-              >
-                <h3 className="font-serif text-2xl text-re-ink">{b.t}</h3>
-                <p className="mt-4 text-re-stone leading-relaxed">{b.d}</p>
-              </StaggerChild>
-            ))}
-          </Stagger>
-        </Container>
-      </Section>
-
-      {/* HOW A CAMPAIGN RUNS */}
-      <Section id="campaign">
-        <Container>
-          <Reveal>
-            <H2 rule className="max-w-3xl">How a campaign runs.</H2>
-          </Reveal>
-
-          <Stagger className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-14" staggerChildren={0.12}>
-            {[
-              {
-                n: "01",
-                t: "Brief and schedule",
-                d: "You send the asset and the close date. We work backwards from it and lock shoot dates around access, tenant hours and the light the building actually gets.",
-              },
-              {
-                n: "02",
-                t: "One visit where we can",
-                d: "Stills, film and aerial together, plus your pieces to camera while we're on site. Returning for fragments costs you campaign days you don't have.",
-              },
-              {
-                n: "03",
-                t: "Delivered to the calendar",
-                d: "Sized for the information memorandum, the portals, the boards and LinkedIn. Branded and unbranded, so the same shoot carries the whole campaign.",
-              },
-            ].map((s) => (
-              <StaggerChild key={s.n} className="border-t border-re-blue/15 pt-6">
-                <p className="font-serif text-3xl gold-text">{s.n}</p>
-                <h3 className="mt-3 font-serif text-2xl text-re-ink">{s.t}</h3>
-                <p className="mt-3 text-re-stone leading-relaxed">{s.d}</p>
               </StaggerChild>
             ))}
           </Stagger>
@@ -267,25 +193,6 @@ export default function CommercialPage() {
           <div className="mt-12">
             <ListingPackages packages={COMMERCIAL_PACKAGES} />
           </div>
-
-          {/* Add-ons sit against the two fixed packages, not the quote: there
-              is nothing to add on to a price that hasn't been set yet. */}
-          <Reveal delay={0.14}>
-            <div className="mt-8 rounded-[1.75rem] border border-re-stone-light bg-white p-8 md:p-10">
-              <p className="label-eyebrow">Add to any campaign</p>
-              <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-3 text-sm text-re-ink">
-                {COMMERCIAL_ADD_ONS.map((a) => (
-                  <li key={a.id} className="flex justify-between gap-4 border-b border-re-stone-light pb-3">
-                    <span>
-                      {a.name}
-                      {a.detail && <span className="block text-xs text-re-stone">{a.detail}</span>}
-                    </span>
-                    <span className="shrink-0 font-medium text-re-blue">{a.price}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
 
           {/* The third tier, given the width the other two share so it reads as
               a step up rather than a footnote under them. */}
