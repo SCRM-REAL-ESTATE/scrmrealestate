@@ -4,14 +4,21 @@ import { SITE } from "./site";
 /** Shared markup for the transactional emails, so they read as one sender. */
 
 /**
- * Resend's shared sandbox sender. It only delivers to the address that owns the
- * Resend account, so left in place it rejects every real enquiry and booking —
- * which looks from the outside exactly like "the form is broken". Sending for
- * real needs a verified domain and CONTACT_FROM_EMAIL set to an address on it.
+ * Who the transactional email comes from.
+ *
+ * scrmrealestate.com.au is verified in Resend, so this is a default in code
+ * rather than an environment variable: a sender identity is public, it can't
+ * change without the domain changing, and hosting-dashboard access shouldn't
+ * be what stands between a working form and a broken one. The env var still
+ * wins if it's set, which is what moving to a different domain would use.
+ *
+ * It MUST stay on a Resend-verified domain. Resend refuses anything else, and
+ * the refusal looks from the outside exactly like "the form is broken".
  */
-export const SANDBOX_FROM = "SCRM Media <onboarding@resend.dev>";
+export const MAIL_FROM =
+  process.env.CONTACT_FROM_EMAIL || "SCRM Media <noreply@scrmrealestate.com.au>";
 
-export const MAIL_FROM = process.env.CONTACT_FROM_EMAIL || SANDBOX_FROM;
+/** Where enquiries land. Recipients need no verification, unlike senders. */
 export const MAIL_TO = process.env.CONTACT_TO_EMAIL || SITE.email;
 
 /**
@@ -25,13 +32,6 @@ export function logSendFailure(what: string, error: { name?: string; message?: s
       error.message ?? "no message"
     } (from: ${MAIL_FROM}, to: ${MAIL_TO})`
   );
-  if (MAIL_FROM === SANDBOX_FROM) {
-    console.error(
-      "CONTACT_FROM_EMAIL is unset, so this sent from Resend's sandbox address, " +
-        "which only delivers to the Resend account owner. Verify a domain at " +
-        "resend.com/domains and set CONTACT_FROM_EMAIL to an address on it."
-    );
-  }
 }
 
 export function table(rows: [string, string][]): string {
