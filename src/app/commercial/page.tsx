@@ -166,45 +166,6 @@ export default function CommercialPage() {
         </Container>
       </Section>
 
-      {/* AGENT VIDEO, FOR COMMERCIAL */}
-      <Section panel="blue">
-        <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <Reveal>
-              <H2 rule light>Your buyers are on LinkedIn.</H2>
-              <p className="mt-6 text-lg text-white/85 leading-relaxed">
-                Commercial is an authority business. Nobody picks an agent off a hero shot of a
-                warehouse, they pick the one whose read on the market they already know.
-              </p>
-              <p className="mt-5 text-lg text-white/85 leading-relaxed">
-                Same agent-led video, cut for where commercial actually happens. Captioned for a
-                feed people scroll at work with the sound off.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.14}>
-              <ul className="space-y-4">
-                {[
-                  "Market commentary while the numbers are still moving",
-                  "Yield and rate movement, in your own words",
-                  "Leasing availability across your book",
-                  "What a precinct is doing and why it matters",
-                  "A walkthrough of an asset you're taking to market",
-                ].map((line) => (
-                  <li
-                    key={line}
-                    className="flex gap-4 rounded-2xl border border-white/20 bg-white/5 px-6 py-4"
-                  >
-                    <span aria-hidden className="mt-2 h-1 w-3 shrink-0 rounded-full bg-white/50" />
-                    <span className="leading-relaxed text-white/90">{line}</span>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
-        </Container>
-      </Section>
-
       {/* HOW A CAMPAIGN RUNS */}
       <Section id="campaign">
         <Container>
@@ -307,9 +268,28 @@ export default function CommercialPage() {
             <ListingPackages packages={COMMERCIAL_PACKAGES} />
           </div>
 
+          {/* Add-ons sit against the two fixed packages, not the quote: there
+              is nothing to add on to a price that hasn't been set yet. */}
+          <Reveal delay={0.14}>
+            <div className="mt-8 rounded-[1.75rem] border border-re-stone-light bg-white p-8 md:p-10">
+              <p className="label-eyebrow">Add to any campaign</p>
+              <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-3 text-sm text-re-ink">
+                {COMMERCIAL_ADD_ONS.map((a) => (
+                  <li key={a.id} className="flex justify-between gap-4 border-b border-re-stone-light pb-3">
+                    <span>
+                      {a.name}
+                      {a.detail && <span className="block text-xs text-re-stone">{a.detail}</span>}
+                    </span>
+                    <span className="shrink-0 font-medium text-re-blue">{a.price}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+
           {/* The third tier, given the width the other two share so it reads as
               a step up rather than a footnote under them. */}
-          <Reveal delay={0.14}>
+          <Reveal delay={0.2}>
             <div className="gold-ring mt-8 rounded-[1.75rem] border border-re-blue/20 bg-white p-8 md:p-12 text-center">
               <p className="label-eyebrow">{COMMERCIAL_PROJECT.name}</p>
               <p className="mt-3 font-serif text-4xl md:text-5xl text-re-ink">
@@ -335,23 +315,6 @@ export default function CommercialPage() {
               <div className="mt-9 flex justify-center">
                 <CTAButton href={`/book?p=${COMMERCIAL_PROJECT.id}`}>Request a quote</CTAButton>
               </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.2}>
-            <div className="mt-8 rounded-[1.75rem] border border-re-stone-light bg-white p-8 md:p-10">
-              <p className="label-eyebrow">Add to any campaign</p>
-              <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-3 text-sm text-re-ink">
-                {COMMERCIAL_ADD_ONS.map((a) => (
-                  <li key={a.id} className="flex justify-between gap-4 border-b border-re-stone-light pb-3">
-                    <span>
-                      {a.name}
-                      {a.detail && <span className="block text-xs text-re-stone">{a.detail}</span>}
-                    </span>
-                    <span className="shrink-0 font-medium text-re-blue">{a.price}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
           </Reveal>
 
