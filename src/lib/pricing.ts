@@ -148,7 +148,9 @@ export const COMMERCIAL_PROJECT = {
   id: "pkg-commercial-project",
   name: "Bespoke project",
   price: "Quoted per project",
-  note: "Not agency work. Projects briefed on requirements, not packages.",
+  /** The card leads on who this is not for: the two tiers above it are the
+   *  agency product, and this is the one that isn't. */
+  headline: "Not a commercial agency.",
   pitch:
     "Government, institutional and development projects don't arrive as fifteen photos and a floor plan. They arrive as a requirement. We scope the filming and photography to meet it, and price on the expertise the brief calls for and the skills we combine to deliver it.",
   includes: [

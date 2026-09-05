@@ -313,13 +313,13 @@ export default function CommercialPage() {
             <div className="gold-ring mt-8 rounded-[1.75rem] border border-re-blue/20 bg-white p-8 md:p-12 text-center">
               <p className="label-eyebrow">{COMMERCIAL_PROJECT.name}</p>
               <p className="mt-3 font-serif text-4xl md:text-5xl text-re-ink">
+                {COMMERCIAL_PROJECT.headline}
+              </p>
+              <p className="mt-4 text-sm tracking-[0.16em] uppercase text-re-stone">
                 {COMMERCIAL_PROJECT.price}
               </p>
 
-              <p className="mx-auto mt-6 max-w-xl border-t border-re-stone-light pt-6 font-serif text-lg leading-snug text-re-ink">
-                {COMMERCIAL_PROJECT.note}
-              </p>
-              <p className="mx-auto mt-5 max-w-2xl text-re-stone leading-relaxed">
+              <p className="mx-auto mt-7 max-w-2xl border-t border-re-stone-light pt-7 text-re-stone leading-relaxed">
                 {COMMERCIAL_PROJECT.pitch}
               </p>
 
