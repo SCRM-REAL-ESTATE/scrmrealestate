@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { SITE } from "@/lib/site";
 import { clean, escapeHtml } from "@/lib/sanitise";
-import { emailShell, table } from "@/lib/email";
+import { emailShell, logSendFailure, table, MAIL_FROM as FROM, MAIL_TO as TO } from "@/lib/email";
 import { getAddOn, getOffer, money, type Stream } from "@/lib/catalogue";
 import { quote, totalLabel } from "@/lib/booking-rules";
 import { DETAIL_QUESTIONS, labelFor } from "@/lib/booking-questions";
@@ -19,9 +19,6 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
  * Add-ons accepted here are priced from the catalogue by id. The browser never
  * sends an amount, and any total it thinks it knows is ignored.
  */
-
-const FROM = process.env.CONTACT_FROM_EMAIL || "SCRM Media <onboarding@resend.dev>";
-const TO = process.env.CONTACT_TO_EMAIL || SITE.email;
 
 const STREAMS: Stream[] = ["residential", "commercial", "monthly"];
 
@@ -186,7 +183,7 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error("Resend rejected the booking details:", error);
+      logSendFailure("booking details", error);
       return NextResponse.json(
         { error: `We couldn't send that just now. Please call us on ${SITE.phone}.` },
         { status: 502 }

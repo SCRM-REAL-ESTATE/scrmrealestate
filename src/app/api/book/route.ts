@@ -6,7 +6,7 @@ import { clean, escapeHtml, isEmail } from "@/lib/sanitise";
 import { getOffer, money } from "@/lib/catalogue";
 import { quote, totalLabel } from "@/lib/booking-rules";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { emailShell, table } from "@/lib/email";
+import { emailShell, logSendFailure, table, MAIL_FROM as FROM, MAIL_TO as TO } from "@/lib/email";
 
 /**
  * The booking itself: address, package, extras, when they want it, who to call.
@@ -21,9 +21,6 @@ import { emailShell, table } from "@/lib/email";
  * The total is recomputed here from the catalogue. The browser sends ids, never
  * prices: the number in the email has to be one we'd honour.
  */
-
-const FROM = process.env.CONTACT_FROM_EMAIL || "SCRM Media <onboarding@resend.dev>";
-const TO = process.env.CONTACT_TO_EMAIL || SITE.email;
 
 /** No I, L, O, 0 or 1 — these get read down the phone. */
 const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -181,7 +178,7 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error("Resend rejected the booking:", error);
+      logSendFailure("booking", error);
       return NextResponse.json(
         { error: `We couldn't send that just now. Please call us on ${SITE.phone}.` },
         { status: 502 }

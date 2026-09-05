@@ -1,6 +1,14 @@
--- Run this in the Supabase SQL editor to create the contact submissions table.
--- The contact form on the site (src/components/ContactForm.tsx) inserts into this table
--- using the public anon key, so RLS is enabled and a permissive INSERT policy is added.
+-- Run this in the Supabase SQL editor.
+--
+-- LEGACY, not applied to the live database: contact_submissions below is no
+-- longer written to by anything. The contact form used to insert straight from
+-- the browser with the anon key, which silently discarded every enquiry
+-- whenever the keys weren't configured. It now posts to /api/contact and is
+-- delivered as email instead. Kept for reference only. Don't create it: the
+-- permissive anon INSERT policy is public write access to a table nothing
+-- reads.
+--
+-- The live schema is `bookings`, further down.
 
 create table if not exists public.contact_submissions (
   id uuid primary key default gen_random_uuid(),

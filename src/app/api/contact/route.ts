@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { SITE } from "@/lib/site";
 import { clean, escapeHtml, isEmail } from "@/lib/sanitise";
+import { logSendFailure, MAIL_FROM as FROM, MAIL_TO as TO } from "@/lib/email";
 
 /**
  * Enquiries from the contact form land in the inbox as email.
@@ -11,16 +11,6 @@ import { clean, escapeHtml, isEmail } from "@/lib/sanitise";
  * missing the route says so plainly rather than accepting the message and
  * dropping it, which is what the old client-side path did.
  */
-
-/**
- * Resend's shared sandbox sender. It only delivers to the address that owns the
- * Resend account, so in production it silently rejects every real enquiry —
- * which looks exactly like "the form is broken". Sending for real needs a
- * verified domain and CONTACT_FROM_EMAIL set to an address on it.
- */
-const SANDBOX_FROM = "SCRM Media <onboarding@resend.dev>";
-const FROM = process.env.CONTACT_FROM_EMAIL || SANDBOX_FROM;
-const TO = process.env.CONTACT_TO_EMAIL || SITE.email;
 
 type Payload = {
   name?: string;
@@ -113,18 +103,7 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      // Log the reason itself, not the object: a bare `error` renders as
-      // "[object Object]" in the platform logs and tells nobody anything.
-      console.error(
-        `Resend rejected the enquiry [${error.name}]: ${error.message} (from: ${FROM}, to: ${TO})`
-      );
-      if (FROM === SANDBOX_FROM) {
-        console.error(
-          "CONTACT_FROM_EMAIL is unset, so this sent from Resend's sandbox address, " +
-            "which only delivers to the Resend account owner. Verify a domain at " +
-            "resend.com/domains and set CONTACT_FROM_EMAIL to an address on it."
-        );
-      }
+      logSendFailure("enquiry", error);
       return NextResponse.json(
         { error: "We couldn't send that just now. Please try again, or email us directly." },
         { status: 502 }
