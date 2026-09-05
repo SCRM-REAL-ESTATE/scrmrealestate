@@ -245,11 +245,12 @@ export default function CommercialPage() {
         <Container>
           <Reveal>
             <div className="max-w-3xl">
-              <H2 rule>How we turn it around this fast.</H2>
+              <H2 rule>Our own production platform.</H2>
               <p className="mt-5 text-lg text-re-stone leading-relaxed">
-                We run our own software for the work that normally gets sent out and comes
-                back a week later. It is why a campaign moves quickly, holds its quality
-                and still costs what it does.
+                A commercial campaign is judged on how the asset is presented. So the
+                finishing is not sent out to whoever is available that week. Every frame
+                is built on software we run ourselves, which means the standard is set
+                inside the process rather than left to someone else's queue.
               </p>
             </div>
           </Reveal>
@@ -258,23 +259,23 @@ export default function CommercialPage() {
             {[
               {
                 t: "Photo staging",
-                d: "Empty suites and offices furnished so a buyer can read the space instead of guessing at it.",
+                d: "Vacant suites and floors furnished to the standard of the building, so a buyer reads the space as it will be occupied rather than as an empty shell.",
               },
               {
                 t: "Video staging",
-                d: "The same staging carried through the walkthrough, so the film matches the stills.",
+                d: "The same furnished treatment carried through the walkthrough frame by frame, so the film and the stills present one asset rather than two.",
               },
               {
                 t: "Twilight and dawn",
-                d: "Daytime photos and video taken to twilight or dawn without booking a second visit.",
+                d: "Daytime capture taken to twilight or dawn, the hours a building looks its best, held to the same grade across every frame of the campaign.",
               },
               {
                 t: "Floor plans",
-                d: "2D plans drawn from the same capture and branded to your agency.",
+                d: "Drawn from the same capture and set in your agency's branding, so the plan in the memorandum sits beside the imagery as one piece of work.",
               },
               {
                 t: "Your own dashboard",
-                d: "Every asset gets one. All the content for that campaign delivered into it, ready to pull down.",
+                d: "Every asset gets its own. The finished campaign held in one place, sized for the memorandum, the portals, the boards and LinkedIn.",
               },
             ].map((f) => (
               <StaggerChild
@@ -309,32 +310,30 @@ export default function CommercialPage() {
           {/* The third tier, given the width the other two share so it reads as
               a step up rather than a footnote under them. */}
           <Reveal delay={0.14}>
-            <div className="gold-ring mt-8 rounded-[1.75rem] border border-re-blue/20 bg-white p-8 md:p-12">
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16">
-                <div>
-                  <p className="label-eyebrow">{COMMERCIAL_PROJECT.name}</p>
-                  <p className="mt-3 font-serif text-4xl md:text-5xl text-re-ink">
-                    {COMMERCIAL_PROJECT.price}
-                  </p>
-                  <p className="mt-6 pt-5 border-t border-re-stone-light font-serif text-lg leading-snug text-re-ink">
-                    {COMMERCIAL_PROJECT.note}
-                  </p>
-                  <p className="mt-5 text-re-stone leading-relaxed">
-                    {COMMERCIAL_PROJECT.pitch}
-                  </p>
-                  <div className="mt-8">
-                    <CTAButton href={`/book?p=${COMMERCIAL_PROJECT.id}`}>Request a quote</CTAButton>
-                  </div>
-                </div>
+            <div className="gold-ring mt-8 rounded-[1.75rem] border border-re-blue/20 bg-white p-8 md:p-12 text-center">
+              <p className="label-eyebrow">{COMMERCIAL_PROJECT.name}</p>
+              <p className="mt-3 font-serif text-4xl md:text-5xl text-re-ink">
+                {COMMERCIAL_PROJECT.price}
+              </p>
 
-                <ul className="space-y-3 text-sm text-re-ink lg:border-l lg:border-re-stone-light lg:pl-16">
-                  {COMMERCIAL_PROJECT.includes.map((line) => (
-                    <li key={line} className="flex gap-3">
-                      <span aria-hidden className="mt-2 h-1 w-3 shrink-0 rounded-full bg-re-blue-accent" />
-                      <span className="leading-relaxed">{line}</span>
-                    </li>
-                  ))}
-                </ul>
+              <p className="mx-auto mt-6 max-w-xl border-t border-re-stone-light pt-6 font-serif text-lg leading-snug text-re-ink">
+                {COMMERCIAL_PROJECT.note}
+              </p>
+              <p className="mx-auto mt-5 max-w-2xl text-re-stone leading-relaxed">
+                {COMMERCIAL_PROJECT.pitch}
+              </p>
+
+              <ul className="mx-auto mt-9 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-3 text-left text-sm text-re-ink">
+                {COMMERCIAL_PROJECT.includes.map((line) => (
+                  <li key={line} className="flex gap-3">
+                    <span aria-hidden className="mt-2 h-1 w-3 shrink-0 rounded-full bg-re-blue-accent" />
+                    <span className="leading-relaxed">{line}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-9 flex justify-center">
+                <CTAButton href={`/book?p=${COMMERCIAL_PROJECT.id}`}>Request a quote</CTAButton>
               </div>
             </div>
           </Reveal>
