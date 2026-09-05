@@ -52,11 +52,26 @@ export default function ListingPackages({
 
               <p className={`label-eyebrow ${pkg.featured ? "!text-white/85" : ""}`}>{pkg.name}</p>
               <p className={`mt-3 font-serif text-5xl ${pkg.featured ? "text-white" : "text-re-ink"}`}>
+                {pkg.priceFrom && (
+                  <span className={`mr-2 align-middle text-xl ${pkg.featured ? "text-white/80" : "text-re-stone"}`}>
+                    From
+                  </span>
+                )}
                 {pkg.price}
               </p>
               <p className={`mt-3 text-sm ${pkg.featured ? "text-white/85" : "text-re-stone"}`}>
                 {pkg.products} · {pkg.turnaround}
               </p>
+
+              {pkg.scope && (
+                <p
+                  className={`mt-4 rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                    pkg.featured ? "bg-white/10 text-white" : "bg-re-blue-light text-re-ink"
+                  }`}
+                >
+                  {pkg.scope}
+                </p>
+              )}
 
               <p
                 className={`mt-6 pt-5 border-t font-serif text-lg leading-snug ${

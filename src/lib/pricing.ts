@@ -30,6 +30,11 @@ type PackageInput = {
   note: string;
   /** What this tier adds over the one below it, so the ladder reads at a glance. */
   step: string;
+  /** Size of asset the fixed price covers. Commercial only: residential is
+   *  per property, so scale never needed stating there. */
+  scope?: string;
+  /** Renders the price as "From $x". Commercial scope varies inside a tier. */
+  priceFrom?: boolean;
   featured?: boolean;
 };
 
@@ -108,6 +113,8 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = priced<PackageInput>([
     ],
     note: "Enough to take an asset to market.",
     step: "The three things a campaign can't launch without.",
+    scope: "One office suite, floor or warehouse of standard size, shot in a single visit.",
+    priceFrom: true,
   },
   {
     id: "pkg-campaign",
@@ -124,9 +131,32 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = priced<PackageInput>([
     ],
     note: "The campaign sells the asset. The agent video sells you.",
     step: "Everything in Asset, plus a piece to camera from you.",
+    scope: "One office suite, floor or warehouse of standard size, shot in a single visit.",
+    priceFrom: true,
     featured: true,
   },
 ]);
+
+/**
+ * The third commercial tier. Deliberately not priced: the two packages buy a
+ * single asset shot in one visit, and anything past that moves on size, on how
+ * much has to be captured and on how many days it takes, so a fixed number
+ * would be wrong in both directions.
+ */
+export const COMMERCIAL_PROJECT = {
+  id: "pkg-commercial-project",
+  name: "Bespoke project",
+  price: "Quoted per project",
+  note: "For commercial work the two packages can't honestly cover.",
+  pitch:
+    "Larger and multi building projects are quoted against the asset. We price on the size of the site, what has to be captured, the content you want out of it and how many days on site that takes.",
+  includes: [
+    "Multi building sites and floorplate portfolios",
+    "Campaigns captured in rounds across the marketing period",
+    "More than one shooter, or more than one day on site",
+    "Content planned to the campaign rather than to a package",
+  ],
+};
 
 /** Cheapest published commercial package, quoted in summary lines. */
 export const COMMERCIAL_FROM = money(

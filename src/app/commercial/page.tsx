@@ -4,7 +4,13 @@ import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import FAQAccordion from "@/components/FAQAccordion";
 import ListingPackages from "@/components/ListingPackages";
-import { COMMERCIAL_ADD_ONS, COMMERCIAL_FROM, COMMERCIAL_PACKAGES, LISTING_PACKAGES } from "@/lib/pricing";
+import {
+  COMMERCIAL_ADD_ONS,
+  COMMERCIAL_FROM,
+  COMMERCIAL_PACKAGES,
+  COMMERCIAL_PROJECT,
+  LISTING_PACKAGES,
+} from "@/lib/pricing";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -32,7 +38,7 @@ const ASSET_CLASSES = [
 const faqs = [
   {
     q: "What if the asset is bigger than the packages?",
-    a: "Then we quote it. The two packages cover office space and warehousing at a normal campaign scale, which is most of what we shoot. A multi-building project, a portfolio of floorplates, or a campaign that runs in rounds across six weeks gets priced against the asset instead, because a fixed number would be wrong in both directions.",
+    a: "Then it is a bespoke project and we quote it. The two packages buy one office suite, floor or warehouse of standard size, shot in a single visit. Past that, the price moves on the size of the site, what has to be captured and how many days on site it takes.",
   },
   {
     q: "How far ahead should we book?",
@@ -45,10 +51,6 @@ const faqs = [
   {
     q: "Are you insured, and will you sign our NDA?",
     a: "Yes to both. We carry public liability cover and send the certificate of currency with the quote. On confidentiality we sign your agreement before we shoot: off-market campaigns stay off-market, and nothing goes out as a sample or a teaser without your approval.",
-  },
-  {
-    q: "Can you handle a large project, not just a single asset?",
-    a: "Yes. Most of our commercial work is office space and warehousing at a normal campaign scale, and we take on full projects as well. Where a campaign needs more than one shooter or more than one day on site, we schedule it that way rather than stretching a single visit and delivering less.",
   },
   {
     q: "Do you do residential as well?",
@@ -100,35 +102,6 @@ export default function CommercialPage() {
         </div>
       </section>
 
-      {/* NOT A LISTING */}
-      <Section>
-        <Container>
-          <Reveal>
-            <H2 rule className="max-w-3xl">A commercial campaign isn&apos;t a listing.</H2>
-          </Reveal>
-
-          <Stagger className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8" staggerChildren={0.09}>
-            {[
-              "It runs four to six weeks, not one weekend.",
-              "A vendor approved the marketing budget, so every line of it gets read.",
-              "The imagery has to carry an information memorandum, not just a portal thumbnail.",
-              "The close date is fixed, and everything is scheduled backwards from it.",
-            ].map((line, i) => (
-              <StaggerChild key={line} className="flex gap-5 border-t border-re-blue/15 pt-5">
-                <span className="font-serif text-2xl gold-text shrink-0">0{i + 1}</span>
-                <p className="text-lg text-re-ink leading-relaxed">{line}</p>
-              </StaggerChild>
-            ))}
-          </Stagger>
-
-          <Reveal delay={0.12}>
-            <p className="mt-12 max-w-2xl font-serif text-2xl md:text-3xl text-re-ink">
-              So it isn&apos;t sold as a package with a number on it.
-            </p>
-          </Reveal>
-        </Container>
-      </Section>
-
       {/* ASSET CLASSES */}
       <Section panel="white">
         <Container>
@@ -136,8 +109,7 @@ export default function CommercialPage() {
             <div className="max-w-2xl">
               <H2 rule>What we shoot.</H2>
               <p className="mt-5 text-lg text-re-stone leading-relaxed">
-                Most of it is office space and warehousing. The rest we shoot too, and the
-                capacity runs from a single tenancy up to a full project.
+                Most of it is office space and warehousing.
               </p>
             </div>
           </Reveal>
@@ -233,40 +205,6 @@ export default function CommercialPage() {
         </Container>
       </Section>
 
-      {/* CREDENTIALS */}
-      <Section>
-        <Container>
-          <Reveal>
-            <H2 rule className="max-w-3xl">The things a vendor asks before they sign off.</H2>
-          </Reveal>
-
-          <Stagger className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6" staggerChildren={0.09}>
-            {[
-              {
-                t: "Public liability insured",
-                d: "We carry public liability cover, and we'll send the certificate of currency with the quote rather than waiting to be asked for it.",
-              },
-              {
-                t: "We sign your NDA",
-                d: "Off-market stays off-market. Nothing is posted, shown as a sample or used as a teaser without your say-so, and we'll sign your agreement before anything is shot.",
-              },
-              {
-                t: "Capacity for the big one",
-                d: "A single tenancy and a full project are both bookable. If a campaign needs more than one shooter or more than one day, we schedule it that way instead of stretching one visit.",
-              },
-            ].map((c) => (
-              <StaggerChild
-                key={c.t}
-                className="rounded-[1.75rem] border border-re-stone-light bg-white p-8"
-              >
-                <h3 className="font-serif text-xl text-re-ink">{c.t}</h3>
-                <p className="mt-4 text-re-stone leading-relaxed">{c.d}</p>
-              </StaggerChild>
-            ))}
-          </Stagger>
-        </Container>
-      </Section>
-
       {/* HOW A CAMPAIGN RUNS */}
       <Section id="campaign">
         <Container>
@@ -302,15 +240,64 @@ export default function CommercialPage() {
         </Container>
       </Section>
 
+      {/* THE SOFTWARE */}
+      <Section panel="white">
+        <Container>
+          <Reveal>
+            <div className="max-w-3xl">
+              <H2 rule>How we turn it around this fast.</H2>
+              <p className="mt-5 text-lg text-re-stone leading-relaxed">
+                We run our own software for the work that normally gets sent out and comes
+                back a week later. It is why a campaign moves quickly, holds its quality
+                and still costs what it does.
+              </p>
+            </div>
+          </Reveal>
+
+          <Stagger className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" staggerChildren={0.07}>
+            {[
+              {
+                t: "Photo staging",
+                d: "Empty suites and offices furnished so a buyer can read the space instead of guessing at it.",
+              },
+              {
+                t: "Video staging",
+                d: "The same staging carried through the walkthrough, so the film matches the stills.",
+              },
+              {
+                t: "Twilight and dawn",
+                d: "Daytime photos and video taken to twilight or dawn without booking a second visit.",
+              },
+              {
+                t: "Floor plans",
+                d: "2D plans drawn from the same capture and branded to your agency.",
+              },
+              {
+                t: "Your own dashboard",
+                d: "Every asset gets one. All the content for that campaign delivered into it, ready to pull down.",
+              },
+            ].map((f) => (
+              <StaggerChild
+                key={f.t}
+                className="rounded-[1.5rem] border border-re-stone-light bg-re-ivory p-7"
+              >
+                <h3 className="font-serif text-xl text-re-ink">{f.t}</h3>
+                <p className="mt-3 text-re-stone leading-relaxed">{f.d}</p>
+              </StaggerChild>
+            ))}
+          </Stagger>
+        </Container>
+      </Section>
+
       {/* PRICING */}
-      <Section panel="tint">
+      <Section panel="tint" id="pricing">
         <Container>
           <Reveal>
             <div className="max-w-2xl">
-              <H2 rule>Two packages, or a quote.</H2>
+              <H2 rule>What it costs.</H2>
               <p className="mt-5 text-lg text-re-stone leading-relaxed">
-                Office space and warehousing at a normal campaign scale fits one of these.
-                Delivered next business day, same as residential.
+                Two fixed packages for an office suite, floor or warehouse of standard
+                size. That covers most of what we shoot. Anything larger is quoted.
               </p>
             </div>
           </Reveal>
@@ -319,42 +306,57 @@ export default function CommercialPage() {
             <ListingPackages packages={COMMERCIAL_PACKAGES} />
           </div>
 
+          {/* The third tier, given the width the other two share so it reads as
+              a step up rather than a footnote under them. */}
           <Reveal delay={0.14}>
-            <div className="mt-12 rounded-[1.75rem] border border-re-blue/15 bg-white p-8 md:p-10">
-              <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10">
+            <div className="gold-ring mt-8 rounded-[1.75rem] border border-re-blue/20 bg-white p-8 md:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16">
                 <div>
-                  <h3 className="font-serif text-2xl text-re-ink">Bigger than a package?</h3>
-                  <p className="mt-4 text-re-stone leading-relaxed">
-                    A multi-building project, a full floorplate portfolio, or a campaign that runs
-                    in rounds over six weeks doesn&apos;t fit a fixed number, so we quote it against
-                    the asset. Send the address and the close date.
+                  <p className="label-eyebrow">{COMMERCIAL_PROJECT.name}</p>
+                  <p className="mt-3 font-serif text-4xl md:text-5xl text-re-ink">
+                    {COMMERCIAL_PROJECT.price}
                   </p>
-                  <div className="mt-7">
-                    <CTAButton href="/book?p=pkg-commercial-project">Request a quote</CTAButton>
+                  <p className="mt-6 pt-5 border-t border-re-stone-light font-serif text-lg leading-snug text-re-ink">
+                    {COMMERCIAL_PROJECT.note}
+                  </p>
+                  <p className="mt-5 text-re-stone leading-relaxed">
+                    {COMMERCIAL_PROJECT.pitch}
+                  </p>
+                  <div className="mt-8">
+                    <CTAButton href={`/book?p=${COMMERCIAL_PROJECT.id}`}>Request a quote</CTAButton>
                   </div>
                 </div>
 
-                <div>
-                  <p className="label-eyebrow">Add to any campaign</p>
-                  <ul className="mt-5 space-y-2.5 text-sm text-re-ink">
-                    {COMMERCIAL_ADD_ONS.map((a) => (
-                      <li key={a.name} className="flex justify-between gap-4 border-b border-re-stone-light pb-2.5">
-                        <span>
-                          {a.name}
-                          {a.detail && (
-                            <span className="block text-xs text-re-stone">{a.detail}</span>
-                          )}
-                        </span>
-                        <span className="shrink-0 font-medium text-re-blue">{a.price}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <ul className="space-y-3 text-sm text-re-ink lg:border-l lg:border-re-stone-light lg:pl-16">
+                  {COMMERCIAL_PROJECT.includes.map((line) => (
+                    <li key={line} className="flex gap-3">
+                      <span aria-hidden className="mt-2 h-1 w-3 shrink-0 rounded-full bg-re-blue-accent" />
+                      <span className="leading-relaxed">{line}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </Reveal>
 
           <Reveal delay={0.2}>
+            <div className="mt-8 rounded-[1.75rem] border border-re-stone-light bg-white p-8 md:p-10">
+              <p className="label-eyebrow">Add to any campaign</p>
+              <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-3 text-sm text-re-ink">
+                {COMMERCIAL_ADD_ONS.map((a) => (
+                  <li key={a.id} className="flex justify-between gap-4 border-b border-re-stone-light pb-3">
+                    <span>
+                      {a.name}
+                      {a.detail && <span className="block text-xs text-re-stone">{a.detail}</span>}
+                    </span>
+                    <span className="shrink-0 font-medium text-re-blue">{a.price}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.24}>
             <p className="mt-8 text-sm text-re-stone">
               Residential prices separately, per property.{" "}
               <Link
