@@ -12,7 +12,14 @@ import { clean, escapeHtml, isEmail } from "@/lib/sanitise";
  * dropping it, which is what the old client-side path did.
  */
 
-const FROM = process.env.CONTACT_FROM_EMAIL || "SCRM Media <onboarding@resend.dev>";
+/**
+ * Resend's shared sandbox sender. It only delivers to the address that owns the
+ * Resend account, so in production it silently rejects every real enquiry —
+ * which looks exactly like "the form is broken". Sending for real needs a
+ * verified domain and CONTACT_FROM_EMAIL set to an address on it.
+ */
+const SANDBOX_FROM = "SCRM Media <onboarding@resend.dev>";
+const FROM = process.env.CONTACT_FROM_EMAIL || SANDBOX_FROM;
 const TO = process.env.CONTACT_TO_EMAIL || SITE.email;
 
 type Payload = {
@@ -106,7 +113,18 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error("Resend rejected the enquiry:", error);
+      // Log the reason itself, not the object: a bare `error` renders as
+      // "[object Object]" in the platform logs and tells nobody anything.
+      console.error(
+        `Resend rejected the enquiry [${error.name}]: ${error.message} (from: ${FROM}, to: ${TO})`
+      );
+      if (FROM === SANDBOX_FROM) {
+        console.error(
+          "CONTACT_FROM_EMAIL is unset, so this sent from Resend's sandbox address, " +
+            "which only delivers to the Resend account owner. Verify a domain at " +
+            "resend.com/domains and set CONTACT_FROM_EMAIL to an address on it."
+        );
+      }
       return NextResponse.json(
         { error: "We couldn't send that just now. Please try again, or email us directly." },
         { status: 502 }
