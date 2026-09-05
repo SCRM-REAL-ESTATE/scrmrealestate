@@ -38,7 +38,7 @@ const ASSET_CLASSES = [
 const faqs = [
   {
     q: "What if the asset is bigger than the packages?",
-    a: "Then it is a bespoke project and we quote it. The two packages buy one office suite, floor or warehouse of standard size, shot in a single visit. Past that, the price moves on the size of the site, what has to be captured and how many days on site it takes.",
+    a: "Then it is a bespoke project and we quote it. The two packages buy one office suite, floor or warehouse of standard size, shot in a single visit. Past that, and for government, institutional and development work, the brief sets what gets captured and we price on the expertise it calls for rather than on a count of products.",
   },
   {
     q: "How far ahead should we book?",

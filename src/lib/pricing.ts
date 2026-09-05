@@ -138,23 +138,24 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = priced<PackageInput>([
 ]);
 
 /**
- * The third commercial tier. Deliberately not priced: the two packages buy a
- * single asset shot in one visit, and anything past that moves on size, on how
- * much has to be captured and on how many days it takes, so a fixed number
- * would be wrong in both directions.
+ * The third commercial tier, and a different buyer to the two above it. Not an
+ * agency taking an asset to market: government, institutional and development
+ * work that arrives as a requirement rather than a product list. Deliberately
+ * not priced, because what is being bought is the expertise the brief calls
+ * for, which no fixed number describes.
  */
 export const COMMERCIAL_PROJECT = {
   id: "pkg-commercial-project",
   name: "Bespoke project",
   price: "Quoted per project",
-  note: "For commercial work the two packages can't honestly cover.",
+  note: "Not agency work. Projects briefed on requirements, not packages.",
   pitch:
-    "Larger and multi building projects are quoted against the asset. We price on the size of the site, what has to be captured, the content you want out of it and how many days on site that takes.",
+    "Government, institutional and development projects don't arrive as fifteen photos and a floor plan. They arrive as a requirement. We scope the filming and photography to meet it, and price on the expertise the brief calls for and the skills we combine to deliver it.",
   includes: [
-    "Multi building sites and floorplate portfolios",
-    "Campaigns captured in rounds across the marketing period",
-    "More than one shooter, or more than one day on site",
-    "Content planned to the campaign rather than to a package",
+    "Government, institutional and development projects",
+    "Bespoke filming and photography, scoped to the brief",
+    "Requirements our packaged work isn't built for",
+    "Priced on expertise, not on a count of products",
   ],
 };
 
