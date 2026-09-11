@@ -35,7 +35,7 @@ const faqs = [
   },
   {
     q: "Can it be branded to my agency?",
-    a: "Yes. The floor plan and both videos carry your agency branding, and you get branded and unbranded exports of everything so it works on portals and on your own feed.",
+    a: "Yes. The floor plan and both videos carry your agency branding.",
   },
   {
     q: "My agency already has a photographer.",
@@ -78,7 +78,6 @@ export default function AgentsPage() {
                 <ul className="mt-9 grid grid-cols-2 sm:flex sm:flex-wrap gap-x-7 gap-y-2.5 text-[11px] uppercase tracking-[0.18em] text-white/70">
                   {[
                     "Next business day",
-                    "Branded & unbranded",
                     "Portal-ready",
                     "Per listing, no contract",
                   ].map((line) => (
@@ -309,8 +308,8 @@ export default function AgentsPage() {
             <Reveal>
               <H2 rule>What {SIGNATURE.price} gets you.</H2>
               <p className="mt-6 text-lg text-re-stone leading-relaxed">
-                Four products off one visit, delivered next business day. Branded and unbranded
-                exports so it drops straight onto the portals and onto your own feed.
+                Four products off one visit, delivered next business day, sized for the portals
+                and for your own feed.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <CTAButton href="#book">Book your next listing</CTAButton>
@@ -368,7 +367,7 @@ export default function AgentsPage() {
               {
                 n: "03",
                 t: "Next business day, everything",
-                d: "Photos, floor plan, listing video and your agent video. Branded and unbranded, sized for portals and for socials.",
+                d: "Photos, floor plan, listing video and your agent video, sized for portals and for socials.",
               },
             ].map((s) => (
               <StaggerChild key={s.n} className="border-t border-re-blue/15 pt-6">
