@@ -40,6 +40,19 @@ const LISTING_PHOTOS = Array.from(
 
 const verticalVideo = MEDIA_ITEMS.find((i) => i.src === "vertical/vertical-3-bed.mp4");
 
+/**
+ * The finished listing video, embedded from Drive rather than served from our
+ * own storage.
+ *
+ * STOPGAP. The master is 4K and too large to pull into the repo from here, so
+ * the visitor's browser fetches it from Google instead. That costs us the
+ * player chrome and leaves the file subject to Drive's view throttling under
+ * heavy traffic, which an ad campaign can provoke. Replace with an entry in
+ * media.json once `npm run media` has published a web-sized encode, and this
+ * whole block becomes a <video> like the one above it.
+ */
+const LISTING_VIDEO_DRIVE_ID = "1wh3vLEaHV4xk93ahHdPohC3OzcBBcnfd";
+
 export default function SignaturePage() {
   return (
     <>
@@ -59,7 +72,7 @@ export default function SignaturePage() {
               </div>
 
               <p className="mt-4 max-w-xl text-lg text-white/85 leading-relaxed">
-                Photos, floor plan, listing video and a vertical video with you on camera.
+                Photos, a listing video, a floor plan and a vertical video with you on camera.
                 {" "}{SIGNATURE.products}, back {SIGNATURE.turnaround.toLowerCase()}.
               </p>
 
@@ -110,12 +123,42 @@ export default function SignaturePage() {
               </div>
             </Reveal>
 
+            {/* Listing video */}
+            <Reveal>
+              <div>
+                <div className="max-w-2xl">
+                  <p className="label-eyebrow">02</p>
+                  <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
+                    Landscape listing video
+                  </h3>
+                  <p className="mt-3 text-re-stone leading-relaxed">
+                    A walkthrough of the property, cut for the listing and for your socials.
+                  </p>
+                  {/* The example was shot with aerial. Saying so stops the package
+                      reading as though drone is included at this price. */}
+                  <p className="mt-4 rounded-2xl bg-re-blue-light px-5 py-4 text-sm leading-relaxed text-re-ink">
+                    This example includes drone shots. Aerial is an optional extra and is not
+                    included in the {SIGNATURE.price} package.
+                  </p>
+                </div>
+                <div className="relative mt-6 w-full aspect-video overflow-hidden rounded-2xl bg-re-stone-light">
+                  <iframe
+                    src={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/preview`}
+                    title="Landscape listing video"
+                    allow="autoplay; fullscreen"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full border-0"
+                  />
+                </div>
+              </div>
+            </Reveal>
+
             {/* Both of these are portrait, so they pair into one row rather than
                 taking a full-width band each. */}
             <Reveal>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start">
                 <div>
-                  <p className="label-eyebrow">02</p>
+                  <p className="label-eyebrow">03</p>
                   <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                     2D colour floor plan
                   </h3>
@@ -136,7 +179,7 @@ export default function SignaturePage() {
 
                 {verticalVideo && (
                   <div>
-                    <p className="label-eyebrow">03</p>
+                    <p className="label-eyebrow">04</p>
                     <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                       Vertical agent-led video
                     </h3>
