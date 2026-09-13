@@ -170,6 +170,22 @@ export default function SignaturePage() {
                     className="absolute inset-0 h-full w-full border-0"
                   />
                 </div>
+
+                {/* Phones only. Drive's inline player leaves the picture small
+                    behind its own chrome, and iOS has no fullscreen API for a
+                    cross-origin frame, so the only way to give a phone the
+                    whole screen is to hand the file to Drive itself. */}
+                <div className="mt-4 text-center md:hidden">
+                  <a
+                    href={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/view`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-re-blue px-6 py-3 text-sm text-re-blue transition-colors hover:bg-re-blue hover:text-white"
+                  >
+                    Open full screen
+                    <span aria-hidden>→</span>
+                  </a>
+                </div>
               </div>
             </Reveal>
 
