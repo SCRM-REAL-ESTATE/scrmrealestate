@@ -119,14 +119,16 @@ export default function SignaturePage() {
       <Section panel="white">
         <Container>
           <Reveal>
-            <H2 rule>What you get.</H2>
+            <H2 rule className="text-center [&>span]:mx-auto">
+              What you get.
+            </H2>
           </Reveal>
 
           <div className="mt-10 space-y-12 md:space-y-16">
             {/* Photos — the whole set, openable */}
             <Reveal>
               <div>
-                <div className="max-w-2xl">
+                <div className="mx-auto max-w-2xl text-center">
                   <p className="label-eyebrow">01</p>
                   <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                     18 professionally edited photos
