@@ -134,11 +134,12 @@ export default function SignaturePage() {
                   <p className="mt-3 text-re-stone leading-relaxed">
                     A walkthrough of the property, cut for the listing and for your socials.
                   </p>
-                  {/* The example was shot with aerial. Saying so stops the package
-                      reading as though drone is included at this price. */}
+                  {/* The example carries aerial and virtual staging, both of which
+                      are paid add-ons. Saying so stops the package reading as
+                      though either is included at this price. */}
                   <p className="mt-4 rounded-2xl bg-re-blue-light px-5 py-4 text-sm leading-relaxed text-re-ink">
-                    This example includes drone shots. Aerial is an optional extra and is not
-                    included in the {SIGNATURE.price} package.
+                    This example includes drone shots and virtual staging. Both are optional
+                    extras and are not included in the {SIGNATURE.price} package.
                   </p>
                 </div>
                 <div className="relative mt-6 w-full aspect-video overflow-hidden rounded-2xl bg-re-stone-light">
