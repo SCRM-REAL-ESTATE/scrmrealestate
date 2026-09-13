@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Container, H2, CTAButton, Section } from "@/components/ui";
-import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
+import { Reveal } from "@/components/Reveal";
+import ListingPhotoGrid from "@/components/ListingPhotoGrid";
 import { LISTING_PACKAGES } from "@/lib/pricing";
 import { MEDIA_ITEMS, mediaUrl } from "@/lib/media";
 import { SITE } from "@/lib/site";
@@ -14,8 +15,8 @@ import { SITE } from "@/lib/site";
  * for the booking. Deliberately no navigation detours, no philosophy and no
  * second offer: every section either shows the work or books it.
  *
- * The examples are the real deliverables rather than stock, because the whole
- * argument is "this is what lands in your inbox".
+ * Kept to one screen of pitch and one of proof. The header carries no media of
+ * its own so the price is the first and largest thing on the page.
  */
 
 const SIGNATURE = LISTING_PACKAGES.find((p) => p.id === "pkg-signature")!;
@@ -29,17 +30,15 @@ export const metadata: Metadata = {
 const BOOK = `/book?p=${SIGNATURE.id}`;
 
 /**
- * The example that sits beside each line of the package.
- *
- * The photographs are the full delivered set for one listing rather than a
- * selection: the offer is a count, so the count is shown instead of claimed.
+ * The full delivered set for one listing rather than a selection: the offer is
+ * a count, so the count is shown instead of claimed.
  */
 const LISTING_PHOTOS = Array.from(
   { length: 18 },
   (_, i) => `/media/examples/listing/${String(i + 1).padStart(2, "0")}.jpg`
 );
+
 const verticalVideo = MEDIA_ITEMS.find((i) => i.src === "vertical/vertical-3-bed.mp4");
-const landscapeVideo = MEDIA_ITEMS.find((i) => i.src === "landscape/landscape-2-bed.mp4");
 
 export default function SignaturePage() {
   return (
@@ -47,61 +46,41 @@ export default function SignaturePage() {
       {/* ── PRICE ─────────────────────────────────────────────────────────── */}
       <section className="px-3 md:px-6 pt-2 md:pt-3">
         <div className="relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] blue-fade">
-          <Container className="relative py-12 md:py-20">
-            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-16 items-center">
-              <Reveal direction="up">
-                <p className="label-eyebrow !text-white/75">Listing package</p>
-                <h1 className="mt-4 h-display text-4xl sm:text-5xl md:text-6xl text-white">
-                  Your next listing, shot properly.
-                </h1>
+          <Container className="relative py-10 md:py-14">
+            <Reveal direction="up">
+              <p className="label-eyebrow !text-white/75">Listing package</p>
+              <h1 className="mt-3 h-display text-4xl sm:text-5xl md:text-6xl text-white max-w-3xl">
+                Your next listing, shot properly.
+              </h1>
 
-                <div className="mt-7 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  <span className="font-serif text-6xl md:text-7xl text-white">{SIGNATURE.price}</span>
-                  <span className="text-white/75">per listing</span>
-                </div>
+              <div className="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                <span className="font-serif text-5xl md:text-6xl text-white">{SIGNATURE.price}</span>
+                <span className="text-white/75">per listing</span>
+              </div>
 
-                <p className="mt-5 max-w-xl text-lg text-white/85 leading-relaxed">
-                  Photos, floor plan, listing video and a vertical video with you on camera.
-                  {" "}{SIGNATURE.products}, back {SIGNATURE.turnaround.toLowerCase()}.
-                </p>
+              <p className="mt-4 max-w-xl text-lg text-white/85 leading-relaxed">
+                Photos, floor plan, listing video and a vertical video with you on camera.
+                {" "}{SIGNATURE.products}, back {SIGNATURE.turnaround.toLowerCase()}.
+              </p>
 
-                <div className="mt-8 flex flex-wrap items-center gap-4">
-                  <CTAButton href={BOOK} variant="white">
-                    Book this listing
-                  </CTAButton>
-                  <CTAButton href={`tel:${SITE.phoneIntl}`} variant="outline-light" external>
-                    {SITE.phone}
-                  </CTAButton>
-                </div>
+              <div className="mt-7 flex flex-wrap items-center gap-4">
+                <CTAButton href={BOOK} variant="white">
+                  Book this listing
+                </CTAButton>
+                <CTAButton href={`tel:${SITE.phoneIntl}`} variant="outline-light" external>
+                  {SITE.phone}
+                </CTAButton>
+              </div>
 
-                <ul className="mt-9 flex flex-wrap gap-x-7 gap-y-2.5 text-[11px] uppercase tracking-[0.18em] text-white/70">
-                  {["No contract", "No lock-in", "Book per listing"].map((line) => (
-                    <li key={line} className="flex items-center gap-2">
-                      <span aria-hidden className="text-re-gold-thin">◆</span>
-                      {line}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-
-              {/* The agent video, playing. It is the thing the package is bought for. */}
-              {verticalVideo && (
-                <Reveal direction="up" delay={0.12}>
-                  <div className="relative mx-auto w-full max-w-[300px] aspect-[9/16] overflow-hidden rounded-[1.5rem] bg-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.3)]">
-                    <video
-                      src={mediaUrl(verticalVideo.src)}
-                      poster={verticalVideo.poster ? mediaUrl(verticalVideo.poster) : undefined}
-                      className="absolute inset-0 h-full w-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                    />
-                  </div>
-                </Reveal>
-              )}
-            </div>
+              <ul className="mt-7 flex flex-wrap gap-x-7 gap-y-2 text-[11px] uppercase tracking-[0.18em] text-white/70">
+                {["No contract", "No lock-in", "Book per listing"].map((line) => (
+                  <li key={line} className="flex items-center gap-2">
+                    <span aria-hidden className="text-re-gold-thin">◆</span>
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
           </Container>
         </div>
       </section>
@@ -113,128 +92,73 @@ export default function SignaturePage() {
             <H2 rule>What you get.</H2>
           </Reveal>
 
-          <div className="mt-12 space-y-12 md:space-y-16">
-            {/* Photos */}
+          <div className="mt-10 space-y-12 md:space-y-16">
+            {/* Photos — the whole set, openable */}
             <Reveal>
               <div>
                 <div className="max-w-2xl">
                   <p className="label-eyebrow">01</p>
-                  <h3 className="mt-3 font-serif text-3xl md:text-4xl text-re-ink">
+                  <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                     18 professionally edited photos
                   </h3>
-                  <p className="mt-4 text-re-stone leading-relaxed">
-                    Shot on DSLR and edited by hand, sized for the portals and ready to go
-                    live. This is a whole set, exactly as it lands in your inbox.
+                  <p className="mt-3 text-re-stone leading-relaxed">
+                    Shot on DSLR and edited by hand. A whole set, exactly as it lands in your
+                    inbox. Tap any photo to look through them.
                   </p>
                 </div>
-                <Stagger
-                  className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 md:gap-3"
-                  staggerChildren={0.03}
-                >
-                  {LISTING_PHOTOS.map((src, i) => (
-                    <StaggerChild key={src} className="overflow-hidden rounded-xl">
-                      <Image
-                        src={src}
-                        alt={`Listing photograph ${i + 1} of 18`}
-                        width={1600}
-                        height={1068}
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 17vw"
-                        className="block w-full h-full object-cover aspect-[3/2]"
-                      />
-                    </StaggerChild>
-                  ))}
-                </Stagger>
+                <ListingPhotoGrid photos={LISTING_PHOTOS} />
               </div>
             </Reveal>
 
-            {/* Floor plan */}
+            {/* Both of these are portrait, so they pair into one row rather than
+                taking a full-width band each. */}
             <Reveal>
-              <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-14 items-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start">
                 <div>
                   <p className="label-eyebrow">02</p>
-                  <h3 className="mt-3 font-serif text-3xl md:text-4xl text-re-ink">
+                  <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                     2D colour floor plan
                   </h3>
-                  <p className="mt-4 text-re-stone leading-relaxed">
+                  <p className="mt-3 text-re-stone leading-relaxed">
                     Every room measured and labelled, with the total area at the bottom.
                   </p>
+                  <div className="mt-6 rounded-2xl border border-re-stone-light bg-white p-4">
+                    <Image
+                      src="/media/examples/floor-plan.jpg"
+                      alt="2D colour floor plan with room dimensions and total area"
+                      width={1600}
+                      height={2204}
+                      sizes="(max-width: 768px) 90vw, 45vw"
+                      className="block w-full h-auto"
+                    />
+                  </div>
                 </div>
-                {/* Portrait, so it is held to a column of its own: at the full
-                    grid width it runs ~900px tall and swamps the page. */}
-                <div className="mx-auto w-full max-w-[440px] rounded-2xl border border-re-stone-light bg-white p-4 md:p-5">
-                  <Image
-                    src="/media/examples/floor-plan.jpg"
-                    alt="2D colour floor plan with room dimensions and total area"
-                    width={1600}
-                    height={2204}
-                    className="block w-full h-auto"
-                  />
-                </div>
-              </div>
-            </Reveal>
 
-            {/* Listing video */}
-            {landscapeVideo && (
-              <Reveal>
-                <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-14 items-center">
+                {verticalVideo && (
                   <div>
                     <p className="label-eyebrow">03</p>
-                    <h3 className="mt-3 font-serif text-3xl md:text-4xl text-re-ink">
-                      Landscape listing video
-                    </h3>
-                    <p className="mt-4 text-re-stone leading-relaxed">
-                      A walkthrough of the property, cut for the listing and for your socials.
-                    </p>
-                    {/* The example was shot with aerial. Saying so here stops the
-                        package reading as though drone is included at this price. */}
-                    <p className="mt-5 rounded-2xl bg-re-blue-light px-5 py-4 text-sm leading-relaxed text-re-ink">
-                      This example includes drone shots. Aerial is an optional extra and is not
-                      included in the {SIGNATURE.price} package.
-                    </p>
-                  </div>
-                  <div className="relative w-full aspect-video overflow-hidden rounded-2xl bg-re-stone-light">
-                    <video
-                      src={mediaUrl(landscapeVideo.src)}
-                      poster={landscapeVideo.poster ? mediaUrl(landscapeVideo.poster) : undefined}
-                      className="absolute inset-0 h-full w-full object-cover"
-                      controls
-                      muted
-                      playsInline
-                      preload="metadata"
-                    />
-                  </div>
-                </div>
-              </Reveal>
-            )}
-
-            {/* Agent video */}
-            {verticalVideo && (
-              <Reveal>
-                <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-14 items-center">
-                  <div>
-                    <p className="label-eyebrow">04</p>
-                    <h3 className="mt-3 font-serif text-3xl md:text-4xl text-re-ink">
+                    <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                       Vertical agent-led video
                     </h3>
-                    <p className="mt-4 text-re-stone leading-relaxed">
-                      You on camera at the property, branded to you and cut for Reels and TikTok.
-                      The listing sells the property. This sells you.
+                    <p className="mt-3 text-re-stone leading-relaxed">
+                      You on camera at the property, branded to you and cut for Reels and
+                      TikTok. The listing sells the property. This sells you.
                     </p>
+                    <div className="relative mt-6 mx-auto w-full max-w-[300px] aspect-[9/16] overflow-hidden rounded-2xl bg-re-stone-light">
+                      <video
+                        src={mediaUrl(verticalVideo.src)}
+                        poster={verticalVideo.poster ? mediaUrl(verticalVideo.poster) : undefined}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        controls
+                        muted
+                        playsInline
+                        preload="metadata"
+                      />
+                    </div>
                   </div>
-                  <div className="relative mx-auto w-full max-w-[280px] aspect-[9/16] overflow-hidden rounded-2xl bg-re-stone-light">
-                    <video
-                      src={mediaUrl(verticalVideo.src)}
-                      poster={verticalVideo.poster ? mediaUrl(verticalVideo.poster) : undefined}
-                      className="absolute inset-0 h-full w-full object-cover"
-                      controls
-                      muted
-                      playsInline
-                      preload="metadata"
-                    />
-                  </div>
-                </div>
-              </Reveal>
-            )}
+                )}
+              </div>
+            </Reveal>
           </div>
         </Container>
       </Section>

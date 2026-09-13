@@ -70,6 +70,26 @@ export default function Lightbox({
     }
   }, [item]);
 
+  /* Touch paging. The arrows are the only way through on a phone otherwise,
+     and a gallery you cannot flick feels broken there. Vertical drags are
+     ignored so scrolling a tall image never changes the slide. */
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStart.current;
+    touchStart.current = null;
+    if (!start || !many) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+  };
+
   const arrowClass =
     "absolute top-1/2 -translate-y-1/2 z-10 inline-flex items-center justify-center h-12 w-12 md:h-14 md:w-14 rounded-full border border-white/30 text-white hover:border-white hover:bg-white/10 transition-colors";
 
@@ -83,6 +103,8 @@ export default function Lightbox({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
           onClick={onClose}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
           role="dialog"
           aria-modal="true"
           aria-label="Media preview"
