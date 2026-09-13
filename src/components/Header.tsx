@@ -5,6 +5,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Logo from "./Logo";
 import { NAV_LINKS, SITE } from "@/lib/site";
+
+/**
+ * The bar's own "Book a Shoot" button already goes to /book, so the nav does
+ * not list it a second time. It stays in NAV_LINKS because the footer uses
+ * that as the site map, where the page does still belong.
+ */
+const BAR_LINKS = NAV_LINKS.filter((link) => link.href !== "/book");
 import { useHideOnScroll } from "@/lib/useHideOnScroll";
 
 export default function Header() {
@@ -55,7 +62,7 @@ export default function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-1 text-sm" aria-label="Primary">
-          {NAV_LINKS.map((link) => {
+          {BAR_LINKS.map((link) => {
             const active = pathname === link.href;
             return (
               <Link
@@ -139,7 +146,7 @@ export default function Header() {
           </div>
 
           <nav className="flex flex-col px-5 py-6 gap-1" aria-label="Primary mobile">
-            {NAV_LINKS.map((link) => {
+            {BAR_LINKS.map((link) => {
               const active = pathname === link.href;
               return (
                 <Link
