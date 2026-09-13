@@ -158,12 +158,14 @@ export default function SignaturePage() {
                 taking a full-width band each. */}
             <Reveal>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start">
-                <div>
+                {/* Centred: the media below sits centred in its column, so a
+                    left-aligned heading reads as misaligned against it. */}
+                <div className="text-center">
                   <p className="label-eyebrow">03</p>
                   <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                     2D colour floor plan
                   </h3>
-                  <p className="mt-3 text-re-stone leading-relaxed">
+                  <p className="mt-3 mx-auto max-w-md text-re-stone leading-relaxed">
                     Every room measured and labelled, with the total area at the bottom.
                   </p>
                   <div className="mt-6 rounded-2xl border border-re-stone-light bg-white p-4">
@@ -179,16 +181,16 @@ export default function SignaturePage() {
                 </div>
 
                 {verticalVideo && (
-                  <div>
+                  <div className="text-center">
                     <p className="label-eyebrow">04</p>
                     <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                       Vertical agent-led video
                     </h3>
-                    <p className="mt-3 text-re-stone leading-relaxed">
+                    <p className="mt-3 mx-auto max-w-md text-re-stone leading-relaxed">
                       You on camera at the property, branded to you and cut for Reels and
                       TikTok. The listing sells the property. This sells you.
                     </p>
-                    <div className="relative mt-6 mx-auto w-full max-w-[300px] aspect-[9/16] overflow-hidden rounded-2xl bg-re-stone-light">
+                    <div className="relative mt-6 mx-auto w-full max-w-[420px] aspect-[9/16] overflow-hidden rounded-2xl bg-re-stone-light">
                       <video
                         src={mediaUrl(verticalVideo.src)}
                         poster={verticalVideo.poster ? mediaUrl(verticalVideo.poster) : undefined}
