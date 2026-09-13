@@ -6,7 +6,7 @@ import { LISTING_PRICE_RANGE } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Book a shoot",
-  description: `Book listing media in under a minute. Packages ${LISTING_PRICE_RANGE}, extras priced as you add them, delivered the next business day.`,
+  description: `Book listing media in under a minute. Packages ${LISTING_PRICE_RANGE}, extras priced as you add them.`,
   alternates: { canonical: "/book" },
 };
 
@@ -41,7 +41,7 @@ export default async function BookPage({
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <h1 className="h-display text-3xl text-re-ink md:text-4xl">Book a shoot</h1>
           <p className="text-sm text-re-stone">
-            Takes about a minute · delivered next business day · no payment today
+            Takes about a minute · no payment today
           </p>
         </div>
 

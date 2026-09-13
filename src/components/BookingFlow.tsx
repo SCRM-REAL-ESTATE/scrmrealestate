@@ -291,7 +291,7 @@ export default function BookingFlow({
               sub={
                 stream === "monthly"
                   ? "Billed monthly. No lock-in."
-                  : "Every one is delivered the next business day."
+                  : "Priced per listing. No contract."
               }
             >
               <div className="grid gap-3">

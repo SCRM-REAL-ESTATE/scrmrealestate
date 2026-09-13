@@ -25,7 +25,6 @@ type PackageInput = {
   /** Whole AUD. `price` is derived from this. */
   amount: number;
   products: string;
-  turnaround: string;
   includes: string[];
   note: string;
   /** What this tier adds over the one below it, so the ladder reads at a glance. */
@@ -46,7 +45,6 @@ export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
     name: "Listing",
     amount: 349,
     products: "3 products included",
-    turnaround: "Next business day",
     includes: [
       "15 professionally edited DSLR photos",
       "2D colour floor plan",
@@ -60,7 +58,6 @@ export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
     name: "Signature",
     amount: 499,
     products: "4 products included",
-    turnaround: "Next business day",
     includes: [
       "18 professionally edited DSLR photos",
       "2D colour floor plan",
@@ -76,7 +73,6 @@ export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
     name: "Premiere",
     amount: 899,
     products: "5 products included",
-    turnaround: "Next business day",
     includes: [
       "25 professionally edited DSLR photos",
       "2D colour floor plan",
@@ -101,7 +97,6 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = priced<PackageInput>([
     name: "Asset",
     amount: 399,
     products: "3 products included",
-    turnaround: "Next business day",
     includes: [
       "15 professionally edited DSLR photos",
       "2D colour floor plan",
@@ -117,7 +112,6 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = priced<PackageInput>([
     name: "Campaign",
     amount: 549,
     products: "4 products included",
-    turnaround: "Next business day",
     includes: [
       "18 professionally edited DSLR photos",
       "2D colour floor plan",

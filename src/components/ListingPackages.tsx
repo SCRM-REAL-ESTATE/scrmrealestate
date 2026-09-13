@@ -60,7 +60,7 @@ export default function ListingPackages({
                 {pkg.price}
               </p>
               <p className={`mt-3 text-sm ${pkg.featured ? "text-white/85" : "text-re-stone"}`}>
-                {pkg.products} · {pkg.turnaround}
+                {pkg.products}
               </p>
 
               {pkg.scope && (

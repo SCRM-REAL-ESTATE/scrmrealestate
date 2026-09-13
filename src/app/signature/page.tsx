@@ -23,7 +23,7 @@ const SIGNATURE = LISTING_PACKAGES.find((p) => p.id === "pkg-signature")!;
 
 export const metadata: Metadata = {
   title: `Listing photography, floor plan and video from ${SIGNATURE.price}`,
-  description: `${SIGNATURE.price} per listing. ${SIGNATURE.products}, delivered next business day: professionally edited photos, a 2D colour floor plan, a landscape listing video and a vertical agent-led video with you on camera.`,
+  description: `${SIGNATURE.price} per listing. ${SIGNATURE.products}: professionally edited photos, a 2D colour floor plan, a landscape listing video and a vertical agent-led video with you on camera.`,
   alternates: { canonical: "/signature" },
 };
 
@@ -73,7 +73,7 @@ export default function SignaturePage() {
 
               <p className="mt-4 max-w-xl text-lg text-white/85 leading-relaxed">
                 Photos, a listing video, a floor plan and a vertical video with you on camera.
-                {" "}{SIGNATURE.products}, back {SIGNATURE.turnaround.toLowerCase()}.
+                {" "}{SIGNATURE.products}.
               </p>
 
               <div className="mt-7 flex flex-wrap items-center gap-4">
@@ -216,8 +216,7 @@ export default function SignaturePage() {
                 Book your next listing.
               </H2>
               <p className="mt-6 text-lg text-white/85">
-                {SIGNATURE.price} per listing, {SIGNATURE.turnaround.toLowerCase()}. Tell us the
-                address and when you need it.
+                {SIGNATURE.price} per listing. Tell us the address and when you need it.
               </p>
               <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
                 <CTAButton href={BOOK} variant="white">

@@ -14,7 +14,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Agent videos on every listing, $499",
   description:
-    "Signature is $499 a listing: 18 photos, a branded floor plan, the listing video, and a vertical agent-led video with you on camera. Delivered next business day.",
+    "Signature is $499 a listing: 18 photos, a colour floor plan, the listing video, and a vertical agent-led video with you on camera.",
   alternates: { canonical: "/agents" },
 };
 
@@ -35,7 +35,7 @@ const faqs = [
   },
   {
     q: "Can it be branded to my agency?",
-    a: "Yes. The floor plan and both videos carry your agency branding.",
+    a: "Yes. Both videos carry your agency branding.",
   },
   {
     q: "My agency already has a photographer.",
@@ -65,8 +65,8 @@ export default function AgentsPage() {
                 </h1>
 
                 <p className="mt-6 max-w-xl text-lg text-white/85 leading-relaxed">
-                  $499 a listing gets you 18 photos, a branded floor plan and the listing video,
-                  plus a vertical agent-led video with you on camera. Same shoot, next business day.
+                  $499 a listing gets you 18 photos, a colour floor plan and the listing video,
+                  plus a vertical agent-led video with you on camera, all from the same shoot.
                 </p>
 
                 <div className="mt-9">
@@ -77,7 +77,6 @@ export default function AgentsPage() {
 
                 <ul className="mt-9 grid grid-cols-2 sm:flex sm:flex-wrap gap-x-7 gap-y-2.5 text-[11px] uppercase tracking-[0.18em] text-white/70">
                   {[
-                    "Next business day",
                     "Portal-ready",
                     "Per listing, no contract",
                   ].map((line) => (
@@ -242,7 +241,7 @@ export default function AgentsPage() {
                   ))}
                 </ul>
                 <p className="mt-7 border-t border-re-stone-light pt-6 text-re-stone">
-                  {SIGNATURE.products} · {SIGNATURE.turnaround}
+                  {SIGNATURE.products}
                 </p>
               </div>
             </Reveal>
@@ -308,8 +307,7 @@ export default function AgentsPage() {
             <Reveal>
               <H2 rule>What {SIGNATURE.price} gets you.</H2>
               <p className="mt-6 text-lg text-re-stone leading-relaxed">
-                Four products off one visit, delivered next business day, sized for the portals
-                and for your own feed.
+                Four products off one visit, sized for the portals and for your own feed.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <CTAButton href="#book">Book your next listing</CTAButton>
@@ -327,7 +325,7 @@ export default function AgentsPage() {
               <div className="gold-ring rounded-[2rem] blue-fade p-9 md:p-11 text-white shadow-[0_30px_70px_rgba(30,98,224,0.3)]">
                 <p className="font-serif text-6xl">{SIGNATURE.price}</p>
                 <p className="mt-3 text-sm text-white/80">
-                  {SIGNATURE.products} · {SIGNATURE.turnaround}
+                  {SIGNATURE.products}
                 </p>
                 <ul className="mt-8 space-y-4">
                   {SIGNATURE.includes.map((line) => (
@@ -366,7 +364,7 @@ export default function AgentsPage() {
               },
               {
                 n: "03",
-                t: "Next business day, everything",
+                t: "Everything, ready to publish",
                 d: "Photos, floor plan, listing video and your agent video, sized for portals and for socials.",
               },
             ].map((s) => (
@@ -409,7 +407,6 @@ export default function AgentsPage() {
               <ul className="mt-9 space-y-3 text-white/80">
                 {[
                   "$499 per listing, no contract",
-                  "Shot one day, delivered the next",
                   "Agent video included, not an add-on",
                 ].map((line) => (
                   <li key={line} className="flex gap-3">

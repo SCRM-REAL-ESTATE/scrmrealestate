@@ -58,7 +58,6 @@ export type BookableOffer = {
   /** Billed monthly, so no shoot date and no add-ons. */
   recurring?: boolean;
   products?: string;
-  turnaround?: string;
   includes: string[];
   note?: string;
   step?: string;
@@ -92,7 +91,6 @@ const fromPackage = (
   amount: pkg.amount,
   price: pkg.price,
   products: pkg.products,
-  turnaround: pkg.turnaround,
   includes: pkg.includes,
   note: pkg.note,
   step: pkg.step,

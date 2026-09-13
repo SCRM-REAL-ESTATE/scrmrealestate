@@ -281,9 +281,8 @@ export function totalLabel(q: Quote): string {
 }
 
 /**
- * Delivery is "next business day" everywhere on the site. Weekends only — there
- * is no public-holiday list, so this is used as a hint next to a date field and
- * never printed as a promise.
+ * The next weekday after a date. Weekends only — there is no public-holiday
+ * list, so this is a hint next to a date field and never printed as a promise.
  */
 export function nextBusinessDay(from: Date): Date {
   const d = new Date(from);

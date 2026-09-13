@@ -61,8 +61,6 @@ export default function HomePage() {
               <span className="text-re-gold-thin">◆</span>
               <span>Carousels &amp; Stories</span>
               <span className="text-re-gold-thin">◆</span>
-              <span>Delivered Next Business Day</span>
-              <span className="text-re-gold-thin">◆</span>
             </div>
           ))}
         </div>
@@ -112,7 +110,7 @@ export default function HomePage() {
                 t: "Listing packages",
                 price: "$349",
                 priceSub: "per listing",
-                d: "Photos, floor plan and video. Shot one day, delivered the next.",
+                d: "Photos, floor plan and video for every listing.",
                 i: "01",
                 href: "/services",
                 cta: "See the packages",
@@ -177,7 +175,7 @@ export default function HomePage() {
               <div className="max-w-xl">
                 <H2 rule>Listing packages.</H2>
                 <p className="mt-5 text-re-stone leading-relaxed">
-                  Photos, a branded floor plan and video. Delivered next business day.
+                  Photos, a colour floor plan and video.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-4">

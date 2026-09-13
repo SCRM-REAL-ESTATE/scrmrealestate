@@ -53,7 +53,7 @@ const faqs = [
   },
   {
     q: "Do you do residential as well?",
-    a: `Yes, and it's priced completely differently: per property, from ${ENTRY_PRICE}, with photos, a floor plan and video delivered next business day. Commercial is quoted per asset because the campaigns aren't comparable.`,
+    a: `Yes, and it's priced completely differently: per property, from ${ENTRY_PRICE}, with photos, a floor plan and video. Commercial is quoted per asset because the campaigns aren't comparable.`,
   },
 ];
 
