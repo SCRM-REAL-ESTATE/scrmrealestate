@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import { LISTING_PACKAGES } from "@/lib/pricing";
-import { MEDIA_ITEMS, mediaByCategory, mediaUrl } from "@/lib/media";
+import { MEDIA_ITEMS, mediaUrl } from "@/lib/media";
 import { SITE } from "@/lib/site";
 
 /**
@@ -28,10 +28,16 @@ export const metadata: Metadata = {
 
 const BOOK = `/book?p=${SIGNATURE.id}`;
 
-/** The example that sits beside each line of the package. */
-const photos = mediaByCategory("listing")
-  .filter((i) => i.type === "image")
-  .slice(0, 4);
+/**
+ * The example that sits beside each line of the package.
+ *
+ * The photographs are the full delivered set for one listing rather than a
+ * selection: the offer is a count, so the count is shown instead of claimed.
+ */
+const LISTING_PHOTOS = Array.from(
+  { length: 18 },
+  (_, i) => `/media/examples/listing/${String(i + 1).padStart(2, "0")}.jpg`
+);
 const verticalVideo = MEDIA_ITEMS.find((i) => i.src === "vertical/vertical-3-bed.mp4");
 const landscapeVideo = MEDIA_ITEMS.find((i) => i.src === "landscape/landscape-2-bed.mp4");
 
@@ -110,25 +116,30 @@ export default function SignaturePage() {
           <div className="mt-12 space-y-12 md:space-y-16">
             {/* Photos */}
             <Reveal>
-              <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-14 items-center">
-                <div>
+              <div>
+                <div className="max-w-2xl">
                   <p className="label-eyebrow">01</p>
                   <h3 className="mt-3 font-serif text-3xl md:text-4xl text-re-ink">
                     18 professionally edited photos
                   </h3>
                   <p className="mt-4 text-re-stone leading-relaxed">
-                    Shot on DSLR and edited by hand. Sized for the portals and ready to go live.
+                    Shot on DSLR and edited by hand, sized for the portals and ready to go
+                    live. This is a whole set, exactly as it lands in your inbox.
                   </p>
                 </div>
-                <Stagger className="grid grid-cols-2 gap-3 md:gap-4" staggerChildren={0.07}>
-                  {photos.map((photo) => (
-                    <StaggerChild key={photo.src} className="overflow-hidden rounded-2xl">
+                <Stagger
+                  className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 md:gap-3"
+                  staggerChildren={0.03}
+                >
+                  {LISTING_PHOTOS.map((src, i) => (
+                    <StaggerChild key={src} className="overflow-hidden rounded-xl">
                       <Image
-                        src={mediaUrl(photo.src)}
-                        alt={photo.alt ?? "Listing photography"}
-                        width={photo.width}
-                        height={photo.height}
-                        className="block w-full h-full object-cover aspect-[4/3]"
+                        src={src}
+                        alt={`Listing photograph ${i + 1} of 18`}
+                        width={1600}
+                        height={1068}
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 17vw"
+                        className="block w-full h-full object-cover aspect-[3/2]"
                       />
                     </StaggerChild>
                   ))}
