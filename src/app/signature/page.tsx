@@ -161,7 +161,9 @@ export default function SignaturePage() {
                     {SIGNATURE.price} package.
                   </p>
                 </div>
-                <div className="relative mt-6 w-full aspect-[3/4] sm:aspect-[4/3] md:aspect-video overflow-hidden rounded-2xl bg-re-stone-light">
+                {/* Desktop plays the embed inline, where Drive's player has
+                    room and behaves. */}
+                <div className="relative mt-6 hidden w-full aspect-video overflow-hidden rounded-2xl bg-re-stone-light md:block">
                   <iframe
                     src={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/preview`}
                     title="Landscape listing video"
@@ -171,21 +173,45 @@ export default function SignaturePage() {
                   />
                 </div>
 
-                {/* Phones only. Drive's inline player leaves the picture small
-                    behind its own chrome, and iOS has no fullscreen API for a
-                    cross-origin frame, so the only way to give a phone the
-                    whole screen is to hand the file to Drive itself. */}
-                <div className="mt-4 text-center md:hidden">
-                  <a
-                    href={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/view`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-re-blue px-6 py-3 text-sm text-re-blue transition-colors hover:bg-re-blue hover:text-white"
-                  >
-                    Open full screen
-                    <span aria-hidden>→</span>
-                  </a>
-                </div>
+                {/* Phones get a still and one play button instead of the embed.
+                    Drive's mobile player stacks a scrubber, skip controls and a
+                    play button that never hides over a letterboxed picture, and
+                    none of that can be changed from outside a cross-origin
+                    frame. Tapping hands the file to Drive, which opens it full
+                    screen. The still is the listing's own facade shot, so it is
+                    the frame the video opens on. */}
+                <a
+                  href={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/view`}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Play the listing video full screen"
+                  className="group relative mt-6 block w-full aspect-video overflow-hidden rounded-2xl bg-re-stone-light md:hidden"
+                >
+                  <Image
+                    src="/media/examples/listing/01.jpg"
+                    alt=""
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                  <span className="absolute inset-0 flex items-center justify-center bg-re-ink/20">
+                    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 shadow-[0_8px_24px_rgba(0,0,0,0.3)]">
+                      <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="ml-1 text-re-blue"
+                        aria-hidden
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </span>
+                </a>
+                <p className="mt-3 text-center text-xs text-re-stone md:hidden">
+                  Opens full screen
+                </p>
               </div>
             </Reveal>
 
