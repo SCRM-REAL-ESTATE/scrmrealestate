@@ -49,7 +49,7 @@ export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
     turnaround: "Next business day",
     includes: [
       "15 professionally edited DSLR photos",
-      "2D colour floor plan with your agency branding",
+      "2D colour floor plan",
       "Landscape listing video",
     ],
     note: "Everything you need to get a listing live.",
@@ -63,7 +63,7 @@ export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
     turnaround: "Next business day",
     includes: [
       "18 professionally edited DSLR photos",
-      "2D colour floor plan with your agency branding",
+      "2D colour floor plan",
       "Landscape listing video",
       "Vertical agent-led video at the property. You on camera, branded to you, cut for Reels and TikTok",
     ],
@@ -79,7 +79,7 @@ export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
     turnaround: "Next business day",
     includes: [
       "25 professionally edited DSLR photos",
-      "2D colour floor plan with your agency branding",
+      "2D colour floor plan",
       "Filmed landscape property film, shot on camera rather than built from stills",
       "Vertical agent-led video",
       "Aerial photography and footage",
@@ -104,7 +104,7 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = priced<PackageInput>([
     turnaround: "Next business day",
     includes: [
       "15 professionally edited DSLR photos",
-      "2D floor plan with your agency branding",
+      "2D colour floor plan",
       "Landscape property video",
     ],
     note: "Enough to take an asset to market.",
@@ -120,7 +120,7 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = priced<PackageInput>([
     turnaround: "Next business day",
     includes: [
       "18 professionally edited DSLR photos",
-      "2D floor plan with your agency branding",
+      "2D colour floor plan",
       "Landscape property video",
       "Vertical agent-led video at the asset, cut for LinkedIn",
     ],

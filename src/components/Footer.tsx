@@ -12,13 +12,13 @@ const services = [
 
 export default function Footer() {
   return (
-    <footer className="bg-re-blue text-white/85 mt-24">
-      <div className="mx-auto max-w-7xl px-5 md:px-8 py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8">
+    <footer className="bg-re-blue text-white/85 mt-16">
+      <div className="mx-auto max-w-7xl px-5 md:px-8 py-11 md:py-14">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6">
           {/* Brand */}
           <div className="md:col-span-4">
             <Logo variant="light" />
-            <div className="mt-6 flex items-center gap-3">
+            <div className="mt-4 flex items-center gap-3">
               <a
                 href={SITE.socials.instagram}
                 target="_blank"
@@ -48,8 +48,8 @@ export default function Footer() {
 
           {/* Services */}
           <div className="md:col-span-3">
-            <p className="label-eyebrow !text-white/55 mb-4">Services</p>
-            <ul className="space-y-3 text-sm">
+            <p className="label-eyebrow !text-white/55 mb-3">Services</p>
+            <ul className="space-y-2 text-sm">
               {services.map((s) => (
                 <li key={s.href}>
                   <Link href={s.href} className="text-white/80 hover:text-white transition-colors">
@@ -62,8 +62,8 @@ export default function Footer() {
 
           {/* Company */}
           <div className="md:col-span-2">
-            <p className="label-eyebrow !text-white/55 mb-4">Company</p>
-            <ul className="space-y-3 text-sm">
+            <p className="label-eyebrow !text-white/55 mb-3">Company</p>
+            <ul className="space-y-2 text-sm">
               {NAV_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="text-white/80 hover:text-white transition-colors">
@@ -76,8 +76,8 @@ export default function Footer() {
 
           {/* Contact */}
           <div className="md:col-span-3">
-            <p className="label-eyebrow !text-white/55 mb-4">Contact</p>
-            <ul className="space-y-3 text-sm">
+            <p className="label-eyebrow !text-white/55 mb-3">Contact</p>
+            <ul className="space-y-2 text-sm">
               <li>
                 <a href={`tel:${SITE.phoneIntl}`} className="text-white/80 hover:text-white transition-colors">
                   {SITE.phone}
@@ -93,7 +93,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 pt-8 border-t border-white/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs text-white/55">
+        <div className="mt-9 pt-6 border-t border-white/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-2 text-xs text-white/55">
           <p>© {new Date().getFullYear()} SCRM Media Real Estate. All rights reserved.</p>
           <p className="tracking-[0.18em] uppercase">A division of SCRM Media</p>
         </div>
