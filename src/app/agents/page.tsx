@@ -14,7 +14,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Agent videos on every listing, $499",
   description:
-    "Signature is $499 a listing: 18 photos, a colour floor plan, the listing video, and a vertical agent-led video with you on camera.",
+    "Signature is $499 a listing: 18 photos, a floor plan, the listing video, and a vertical agent-led video with you on camera.",
   alternates: { canonical: "/agents" },
 };
 
@@ -65,7 +65,7 @@ export default function AgentsPage() {
                 </h1>
 
                 <p className="mt-6 max-w-xl text-lg text-white/85 leading-relaxed">
-                  $499 a listing gets you 18 photos, a colour floor plan and the listing video,
+                  $499 a listing gets you 18 photos, a floor plan and the listing video,
                   plus a vertical agent-led video with you on camera, all from the same shoot.
                 </p>
 

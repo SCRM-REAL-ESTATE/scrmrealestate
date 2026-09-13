@@ -94,7 +94,7 @@ export default function ServicesPage() {
               <div className="max-w-xl">
                 <H2 rule>Listing packages.</H2>
                 <p className="mt-5 text-re-stone leading-relaxed">
-                  Photos, a colour floor plan and video in every package.
+                  Photos, a floor plan and video in every package.
                 </p>
               </div>
               <Link
