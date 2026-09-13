@@ -161,7 +161,7 @@ export default function SignaturePage() {
                     {SIGNATURE.price} package.
                   </p>
                 </div>
-                <div className="relative mt-6 w-full aspect-video overflow-hidden rounded-2xl bg-re-stone-light">
+                <div className="relative mt-6 w-full aspect-[3/4] sm:aspect-[4/3] md:aspect-video overflow-hidden rounded-2xl bg-re-stone-light">
                   <iframe
                     src={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/preview`}
                     title="Landscape listing video"
@@ -221,7 +221,6 @@ export default function SignaturePage() {
                         }
                         className="absolute inset-0 h-full w-full object-cover"
                         controls
-                        muted
                         playsInline
                         preload="metadata"
                       />
