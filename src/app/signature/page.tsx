@@ -126,18 +126,17 @@ export default function SignaturePage() {
             {/* Listing video */}
             <Reveal>
               <div>
-                <div className="max-w-2xl">
+                <div className="mx-auto max-w-2xl text-center">
                   <p className="label-eyebrow">02</p>
                   <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                     Landscape listing video
                   </h3>
-                  <p className="mt-3 text-re-stone leading-relaxed">
-                    A walkthrough of the property, cut for the listing and for your socials.
-                  </p>
-                  {/* The example carries aerial and virtual staging, both of which
-                      are paid add-ons. Saying so stops the package reading as
-                      though either is included at this price. */}
-                  <p className="mt-4 rounded-2xl bg-re-blue-light px-5 py-4 text-sm leading-relaxed text-re-ink">
+                  {/* The example carries aerial and virtual staging, both paid
+                      add-ons. Saying so stops the package reading as though
+                      either is included at this price. Set as a plain line
+                      rather than a callout: a panel here read as a warning
+                      about the work instead of a note about the example. */}
+                  <p className="mt-4 text-sm leading-relaxed text-re-blue">
                     This example includes drone shots and virtual staging. Both are optional
                     extras and are not included in the {SIGNATURE.price} package.
                   </p>
