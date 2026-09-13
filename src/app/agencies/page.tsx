@@ -73,8 +73,9 @@ export default function AgenciesPage() {
             <TiltCard className="gold-ring max-w-2xl mx-auto rounded-[2rem] border border-re-stone-light bg-white p-8 md:p-12 text-center shadow-[0_24px_70px_rgba(30,98,224,0.1)]">
               <p className="label-eyebrow">Monthly Social Media Management</p>
               <p className="mt-4 font-serif text-6xl text-re-ink">
-                $1,800
-                <span className="ml-2 text-base font-sans text-re-stone">from / month</span>
+                <span className="mr-2 align-middle text-2xl font-sans text-re-stone">From</span>
+                {AGENCY_MANAGEMENT.price}
+                <span className="ml-2 text-base font-sans text-re-stone">/ month</span>
               </p>
               <div className="mt-8 mx-auto max-w-md text-left">
                 <ServiceIncludes

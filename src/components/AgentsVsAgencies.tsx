@@ -38,7 +38,7 @@ export default function AgentsVsAgencies() {
       from: "right" as const,
       title: "For agencies",
       price: "$1,800",
-      priceSub: "from, per month",
+      priceSub: "per month",
       body: "Your whole social presence run for you. 8 videos, 6 posts and 6 stories every month, planned and scheduled.",
       href: "/agencies",
       cta: "See agency management",
@@ -87,6 +87,13 @@ export default function AgentsVsAgencies() {
                 </h3>
 
                 <p className={`mt-6 font-serif text-5xl md:text-6xl ${s.dark ? "text-white" : "text-re-blue"}`}>
+                  <span
+                    className={`mr-2 align-middle text-xl font-sans ${
+                      s.dark ? "text-white/80" : "text-re-stone"
+                    }`}
+                  >
+                    From
+                  </span>
                   {s.price}
                   <span
                     className={`ml-2 text-xs font-sans tracking-wide uppercase ${

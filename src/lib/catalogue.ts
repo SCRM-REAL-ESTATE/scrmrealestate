@@ -51,6 +51,8 @@ export type BookableOffer = {
   amount: number;
   price: string;
   priceSub?: string;
+  /** Show the price as "From $x" — an entry price rather than the price. */
+  priceFrom?: boolean;
   /** Quoted, not priced — skips the upsell step. */
   quote?: boolean;
   /** Billed monthly, so no shoot date and no add-ons. */
@@ -172,6 +174,7 @@ export const OFFERS: BookableOffer[] = [
     amount: AGENT_CONTENT.amount,
     price: AGENT_CONTENT.price,
     priceSub: AGENT_CONTENT.priceSub,
+    priceFrom: AGENT_CONTENT.priceFrom,
     recurring: true,
     includes: AGENT_CONTENT.includes,
     note: AGENT_CONTENT.headline,
@@ -186,6 +189,7 @@ export const OFFERS: BookableOffer[] = [
     amount: AGENCY_MANAGEMENT.amount,
     price: AGENCY_MANAGEMENT.price,
     priceSub: AGENCY_MANAGEMENT.priceSub,
+    priceFrom: AGENCY_MANAGEMENT.priceFrom,
     recurring: true,
     includes: AGENCY_MANAGEMENT.includes,
     note: AGENCY_MANAGEMENT.headline,

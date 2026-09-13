@@ -17,6 +17,9 @@ export default function AgentContentCard({ dark = false }: { dark?: boolean }) {
       <p className={`label-eyebrow ${dark ? "!text-white/85" : ""}`}>{AGENT_CONTENT.name}</p>
 
       <p className={`mt-3 font-serif text-4xl md:text-5xl ${dark ? "text-white" : "text-re-ink"}`}>
+        <span className={`mr-2 align-middle text-xl font-sans ${dark ? "text-white/85" : "text-re-stone"}`}>
+          From
+        </span>
         {AGENT_CONTENT.price}
         <span className={`ml-2 text-sm font-sans ${dark ? "text-white/85" : "text-re-stone"}`}>
           {AGENT_CONTENT.priceSub}

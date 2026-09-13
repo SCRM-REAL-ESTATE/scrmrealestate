@@ -172,7 +172,9 @@ export const AGENT_CONTENT = {
   name: "Everything But The House",
   amount: 800,
   price: money(800),
-  priceSub: "from, per month",
+  priceSub: "per month",
+  /** Renders as "From $800". The number is an entry price, not the price. */
+  priceFrom: true,
   headline: "Four videos about you. No listing required.",
   pitch:
     "Listing content only exists while you have stock. This doesn't. Four pieces to camera about who you are, how you work and what you know about your area, planned and posted for you.",
@@ -197,7 +199,8 @@ export const AGENCY_MANAGEMENT = {
   name: "Monthly Social Media Management",
   amount: 1800,
   price: money(1800),
-  priceSub: "from, per month",
+  priceSub: "per month",
+  priceFrom: true,
   headline: "Your agency's whole social presence, run for you.",
   pitch:
     "We plan the month, film it in one batch, edit it, write the captions and post it. One team, start to finish.",

@@ -111,7 +111,7 @@ export default function HomePage() {
               {
                 t: "Listing packages",
                 price: "$349",
-                priceSub: "from, per listing",
+                priceSub: "per listing",
                 d: "Photos, floor plan and video. Shot one day, delivered the next.",
                 i: "01",
                 href: "/services",
@@ -121,7 +121,7 @@ export default function HomePage() {
               {
                 t: "Agent content",
                 price: "$800",
-                priceSub: "from, per month",
+                priceSub: "per month",
                 d: "Four videos a month about you, not a property. Planned, filmed and posted for you.",
                 i: "02",
                 href: "/services#agent",
@@ -131,7 +131,7 @@ export default function HomePage() {
               {
                 t: "Agency management",
                 price: "$1,800",
-                priceSub: "from, per month",
+                priceSub: "per month",
                 d: "Your whole social presence run for you. 8 videos, 6 posts and 6 stories a month.",
                 i: "03",
                 href: "/agencies",
@@ -153,6 +153,7 @@ export default function HomePage() {
                   <span className="font-serif gold-text text-2xl">{p.i}</span>
                   <h3 className="mt-5 font-serif text-2xl md:text-3xl text-re-ink">{p.t}</h3>
                   <p className="mt-4 font-serif text-4xl md:text-5xl text-re-blue">
+                    <span className="mr-2 align-middle text-lg font-sans text-re-stone">From</span>
                     {p.price}
                     <span className="ml-2 text-xs font-sans text-re-stone tracking-wide uppercase">{p.priceSub}</span>
                   </p>

@@ -681,6 +681,9 @@ function PackageCard({
         </div>
         <div className="shrink-0 text-right">
           <p className={`font-serif text-re-blue ${offer.featured ? "text-3xl md:text-4xl" : "text-2xl md:text-3xl"}`}>
+            {offer.priceFrom && (
+              <span className="mr-1.5 align-middle text-sm text-re-stone">From</span>
+            )}
             {offer.price}
           </p>
           {offer.priceSub && <p className="text-[11px] text-re-stone">{offer.priceSub}</p>}
