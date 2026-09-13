@@ -94,7 +94,13 @@ export default function Footer() {
         </div>
 
         <div className="mt-9 pt-6 border-t border-white/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-2 text-xs text-white/55">
-          <p>© {new Date().getFullYear()} SCRM Media Real Estate. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} SCRM Media Real Estate. All rights reserved.
+            <span aria-hidden className="mx-2 text-white/30">·</span>
+            <Link href="/privacy" className="text-white/70 hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+          </p>
           <p className="tracking-[0.18em] uppercase">A division of SCRM Media</p>
         </div>
       </div>
