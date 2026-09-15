@@ -32,7 +32,12 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     // Next defaults to 75, which re-compressed already-compressed source files
     // and was visible on the listing photographs at full size.
-    qualities: [85],
+    //
+    // This is an allow-list, not a default: /_next/image answers 400 for any
+    // quality not named here, and the image silently fails to render. Every
+    // value passed to an <Image quality={...}> anywhere in the app has to
+    // appear in this array.
+    qualities: [70, 85, 90],
     remotePatterns: [
       { protocol: "https", hostname: "**.supabase.co" },
       ...(mediaHost && !mediaHost.endsWith(".supabase.co")
