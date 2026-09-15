@@ -43,17 +43,19 @@ const verticalVideo = MEDIA_ITEMS.find(
 );
 
 /**
- * The finished listing video, embedded from Drive rather than served from our
- * own storage.
+ * The finished listing video, unlisted on YouTube.
  *
- * STOPGAP. The master is 4K and too large to pull into the repo from here, so
- * the visitor's browser fetches it from Google instead. That costs us the
- * player chrome and leaves the file subject to Drive's view throttling under
- * heavy traffic, which an ad campaign can provoke. Replace with an entry in
- * media.json once `npm run media` has published a web-sized encode, and this
- * whole block becomes a <video> like the one above it.
+ * Served from there rather than our own storage because the master is 4K and
+ * too large to publish through the media pipeline from here. YouTube also
+ * streams adaptively, so a phone is sent a 720p rendition rather than the full
+ * file, and it carries the load an ad campaign puts on it.
+ *
+ * Replace with an entry in media.json once `npm run media` has published a
+ * web-sized encode, and this becomes a <video> like the agent one below it.
+ * Until then the video must stay Unlisted, not Private, and keep "Allow
+ * embedding" ticked: either would blank the player on this page.
  */
-const LISTING_VIDEO_DRIVE_ID = "1wh3vLEaHV4xk93ahHdPohC3OzcBBcnfd";
+const LISTING_VIDEO_YOUTUBE_ID = "QALPUZWiHBw";
 
 export default function SignaturePage() {
   return (
@@ -161,37 +163,20 @@ export default function SignaturePage() {
                     {SIGNATURE.price} package.
                   </p>
                 </div>
-                {/* Plays in place on every size so nobody has to leave the
-                    page to watch it.
-
-                    The player is Drive's, inside a cross-origin frame, so its
-                    chrome, its cookie prompt and its always-on play button
-                    cannot be styled or hidden from here. On a phone that
-                    chrome crowds a 16:9 frame, which is what the full screen
-                    link below is for. Hosting the file ourselves replaces all
-                    of this with a native <video>. */}
-                <div className="relative mt-6 w-full aspect-video overflow-hidden rounded-2xl bg-re-stone-light">
+                {/* nocookie serves the player without setting tracking
+                    cookies until someone actually plays it, which is what
+                    removes the consent prompt. rel=0 keeps the end screen to
+                    this channel rather than offering strangers' videos on a
+                    page we are paying for traffic to. */}
+                <div className="relative mt-6 w-full aspect-video overflow-hidden rounded-2xl bg-re-ink">
                   <iframe
-                    src={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/preview`}
+                    src={`https://www.youtube-nocookie.com/embed/${LISTING_VIDEO_YOUTUBE_ID}?rel=0&modestbranding=1&playsinline=1`}
                     title="Landscape listing video"
-                    allow="autoplay; fullscreen"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
+                    loading="lazy"
                     className="absolute inset-0 h-full w-full border-0"
                   />
-                </div>
-
-                {/* Phones only: the frame is short there and iOS gives no
-                    fullscreen API for a cross-origin frame, so this is the
-                    only route to a full-size view. */}
-                <div className="mt-3 text-center md:hidden">
-                  <a
-                    href={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/view`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs text-re-stone underline decoration-re-stone/40 underline-offset-4 transition-colors hover:text-re-blue"
-                  >
-                    Or watch it full screen
-                  </a>
                 </div>
               </div>
             </Reveal>
