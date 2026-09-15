@@ -83,7 +83,8 @@ export default function VirtualStagingPage() {
                 <p className="mt-4 mx-auto max-w-2xl text-lg text-white/85 leading-relaxed">
                   Send us photographs of a vacant property and we furnish the
                   rooms that need it. For sales campaigns and for rental
-                  advertising, on stock you have already shot.
+                  advertising, on stock you have already shot or on a shoot we
+                  do for you.
                 </p>
 
                 <div className="mt-7 flex flex-wrap items-center justify-center gap-4">
@@ -211,7 +212,8 @@ export default function VirtualStagingPage() {
               <H2 rule className="text-center [&>span]:mx-auto">
                 What it costs.
               </H2>
-              <p className="mt-4 text-re-stone leading-relaxed">
+              <p className="label-eyebrow mt-5">{VACANT_PROPERTY.heading}</p>
+              <p className="mt-3 text-re-stone leading-relaxed">
                 {VACANT_PROPERTY.intro}
               </p>
             </div>
@@ -275,8 +277,22 @@ export default function VirtualStagingPage() {
               ))}
           </div>
 
+          {/* Without this the prices above read as the price of staging full
+              stop, when they are the price of staging a shoot that isn't
+              ours. */}
           <Reveal delay={0.16}>
-            <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-re-stone">
+            <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-re-blue/20 bg-white px-6 py-5 text-center">
+              <p className="label-eyebrow">
+                {VACANT_PROPERTY.onOurShoot.heading}
+              </p>
+              <p className="mt-3 text-re-stone leading-relaxed">
+                {VACANT_PROPERTY.onOurShoot.body}
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <p className="mx-auto mt-6 max-w-2xl text-center text-sm text-re-stone">
               {VACANT_PROPERTY.smallPrint}
             </p>
           </Reveal>

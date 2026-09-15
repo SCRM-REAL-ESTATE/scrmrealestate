@@ -232,20 +232,20 @@ export const ADD_ONS: AddOn[] = priced<AddOnInput>([
   {
     id: "add-virtual-staging",
     name: "Virtual staging, 5 rooms",
-    amount: 200,
+    amount: 150,
     detail: "Staged photos appear in your listing video at no extra cost",
   },
   {
     id: "add-listing-video",
     name: "Listing video",
-    amount: 200,
-    detail: "Listing video built from your photos",
+    amount: 100,
+    detail: "Built from photos you supply, for a property we did not shoot",
   },
   {
     id: "add-vacant-pack",
     name: "Vacant property pack",
-    amount: 349,
-    detail: "5 staged rooms and a listing video. Individually $400",
+    amount: 250,
+    detail: "5 staged rooms and a listing video, from photos you supply",
   },
   { id: "add-open-home-video", name: "Open home video", amount: 129 },
   { id: "add-extra-images", name: "Extra images", amount: 49, detail: "per 5" },
@@ -283,26 +283,25 @@ export const COMMERCIAL_ADD_ONS: AddOn[] = [
 export const VACANT_PROPERTY = {
   heading: "Already have photos?",
   intro:
-    "For offices and property managers with vacant stock. Send us your photos and we will stage the rooms that need it and build the video.",
+    "For a property we did not photograph. Send us the photos you already have and we will stage the rooms that need it, and build the video from the set you supply.",
   options: priced([
     {
       id: "add-virtual-staging",
       name: "Virtual staging",
-      amount: 200,
+      amount: 150,
       includes: ["5 virtually staged rooms"],
     },
     {
       id: "add-listing-video",
       name: "Listing video",
-      amount: 200,
-      includes: ["Built from your photos"],
+      amount: 100,
+      includes: ["Built from the photos you supply"],
     },
     {
       id: "add-vacant-pack",
       name: "Vacant property pack",
-      amount: 349,
+      amount: 250,
       includes: ["5 virtually staged rooms", "Listing video built from your photos"],
-      note: "Individually $400",
       featured: true,
     },
   ] as {
@@ -314,6 +313,17 @@ export const VACANT_PROPERTY = {
     featured?: boolean;
   }[]),
   smallPrint: "All virtually staged images and video are labelled as virtually staged.",
+
+  /**
+   * The other half of the story, and the reason the prices above need framing:
+   * staging costs the same either way, but the listing video only costs extra
+   * when we did not shoot the property. On our own shoots it is already paid
+   * for inside the package.
+   */
+  onOurShoot: {
+    heading: "Shooting it with us?",
+    body: `Virtual staging is ${money(150)} for five rooms on any listing package. The staged rooms carry through to your listing video at no extra cost, because the video is already part of what you have paid for.`,
+  },
 };
 
 /** Cheapest add-on, quoted on the package cards. */
