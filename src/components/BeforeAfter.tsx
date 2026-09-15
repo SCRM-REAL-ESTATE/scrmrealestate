@@ -19,12 +19,16 @@ export default function BeforeAfter({
   after,
   alt,
   caption,
+  afterLabel = "Staged",
   priority = false,
 }: {
   before: string;
   after: string;
   alt: string;
   caption?: string;
+  /** What the right-hand half is. Not every pair is staging — the garage is
+   *  decluttering, and calling that "Staged" would misdescribe the work. */
+  afterLabel?: string;
   /** Set on the first one so it isn't lazy-loaded below a fold it's above. */
   priority?: boolean;
 }) {
@@ -92,7 +96,7 @@ export default function BeforeAfter({
           className="pointer-events-none absolute right-4 top-4 rounded-full bg-re-blue/85 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-white transition-opacity duration-200"
           style={{ opacity: pos < 82 ? 1 : 0 }}
         >
-          Staged
+          {afterLabel}
         </span>
 
         <div
@@ -113,7 +117,7 @@ export default function BeforeAfter({
           max={100}
           value={pos}
           onChange={(e) => setPos(Number(e.target.value))}
-          aria-label={`${alt}. Drag to compare before and after staging.`}
+          aria-label={`${alt}. Drag to compare.`}
           className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
         />
       </div>

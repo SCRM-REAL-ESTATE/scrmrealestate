@@ -48,8 +48,9 @@ const PAIRS = [
   },
   {
     name: "garage",
-    alt: "Garage, before and after removing site rubbish",
-    caption: "Garage, cleared of site rubbish",
+    alt: "Garage, before and after decluttering",
+    caption: "Garage, decluttered",
+    afterLabel: "Decluttered",
   },
 ];
 
@@ -115,24 +116,36 @@ export default function VirtualStagingPage() {
                 Drag to compare.
               </H2>
               <p className="mt-4 text-re-stone leading-relaxed">
-                One property, every room shot empty and furnished afterwards. Pull the handle
-                across any of them.
+                One property, shot as we found it and finished afterwards. Four rooms
+                furnished, one garage cleared. Pull the handle across any of them.
               </p>
             </div>
           </Reveal>
 
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
-            {PAIRS.map((p, i) => (
-              <Reveal key={p.name} delay={i === 0 ? 0 : 0.06}>
-                <BeforeAfter
-                  before={`/media/examples/staging/${p.name}-before.jpg`}
-                  after={`/media/examples/staging/${p.name}-after.jpg`}
-                  alt={p.alt}
-                  caption={p.caption}
-                  priority={i === 0}
-                />
-              </Reveal>
-            ))}
+            {PAIRS.map((p, i) => {
+              // Odd count, so the last one would sit alone against the left
+              // edge. It spans the row instead and centres at a column's width.
+              const last = i === PAIRS.length - 1;
+              return (
+                <Reveal
+                  key={p.name}
+                  delay={i === 0 ? 0 : 0.06}
+                  className={last ? "lg:col-span-2" : undefined}
+                >
+                  <div className={last ? "lg:mx-auto lg:w-[calc(50%-1.25rem)]" : undefined}>
+                    <BeforeAfter
+                      before={`/media/examples/staging/${p.name}-before.jpg`}
+                      after={`/media/examples/staging/${p.name}-after.jpg`}
+                      alt={p.alt}
+                      caption={p.caption}
+                      afterLabel={p.afterLabel}
+                      priority={i === 0}
+                    />
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </Container>
       </Section>
