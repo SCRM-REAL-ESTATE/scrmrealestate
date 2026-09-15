@@ -13,7 +13,9 @@ import { SITE } from "@/lib/site";
  * property, same camera position, shot and staged by us.
  */
 
-const STAGING = VACANT_PROPERTY.options.find((o) => o.id === "add-virtual-staging")!;
+const STAGING = VACANT_PROPERTY.options.find(
+  (o) => o.id === "add-virtual-staging",
+)!;
 const PACK = VACANT_PROPERTY.options.find((o) => o.id === "add-vacant-pack")!;
 
 export const metadata: Metadata = {
@@ -69,7 +71,9 @@ export default function VirtualStagingPage() {
                 </h1>
 
                 <div className="mt-5 flex flex-wrap items-baseline justify-center gap-x-4 gap-y-1">
-                  <span className="mr-1 align-middle font-sans text-2xl text-white/75">From</span>
+                  <span className="mr-1 align-middle font-sans text-2xl text-white/75">
+                    From
+                  </span>
                   <span className="font-serif text-5xl md:text-6xl text-white">
                     {STAGING.price}
                   </span>
@@ -77,29 +81,37 @@ export default function VirtualStagingPage() {
                 </div>
 
                 <p className="mt-4 mx-auto max-w-2xl text-lg text-white/85 leading-relaxed">
-                  Send us photographs of a vacant property and we furnish the rooms that need
-                  it. For sales campaigns and for rental advertising, on stock you have already
-                  shot.
+                  Send us photographs of a vacant property and we furnish the
+                  rooms that need it. For sales campaigns and for rental
+                  advertising, on stock you have already shot.
                 </p>
 
                 <div className="mt-7 flex flex-wrap items-center justify-center gap-4">
                   <CTAButton href={`/book?p=${STAGING.id}`} variant="white">
                     Stage a property
                   </CTAButton>
-                  <CTAButton href={`tel:${SITE.phoneIntl}`} variant="outline-light" external>
+                  <CTAButton
+                    href={`tel:${SITE.phoneIntl}`}
+                    variant="outline-light"
+                    external
+                  >
                     {SITE.phone}
                   </CTAButton>
                 </div>
 
                 <ul className="mt-7 flex flex-wrap justify-center gap-x-7 gap-y-2 text-[11px] uppercase tracking-[0.18em] text-white/70">
-                  {["Sales and rentals", "Use your own photos", "Labelled as staged"].map(
-                    (line) => (
-                      <li key={line} className="flex items-center gap-2">
-                        <span aria-hidden className="text-re-gold-thin">◆</span>
-                        {line}
-                      </li>
-                    )
-                  )}
+                  {[
+                    "Sales and rentals",
+                    "Use your own photos",
+                    "Labelled as staged",
+                  ].map((line) => (
+                    <li key={line} className="flex items-center gap-2">
+                      <span aria-hidden className="text-re-gold-thin">
+                        ◆
+                      </span>
+                      {line}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </Reveal>
@@ -116,8 +128,9 @@ export default function VirtualStagingPage() {
                 Drag to compare.
               </H2>
               <p className="mt-4 text-re-stone leading-relaxed">
-                One property, shot as we found it and finished afterwards. Four rooms
-                furnished, one garage cleared. Pull the handle across any of them.
+                One property, shot as we found it and finished afterwards. Four
+                rooms furnished, one garage cleared. Pull the handle across any
+                of them.
               </p>
             </div>
           </Reveal>
@@ -133,7 +146,11 @@ export default function VirtualStagingPage() {
                   delay={i === 0 ? 0 : 0.06}
                   className={last ? "lg:col-span-2" : undefined}
                 >
-                  <div className={last ? "lg:mx-auto lg:w-[calc(50%-1.25rem)]" : undefined}>
+                  <div
+                    className={
+                      last ? "lg:mx-auto lg:w-[calc(50%-1.25rem)]" : undefined
+                    }
+                  >
                     <BeforeAfter
                       before={`/media/examples/staging/${p.name}-before.jpg`}
                       after={`/media/examples/staging/${p.name}-after.jpg`}
@@ -159,9 +176,9 @@ export default function VirtualStagingPage() {
                 The video is staged too.
               </H2>
               <p className="mt-4 text-re-stone leading-relaxed">
-                The rooms we furnish carry through to the listing video at no extra cost, so the
-                campaign doesn&apos;t show a furnished photograph and an empty walkthrough. This
-                is the same property.
+                The rooms we furnish carry through to the listing video at no
+                extra cost, so the campaign doesn&apos;t show a furnished
+                photograph and an empty walkthrough. This is the same property.
               </p>
             </div>
           </Reveal>
@@ -179,7 +196,8 @@ export default function VirtualStagingPage() {
           </Reveal>
           <Reveal delay={0.14}>
             <p className="mx-auto mt-4 max-w-2xl text-center text-sm text-re-blue">
-              This example also includes drone shots, which are an optional extra.
+              This example also includes drone shots, which are an optional
+              extra.
             </p>
           </Reveal>
         </Container>
@@ -193,57 +211,68 @@ export default function VirtualStagingPage() {
               <H2 rule className="text-center [&>span]:mx-auto">
                 What it costs.
               </H2>
-              <p className="mt-4 text-re-stone leading-relaxed">{VACANT_PROPERTY.intro}</p>
+              <p className="mt-4 text-re-stone leading-relaxed">
+                {VACANT_PROPERTY.intro}
+              </p>
             </div>
           </Reveal>
 
-          <div className="mx-auto mt-10 grid max-w-5xl grid-cols-1 md:grid-cols-3 gap-6">
-            {VACANT_PROPERTY.options.map((o) => (
-              <Reveal key={o.id}>
-                <div
-                  className={`gold-ring flex h-full flex-col rounded-[1.75rem] border p-8 text-center ${
-                    o.featured
-                      ? "blue-fade border-re-blue text-white"
-                      : "border-re-stone-light bg-white"
-                  }`}
-                >
-                  <p className={`label-eyebrow ${o.featured ? "!text-white/85" : ""}`}>
-                    {o.name}
-                  </p>
-                  <p
-                    className={`mt-3 font-serif text-5xl ${
-                      o.featured ? "text-white" : "text-re-ink"
-                    }`}
-                  >
-                    {o.price}
-                  </p>
-                  {o.note && (
-                    <p className={`mt-2 text-sm ${o.featured ? "text-white/80" : "text-re-stone"}`}>
-                      {o.note}
-                    </p>
-                  )}
-                  <ul
-                    className={`mt-6 space-y-3 border-t pt-6 text-sm ${
+          {/* The listing video is its own product and is sold on Services. On a
+              staging page it reads as a third staging tier, so it is left out
+              here rather than removed from the shared data. */}
+          <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 sm:grid-cols-2 gap-5">
+            {VACANT_PROPERTY.options
+              .filter((o) => o.id !== "add-listing-video")
+              .map((o) => (
+                <Reveal key={o.id}>
+                  <div
+                    className={`gold-ring flex h-full flex-col rounded-[1.5rem] border p-6 text-center ${
                       o.featured
-                        ? "border-white/20 text-white/90"
-                        : "border-re-stone-light text-re-ink"
+                        ? "blue-fade border-re-blue text-white"
+                        : "border-re-stone-light bg-white"
                     }`}
                   >
-                    {o.includes.map((line) => (
-                      <li key={line}>{line}</li>
-                    ))}
-                  </ul>
-                  <div className="mt-7 flex flex-grow items-end justify-center">
-                    <CTAButton
-                      href={`/book?p=${o.id}`}
-                      variant={o.featured ? "outline-light" : "solid"}
+                    <p
+                      className={`label-eyebrow ${o.featured ? "!text-white/85" : ""}`}
                     >
-                      Book this
-                    </CTAButton>
+                      {o.name}
+                    </p>
+                    <p
+                      className={`mt-2 font-serif text-4xl ${
+                        o.featured ? "text-white" : "text-re-ink"
+                      }`}
+                    >
+                      {o.price}
+                    </p>
+                    {o.note && (
+                      <p
+                        className={`mt-2 text-sm ${o.featured ? "text-white/80" : "text-re-stone"}`}
+                      >
+                        {o.note}
+                      </p>
+                    )}
+                    <ul
+                      className={`mt-4 space-y-2 border-t pt-4 text-sm ${
+                        o.featured
+                          ? "border-white/20 text-white/90"
+                          : "border-re-stone-light text-re-ink"
+                      }`}
+                    >
+                      {o.includes.map((line) => (
+                        <li key={line}>{line}</li>
+                      ))}
+                    </ul>
+                    <div className="mt-5 flex flex-grow items-end justify-center">
+                      <CTAButton
+                        href={`/book?p=${o.id}`}
+                        variant={o.featured ? "outline-light" : "solid"}
+                      >
+                        Book this
+                      </CTAButton>
+                    </div>
                   </div>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              ))}
           </div>
 
           <Reveal delay={0.16}>
@@ -263,14 +292,18 @@ export default function VirtualStagingPage() {
                 Send us the empty rooms.
               </H2>
               <p className="mt-6 text-lg text-white/85">
-                Photographs of the property and which rooms you want furnished is enough to
-                start.
+                Photographs of the property and which rooms you want furnished
+                is enough to start.
               </p>
               <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
                 <CTAButton href={`/book?p=${PACK.id}`} variant="white">
                   Stage a property
                 </CTAButton>
-                <CTAButton href={`tel:${SITE.phoneIntl}`} variant="outline-light" external>
+                <CTAButton
+                  href={`tel:${SITE.phoneIntl}`}
+                  variant="outline-light"
+                  external
+                >
                   {SITE.phone}
                 </CTAButton>
               </div>
