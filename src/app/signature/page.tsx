@@ -203,6 +203,7 @@ export default function SignaturePage() {
                       width={1600}
                       height={2204}
                       sizes="(max-width: 768px) 90vw, 45vw"
+                      quality={90}
                       className="block w-full h-auto"
                     />
                   </div>

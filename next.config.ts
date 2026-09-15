@@ -30,6 +30,9 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    // Next defaults to 75, which re-compressed already-compressed source files
+    // and was visible on the listing photographs at full size.
+    qualities: [85],
     remotePatterns: [
       { protocol: "https", hostname: "**.supabase.co" },
       ...(mediaHost && !mediaHost.endsWith(".supabase.co")

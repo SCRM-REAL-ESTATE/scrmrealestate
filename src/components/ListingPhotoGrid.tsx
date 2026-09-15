@@ -46,6 +46,7 @@ export default function ListingPhotoGrid({ photos }: { photos: string[] }) {
                 width={1600}
                 height={1068}
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 17vw"
+                quality={85}
                 className="block w-full h-full object-cover aspect-[3/2] transition-transform duration-500 group-hover:scale-[1.04]"
               />
               <span className="absolute inset-0 bg-re-ink/0 transition-colors duration-300 group-hover:bg-re-ink/10" />
