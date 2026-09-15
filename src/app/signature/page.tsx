@@ -161,9 +161,16 @@ export default function SignaturePage() {
                     {SIGNATURE.price} package.
                   </p>
                 </div>
-                {/* Desktop plays the embed inline, where Drive's player has
-                    room and behaves. */}
-                <div className="relative mt-6 hidden w-full aspect-video overflow-hidden rounded-2xl bg-re-stone-light md:block">
+                {/* Plays in place on every size so nobody has to leave the
+                    page to watch it.
+
+                    The player is Drive's, inside a cross-origin frame, so its
+                    chrome, its cookie prompt and its always-on play button
+                    cannot be styled or hidden from here. On a phone that
+                    chrome crowds a 16:9 frame, which is what the full screen
+                    link below is for. Hosting the file ourselves replaces all
+                    of this with a native <video>. */}
+                <div className="relative mt-6 w-full aspect-video overflow-hidden rounded-2xl bg-re-stone-light">
                   <iframe
                     src={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/preview`}
                     title="Landscape listing video"
@@ -173,45 +180,19 @@ export default function SignaturePage() {
                   />
                 </div>
 
-                {/* Phones get a still and one play button instead of the embed.
-                    Drive's mobile player stacks a scrubber, skip controls and a
-                    play button that never hides over a letterboxed picture, and
-                    none of that can be changed from outside a cross-origin
-                    frame. Tapping hands the file to Drive, which opens it full
-                    screen. The still is the listing's own facade shot, so it is
-                    the frame the video opens on. */}
-                <a
-                  href={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/view`}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Play the listing video full screen"
-                  className="group relative mt-6 block w-full aspect-video overflow-hidden rounded-2xl bg-re-stone-light md:hidden"
-                >
-                  <Image
-                    src="/media/examples/listing/01.jpg"
-                    alt=""
-                    fill
-                    sizes="100vw"
-                    className="object-cover"
-                  />
-                  <span className="absolute inset-0 flex items-center justify-center bg-re-ink/20">
-                    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 shadow-[0_8px_24px_rgba(0,0,0,0.3)]">
-                      <svg
-                        width="22"
-                        height="22"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="ml-1 text-re-blue"
-                        aria-hidden
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </span>
-                  </span>
-                </a>
-                <p className="mt-3 text-center text-xs text-re-stone md:hidden">
-                  Opens full screen
-                </p>
+                {/* Phones only: the frame is short there and iOS gives no
+                    fullscreen API for a cross-origin frame, so this is the
+                    only route to a full-size view. */}
+                <div className="mt-3 text-center md:hidden">
+                  <a
+                    href={`https://drive.google.com/file/d/${LISTING_VIDEO_DRIVE_ID}/view`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs text-re-stone underline decoration-re-stone/40 underline-offset-4 transition-colors hover:text-re-blue"
+                  >
+                    Or watch it full screen
+                  </a>
+                </div>
               </div>
             </Reveal>
 
