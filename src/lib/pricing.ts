@@ -238,7 +238,7 @@ export const ADD_ONS: AddOn[] = priced<AddOnInput>([
   {
     id: "add-listing-video",
     name: "Listing video",
-    amount: 100,
+    amount: 150,
     detail: "Built from photos you supply, for a property we did not shoot",
   },
   { id: "add-open-home-video", name: "Open home video", amount: 129 },
@@ -289,7 +289,7 @@ export const VACANT_PROPERTY = {
     {
       id: "add-listing-video",
       name: "Listing video",
-      amount: 100,
+      amount: 150,
       includes: ["Built from the photos you supply"],
     },
   ] as {

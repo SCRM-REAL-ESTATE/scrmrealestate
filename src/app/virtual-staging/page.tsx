@@ -66,20 +66,10 @@ export default function VirtualStagingPage() {
               <div className="mx-auto max-w-5xl text-center">
                 <p className="label-eyebrow !text-white/75">Virtual staging</p>
                 <h1 className="mt-3 h-display text-4xl sm:text-5xl md:text-6xl text-white">
-                  An empty room is a hard sell.
+                  The fix for an empty home.
                 </h1>
 
-                <div className="mt-5 flex flex-wrap items-baseline justify-center gap-x-4 gap-y-1">
-                  <span className="mr-1 align-middle font-sans text-2xl text-white/75">
-                    From
-                  </span>
-                  <span className="font-serif text-5xl md:text-6xl text-white">
-                    {STAGING.price}
-                  </span>
-                  <span className="text-white/75">for five rooms</span>
-                </div>
-
-                <p className="mt-4 mx-auto max-w-2xl text-lg text-white/85 leading-relaxed">
+                <p className="mt-5 mx-auto max-w-2xl text-lg text-white/85 leading-relaxed">
                   Send us photographs of a vacant property and we furnish the
                   rooms that need it. For sales campaigns and for rental
                   advertising, on stock you have already shot or on a shoot we
