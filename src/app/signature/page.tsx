@@ -122,7 +122,7 @@ export default function SignaturePage() {
         <Container>
           <Reveal>
             <H2 rule className="text-center [&>span]:mx-auto">
-              What you get.
+              What&apos;s included.
             </H2>
           </Reveal>
 
@@ -131,13 +131,13 @@ export default function SignaturePage() {
             <Reveal>
               <div>
                 <div className="mx-auto max-w-2xl text-center">
-                  <p className="label-eyebrow">01</p>
+                  <p className="font-serif text-5xl md:text-6xl gold-text">01</p>
                   <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                     18 professionally edited photos
                   </h3>
                   <p className="mt-3 text-re-stone leading-relaxed">
                     Shot on DSLR and edited by hand. A whole set, exactly as it
-                    lands in your inbox. Tap any photo to look through them.
+                    lands in your inbox. Tap to look through them.
                   </p>
                 </div>
                 <ListingPhotoGrid photos={LISTING_PHOTOS} />
@@ -148,7 +148,7 @@ export default function SignaturePage() {
             <Reveal>
               <div>
                 <div className="mx-auto max-w-2xl text-center">
-                  <p className="label-eyebrow">02</p>
+                  <p className="font-serif text-5xl md:text-6xl gold-text">02</p>
                   <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                     Landscape listing video
                   </h3>
@@ -188,7 +188,7 @@ export default function SignaturePage() {
                 {/* Centred: the media below sits centred in its column, so a
                     left-aligned heading reads as misaligned against it. */}
                 <div className="text-center">
-                  <p className="label-eyebrow">03</p>
+                  <p className="font-serif text-5xl md:text-6xl gold-text">03</p>
                   <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                     2D floor plan
                   </h3>
@@ -211,7 +211,7 @@ export default function SignaturePage() {
 
                 {verticalVideo && (
                   <div className="text-center">
-                    <p className="label-eyebrow">04</p>
+                    <p className="font-serif text-5xl md:text-6xl gold-text">04</p>
                     <h3 className="mt-2 font-serif text-3xl md:text-4xl text-re-ink">
                       Vertical agent-led video
                     </h3>
