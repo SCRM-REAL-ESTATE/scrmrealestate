@@ -16,7 +16,6 @@ import { SITE } from "@/lib/site";
 const STAGING = VACANT_PROPERTY.options.find(
   (o) => o.id === "add-virtual-staging",
 )!;
-const PACK = VACANT_PROPERTY.options.find((o) => o.id === "add-vacant-pack")!;
 
 export const metadata: Metadata = {
   title: `Virtual staging for listings and rentals, from ${STAGING.price}`,
@@ -219,62 +218,57 @@ export default function VirtualStagingPage() {
             </div>
           </Reveal>
 
-          {/* The listing video is its own product and is sold on Services. On a
-              staging page it reads as a third staging tier, so it is left out
-              here rather than removed from the shared data. */}
           <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 sm:grid-cols-2 gap-5">
-            {VACANT_PROPERTY.options
-              .filter((o) => o.id !== "add-listing-video")
-              .map((o) => (
-                <Reveal key={o.id}>
-                  <div
-                    className={`gold-ring flex h-full flex-col rounded-[1.5rem] border p-6 text-center ${
-                      o.featured
-                        ? "blue-fade border-re-blue text-white"
-                        : "border-re-stone-light bg-white"
+            {VACANT_PROPERTY.options.map((o) => (
+              <Reveal key={o.id}>
+                <div
+                  className={`gold-ring flex h-full flex-col rounded-[1.5rem] border p-6 text-center ${
+                    o.featured
+                      ? "blue-fade border-re-blue text-white"
+                      : "border-re-stone-light bg-white"
+                  }`}
+                >
+                  <p
+                    className={`label-eyebrow ${o.featured ? "!text-white/85" : ""}`}
+                  >
+                    {o.name}
+                  </p>
+                  <p
+                    className={`mt-2 font-serif text-4xl ${
+                      o.featured ? "text-white" : "text-re-ink"
                     }`}
                   >
+                    {o.price}
+                  </p>
+                  {o.note && (
                     <p
-                      className={`label-eyebrow ${o.featured ? "!text-white/85" : ""}`}
+                      className={`mt-2 text-sm ${o.featured ? "text-white/80" : "text-re-stone"}`}
                     >
-                      {o.name}
+                      {o.note}
                     </p>
-                    <p
-                      className={`mt-2 font-serif text-4xl ${
-                        o.featured ? "text-white" : "text-re-ink"
-                      }`}
+                  )}
+                  <ul
+                    className={`mt-4 space-y-2 border-t pt-4 text-sm ${
+                      o.featured
+                        ? "border-white/20 text-white/90"
+                        : "border-re-stone-light text-re-ink"
+                    }`}
+                  >
+                    {o.includes.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
+                  <div className="mt-5 flex flex-grow items-end justify-center">
+                    <CTAButton
+                      href={`/book?p=${o.id}`}
+                      variant={o.featured ? "outline-light" : "solid"}
                     >
-                      {o.price}
-                    </p>
-                    {o.note && (
-                      <p
-                        className={`mt-2 text-sm ${o.featured ? "text-white/80" : "text-re-stone"}`}
-                      >
-                        {o.note}
-                      </p>
-                    )}
-                    <ul
-                      className={`mt-4 space-y-2 border-t pt-4 text-sm ${
-                        o.featured
-                          ? "border-white/20 text-white/90"
-                          : "border-re-stone-light text-re-ink"
-                      }`}
-                    >
-                      {o.includes.map((line) => (
-                        <li key={line}>{line}</li>
-                      ))}
-                    </ul>
-                    <div className="mt-5 flex flex-grow items-end justify-center">
-                      <CTAButton
-                        href={`/book?p=${o.id}`}
-                        variant={o.featured ? "outline-light" : "solid"}
-                      >
-                        Book this
-                      </CTAButton>
-                    </div>
+                      Book this
+                    </CTAButton>
                   </div>
-                </Reveal>
-              ))}
+                </div>
+              </Reveal>
+            ))}
           </div>
 
           {/* Without this the prices above read as the price of staging full
@@ -312,7 +306,7 @@ export default function VirtualStagingPage() {
                 is enough to start.
               </p>
               <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-                <CTAButton href={`/book?p=${PACK.id}`} variant="white">
+                <CTAButton href={`/book?p=${STAGING.id}`} variant="white">
                   Stage a property
                 </CTAButton>
                 <CTAButton

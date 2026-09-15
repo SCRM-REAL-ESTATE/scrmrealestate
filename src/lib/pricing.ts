@@ -241,12 +241,6 @@ export const ADD_ONS: AddOn[] = priced<AddOnInput>([
     amount: 100,
     detail: "Built from photos you supply, for a property we did not shoot",
   },
-  {
-    id: "add-vacant-pack",
-    name: "Vacant property pack",
-    amount: 250,
-    detail: "5 staged rooms and a listing video, from photos you supply",
-  },
   { id: "add-open-home-video", name: "Open home video", amount: 129 },
   { id: "add-extra-images", name: "Extra images", amount: 49, detail: "per 5" },
 ]);
@@ -290,19 +284,13 @@ export const VACANT_PROPERTY = {
       name: "Virtual staging",
       amount: 150,
       includes: ["5 virtually staged rooms"],
+      featured: true,
     },
     {
       id: "add-listing-video",
       name: "Listing video",
       amount: 100,
       includes: ["Built from the photos you supply"],
-    },
-    {
-      id: "add-vacant-pack",
-      name: "Vacant property pack",
-      amount: 250,
-      includes: ["5 virtually staged rooms", "Listing video built from your photos"],
-      featured: true,
     },
   ] as {
     id: string;

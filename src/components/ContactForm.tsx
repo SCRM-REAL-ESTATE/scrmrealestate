@@ -11,7 +11,7 @@ const serviceOptions = [
   ...OFFERS.filter((o) => !o.quote).map((o) =>
     o.recurring ? `${o.name} from ${o.price}/mo` : `${o.name} ${o.price}`
   ),
-  `Vacant property pack ${VACANT_PROPERTY.options.find((o) => o.featured)?.price ?? ""}`.trim(),
+  `Virtual staging ${VACANT_PROPERTY.options.find((o) => o.featured)?.price ?? ""}`.trim(),
   "Add-ons",
   "Not sure yet",
 ];

@@ -310,14 +310,6 @@ export const BOOKABLE_ADD_ONS: BookableAddOn[] = [
     noShootOnly: true,
     pitch: "Built from photos you already have.",
   },
-  {
-    ...addOn("add-vacant-pack"),
-    group: "presentation",
-    streams: RES,
-    noShootOnly: true,
-    bundleOf: ["add-virtual-staging", "add-listing-video"],
-    pitch: "Staged rooms and a video, from photos you already have.",
-  },
 ];
 
 export const getOffer = (id: string | null | undefined): BookableOffer | undefined =>
