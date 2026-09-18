@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Container, Section } from "@/components/ui";
 import { SITE } from "@/lib/site";
 
@@ -13,13 +14,15 @@ import { SITE } from "@/lib/site";
  * to match the voice of the rest of the site.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Privacy Policy",
-  description:
-    "How SCRM Media collects, uses and stores personal information, and how to access, correct or delete it.",
-  alternates: { canonical: "/privacy" },
+  share: "Privacy Policy",
+  description: "How SCRM Media collects, uses and stores personal information, and how to access, correct or delete it.",
+  path: "/privacy",
+  card: "privacy",
+  cardAlt: "SCRM Media Real Estate",
   robots: { index: true, follow: true },
-};
+});
 
 /** Shared spacing so every heading in the document sits the same. */
 const H = ({ children }: { children: React.ReactNode }) => (

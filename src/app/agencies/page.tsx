@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 import ServiceIncludes from "@/components/ServiceIncludes";
@@ -6,11 +7,14 @@ import AgencyShowcase from "@/components/AgencyShowcase";
 import TiltCard from "@/components/TiltCard";
 import { AGENCY_MANAGEMENT } from "@/lib/pricing";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Agencies",
-  description:
-    "Monthly social media management for real estate agencies. 8 videos, 6 posts and 6 stories a month, planned, filmed, edited and scheduled for you. From $1,800 per month.",
-};
+  share: "Social media management for real estate agencies",
+  description: "Monthly social media management for real estate agencies. 8 videos, 6 posts and 6 stories a month, planned, filmed, edited and scheduled for you. From $1,800 per month.",
+  path: "/agencies",
+  card: "agencies",
+  cardAlt: "Three vertical frames from recent agency social content",
+});
 
 export default function AgenciesPage() {
   return (

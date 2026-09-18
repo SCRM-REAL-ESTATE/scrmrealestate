@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Image from "next/image";
 import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "About",
-  description:
-    "SCRM Media Real Estate is the property side of SCRM Media, an Australian content and marketing studio.",
-};
+  share: "About SCRM Media Real Estate",
+  description: "SCRM Media Real Estate is the property side of SCRM Media, an Australian content and marketing studio.",
+  path: "/about",
+  card: "about",
+  cardAlt: "A styled apartment living room photographed for a listing campaign",
+});
 
 export default function AboutPage() {
   return (

@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Container } from "@/components/ui";
 import BookingFlow from "@/components/BookingFlow";
 import { getOffer, type Stream } from "@/lib/catalogue";
 import { LISTING_PRICE_RANGE } from "@/lib/pricing";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Book a shoot",
+  share: "Book a shoot",
   description: `Book listing media in under a minute. Packages ${LISTING_PRICE_RANGE}, extras priced as you add them.`,
-  alternates: { canonical: "/book" },
-};
+  path: "/book",
+  card: "book",
+  cardAlt: "An apartment kitchen and dining area photographed for a listing",
+});
 
 const STREAM_IDS: Stream[] = ["residential", "commercial", "monthly"];
 

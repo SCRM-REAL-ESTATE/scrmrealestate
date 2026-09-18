@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Container, Eyebrow, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
 import WorkGallery from "@/components/WorkGallery";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Work",
-  description:
-    "A look at recent SCRM Media Real Estate work: listing photography, vertical video, social content and brand stories.",
-};
+  share: "Recent work",
+  description: "A look at recent SCRM Media Real Estate work: listing photography, vertical video, social content and brand stories.",
+  path: "/work",
+  card: "work",
+  cardAlt: "Three frames from recent listing and social campaigns",
+});
 
 export default function WorkPage() {
   return (

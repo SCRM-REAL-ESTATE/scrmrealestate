@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { Container, H2, CTAButton, Section } from "@/components/ui";
@@ -10,11 +11,14 @@ import AgentContentCard from "@/components/AgentContentCard";
 import PairsWellWith from "@/components/PairsWellWith";
 import { ADD_ONS_FROM, VACANT_PROPERTY } from "@/lib/pricing";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Services",
-  description:
-    "Listing packages from $349 with photos, floor plan and video, agent content from $800 a month, and monthly social media management from $1,800, built specifically for real estate.",
-};
+  share: "Listing packages, agent content and agency management",
+  description: "Listing packages from $349 with photos, floor plan and video, agent content from $800 a month, and monthly social media management from $1,800, built specifically for real estate.",
+  path: "/services",
+  card: "services",
+  cardAlt: "An open plan kitchen and dining area photographed for a listing",
+});
 
 const faqs = [
   {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
 import BeforeAfter from "@/components/BeforeAfter";
@@ -17,11 +18,14 @@ const STAGING = VACANT_PROPERTY.options.find(
   (o) => o.id === "add-virtual-staging",
 )!;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: `Virtual staging for listings and rentals, from ${STAGING.price}`,
+  share: `Virtual staging, from ${STAGING.price}`,
   description: `Virtual staging from ${STAGING.price} for five rooms. Send us photos of an empty property and we furnish the rooms that need it, for sales listings and rental advertising. Staged rooms carry through to your listing video at no extra cost.`,
-  alternates: { canonical: "/virtual-staging" },
-};
+  path: "/virtual-staging",
+  card: "virtual-staging",
+  cardAlt: "The same living room photographed empty and again virtually staged",
+});
 
 /** The listing video for the same property, so the staging can be seen moving. */
 const LISTING_VIDEO_YOUTUBE_ID = "QALPUZWiHBw";

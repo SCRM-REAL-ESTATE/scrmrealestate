@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
@@ -12,12 +13,14 @@ import {
 } from "@/lib/pricing";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Commercial",
-  description:
-    "Photography, film, aerial and agent-led video for commercial property campaigns. Office, industrial, retail, development sites and land, scheduled to your EOI or auction close and quoted per asset.",
-  alternates: { canonical: "/commercial" },
-};
+  share: "Commercial property marketing",
+  description: "Photography, film, aerial and agent-led video for commercial property campaigns. Office, industrial, retail, development sites and land, scheduled to your EOI or auction close and quoted per asset.",
+  path: "/commercial",
+  card: "commercial",
+  cardAlt: "SCRM Media Real Estate",
+});
 
 const ENTRY_PRICE = LISTING_PACKAGES[0].price;
 

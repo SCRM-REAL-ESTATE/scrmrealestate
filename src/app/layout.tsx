@@ -44,6 +44,9 @@ export const metadata: Metadata = {
     "Australia",
   ],
   alternates: { canonical: "/" },
+  // The home page's own preview, and the fallback for anything that does not
+  // call pageMeta(). Every other route overrides this wholesale — Next does
+  // not merge openGraph blocks field by field, it replaces them.
   openGraph: {
     type: "website",
     locale: "en_AU",
@@ -51,13 +54,20 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     title: `${SITE.name} | ${SITE.tagline}`,
     description: SITE.description,
-    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: SITE.name }],
+    images: [
+      {
+        url: "/og/home.jpg",
+        width: 1200,
+        height: 630,
+        alt: "An apartment living and dining room photographed for a listing campaign",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE.name} | ${SITE.tagline}`,
     description: SITE.description,
-    images: ["/og.jpg"],
+    images: ["/og/home.jpg"],
   },
   robots: { index: true, follow: true },
 };

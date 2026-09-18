@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Container, Eyebrow } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
 import ContactForm from "@/components/ContactForm";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Contact",
-  description:
-    "Book a strategy call with SCRM Media Real Estate. Tell us about your agency, your goals, and we'll suggest the right next move.",
-};
+  share: "Talk to SCRM Media Real Estate",
+  description: "Book a strategy call with SCRM Media Real Estate. Tell us about your agency, your goals, and we'll suggest the right next move.",
+  path: "/contact",
+  card: "contact",
+  cardAlt: "An apartment balcony photographed for a listing campaign",
+});
 
 export default function ContactPage() {
   return (

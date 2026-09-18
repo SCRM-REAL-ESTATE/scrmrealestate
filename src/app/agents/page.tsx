@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal, Stagger, StaggerChild } from "@/components/Reveal";
@@ -11,12 +12,14 @@ import FAQAccordion from "@/components/FAQAccordion";
 import { LISTING_PACKAGES, ADD_ONS_FROM } from "@/lib/pricing";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Agent videos on every listing, $499",
-  description:
-    "Signature is $499 a listing: 18 photos, a floor plan, the listing video, and a vertical agent-led video with you on camera.",
-  alternates: { canonical: "/agents" },
-};
+  share: "Agent video on every listing, $499",
+  description: "Signature is $499 a listing: 18 photos, a floor plan, the listing video, and a vertical agent-led video with you on camera.",
+  path: "/agents",
+  card: "agents",
+  cardAlt: "A kitchen photographed for a listing campaign",
+});
 
 const SIGNATURE = LISTING_PACKAGES.find((p) => p.name === "Signature") ?? LISTING_PACKAGES[1];
 

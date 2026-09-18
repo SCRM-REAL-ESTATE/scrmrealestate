@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Image from "next/image";
 import { Container, H2, CTAButton, Section } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
@@ -21,11 +22,14 @@ import { SITE } from "@/lib/site";
 
 const SIGNATURE = LISTING_PACKAGES.find((p) => p.id === "pkg-signature")!;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: `Listing photography, floor plan and video from ${SIGNATURE.price}`,
+  share: `The Signature package, ${SIGNATURE.price} a listing`,
   description: `${SIGNATURE.price} per listing. ${SIGNATURE.products}: professionally edited photos, a 2D floor plan, a landscape listing video and a vertical agent-led video with you on camera.`,
-  alternates: { canonical: "/signature" },
-};
+  path: "/signature",
+  card: "signature",
+  cardAlt: "A kitchen from the Signature example listing",
+});
 
 const BOOK = `/book?p=${SIGNATURE.id}`;
 
