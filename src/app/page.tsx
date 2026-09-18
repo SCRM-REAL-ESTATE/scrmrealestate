@@ -6,7 +6,10 @@ import ListingPackages from "@/components/ListingPackages";
 import HomeWorkPreview from "@/components/HomeWorkPreview";
 import HomeVideoReel from "@/components/HomeVideoReel";
 import AgentsVsAgencies from "@/components/AgentsVsAgencies";
-import { ADD_ONS_FROM } from "@/lib/pricing";
+import { ADD_ONS_FROM, VACANT_PROPERTY } from "@/lib/pricing";
+
+/** The staging price, quoted on the link to its page rather than hardcoded. */
+const STAGING_FROM = VACANT_PROPERTY.options.find((o) => o.featured)!.price;
 
 export default function HomePage() {
   return (
@@ -184,6 +187,17 @@ export default function HomePage() {
                   className="inline-flex items-center gap-2 rounded-full border border-re-stone-light px-7 py-3.5 text-xs tracking-[0.2em] uppercase text-re-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-re-blue hover:text-re-blue"
                 >
                   Add-ons from {ADD_ONS_FROM}
+                  <span aria-hidden className="text-base leading-none">+</span>
+                </Link>
+                {/* Virtual staging has its own page and its own ads, but
+                    until now the only route to it was the navigation — which
+                    on a phone means opening the menu first. This is the link
+                    someone scrolling actually passes. */}
+                <Link
+                  href="/virtual-staging"
+                  className="inline-flex items-center gap-2 rounded-full border border-re-stone-light px-7 py-3.5 text-xs tracking-[0.2em] uppercase text-re-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-re-blue hover:text-re-blue"
+                >
+                  Virtual staging from {STAGING_FROM}
                   <span aria-hidden className="text-base leading-none">+</span>
                 </Link>
                 <Link href="/services" className="group inline-flex items-center gap-2 text-sm font-medium text-re-blue hover:text-re-blue-accent transition-colors">
