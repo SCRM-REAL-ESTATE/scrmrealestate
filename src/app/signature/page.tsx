@@ -7,7 +7,6 @@ import {
   BookBand,
   ExampleExtrasNote,
   FloorPlanExample,
-  MediaVideo,
   PackageHero,
   Step,
   StepBlurb,
@@ -15,7 +14,6 @@ import {
 } from "@/components/PackageLanding";
 import { LISTING_PACKAGES } from "@/lib/pricing";
 import { listingPhotos } from "@/lib/examples";
-import { MEDIA_ITEMS } from "@/lib/media";
 
 /**
  * Paid-traffic landing page for the Signature package.
@@ -46,7 +44,15 @@ const BOOK = `/book?p=${SIGNATURE.id}`;
  *  count, so the count is shown instead of claimed. */
 const PHOTOS = listingPhotos(SIGNATURE.id);
 
-const verticalVideo = MEDIA_ITEMS.find((i) => i.src === "vertical/vertical-3-bed.mp4");
+/**
+ * The vertical agent-led video, unlisted on YouTube as a Short.
+ *
+ * Same reasoning as the landscape films above it: YouTube holds the good
+ * master and streams a rendition the phone can play, and the page stops
+ * depending on our own bucket. A Short embeds through the ordinary embed URL —
+ * it just needs a 9:16 frame to sit in.
+ */
+const VERTICAL_VIDEO_YOUTUBE_ID = "J82aMnIOiM8";
 
 export default function SignaturePage() {
   return (
@@ -107,21 +113,20 @@ export default function SignaturePage() {
                   <FloorPlanExample />
                 </div>
 
-                {verticalVideo && (
-                  <div>
-                    <Step n="04" title="Vertical agent-led video">
-                      <StepBlurb>
-                        You on camera at the property, branded to you and cut for
-                        Reels and TikTok. The listing sells the property. This sells
-                        you.
-                      </StepBlurb>
-                    </Step>
-                    <MediaVideo
-                      item={verticalVideo}
-                      className="mx-auto w-full max-w-[420px] aspect-[9/16]"
-                    />
-                  </div>
-                )}
+                <div>
+                  <Step n="04" title="Vertical agent-led video">
+                    <StepBlurb>
+                      You on camera at the property, branded to you and cut for
+                      Reels and TikTok. The listing sells the property. This sells
+                      you.
+                    </StepBlurb>
+                  </Step>
+                  <YouTubeEmbed
+                    id={VERTICAL_VIDEO_YOUTUBE_ID}
+                    title="Vertical agent-led video"
+                    className="mx-auto w-full max-w-[420px] aspect-[9/16]"
+                  />
+                </div>
               </div>
             </Reveal>
           </div>

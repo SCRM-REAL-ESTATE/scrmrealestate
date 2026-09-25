@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Container, H2, CTAButton, Section } from "./ui";
 import { Reveal } from "./Reveal";
-import { mediaUrl, type MediaItem } from "@/lib/media";
 import { SITE } from "@/lib/site";
 
 /**
@@ -148,13 +147,18 @@ export const LISTING_VIDEO_YOUTUBE_ID = "QALPUZWiHBw";
 export function YouTubeEmbed({
   id = LISTING_VIDEO_YOUTUBE_ID,
   title = "Landscape listing video",
+  className = "w-full aspect-video",
 }: {
-  /** The eleven characters after `v=` or `youtu.be/`, not the whole URL. */
+  /** The eleven characters after `v=`, `youtu.be/` or `shorts/`, not the whole
+   *  URL. A Short is an ordinary video to the embed player. */
   id?: string;
   title?: string;
+  /** Shape and width. Defaults to a landscape frame; a vertical video has to
+   *  be given a 9:16 one or the player letterboxes it into black bars. */
+  className?: string;
 }) {
   return (
-    <div className="relative mt-6 w-full aspect-video overflow-hidden rounded-2xl bg-re-ink">
+    <div className={`relative mt-6 overflow-hidden rounded-2xl bg-re-ink ${className}`}>
       <iframe
         src={`https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1`}
         title={title}
@@ -162,28 +166,6 @@ export function YouTubeEmbed({
         allowFullScreen
         loading="lazy"
         className="absolute inset-0 h-full w-full border-0"
-      />
-    </div>
-  );
-}
-
-/**
- * A video we host ourselves, rather than the YouTube example above.
- *
- * The caller supplies the shape: a vertical agent video and a landscape
- * property film sit in the same page but nothing else about them matches, and
- * a component that guessed would get one of them wrong.
- */
-export function MediaVideo({ item, className }: { item: MediaItem; className: string }) {
-  return (
-    <div className={`relative mt-6 overflow-hidden rounded-2xl bg-re-stone-light ${className}`}>
-      <video
-        src={mediaUrl(item.src)}
-        poster={item.poster ? mediaUrl(item.poster) : undefined}
-        className="absolute inset-0 h-full w-full object-cover"
-        controls
-        playsInline
-        preload="metadata"
       />
     </div>
   );
