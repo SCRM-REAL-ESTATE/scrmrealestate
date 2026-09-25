@@ -7,11 +7,11 @@ import {
   BookBand,
   ExampleExtrasNote,
   FloorPlanExample,
-  ListingVideoEmbed,
   MediaVideo,
   PackageHero,
   Step,
   StepBlurb,
+  YouTubeEmbed,
 } from "@/components/PackageLanding";
 import { LISTING_PACKAGES } from "@/lib/pricing";
 import { listingPhotos } from "@/lib/examples";
@@ -89,7 +89,7 @@ export default function SignaturePage() {
                 <Step n="02" title="Landscape listing video">
                   <ExampleExtrasNote price={SIGNATURE.price} />
                 </Step>
-                <ListingVideoEmbed />
+                <YouTubeEmbed />
               </div>
             </Reveal>
 

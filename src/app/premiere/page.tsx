@@ -10,6 +10,7 @@ import {
   PackageHero,
   Step,
   StepBlurb,
+  YouTubeEmbed,
 } from "@/components/PackageLanding";
 import { LISTING_PACKAGES } from "@/lib/pricing";
 import { listingPhotos } from "@/lib/examples";
@@ -20,10 +21,10 @@ import { MEDIA_ITEMS } from "@/lib/media";
  * pieces as /signature and /listing.
  *
  * What separates this package from the two below it is that the property film
- * is filmed rather than assembled from stills, so the example here is one of
- * the real filmed landscape videos from the Work gallery — not the YouTube
- * example the cheaper pages use. Showing the stills-built video on this page
- * would undersell the one thing the extra money buys.
+ * is filmed rather than assembled from stills, so the example in section 02 is
+ * one of the real filmed landscape videos — not the stills-built one the
+ * cheaper pages show, which would undersell the one thing the extra money
+ * buys.
  */
 
 const PREMIERE = LISTING_PACKAGES.find((p) => p.id === "pkg-premiere")!;
@@ -47,9 +48,17 @@ const BOOK = `/book?p=${PREMIERE.id}`;
  */
 const PHOTOS = listingPhotos(PREMIERE.id);
 
-/** The filmed one, from the Listing Video tab on /work. Shot on camera, which
- *  is the whole distinction this page is selling. */
-const propertyFilm = MEDIA_ITEMS.find((i) => i.src === "landscape/landscape-3-bed.mp4");
+/**
+ * The filmed property film, unlisted on YouTube.
+ *
+ * The same video runs in the Listing Video tab on /work, but from our own
+ * bucket, where it is still sitting at the resolution the old encoder wrote.
+ * Shot on camera rather than built from stills is the whole distinction this
+ * page is selling, so it is served from YouTube here: adaptive streaming sends
+ * a phone a rendition it can actually play, and a soft file is the last thing
+ * this particular section can afford to be.
+ */
+const PROPERTY_FILM_YOUTUBE_ID = "TUNj81RcbVE";
 
 const verticalVideo = MEDIA_ITEMS.find((i) => i.src === "vertical/vertical-3-bed.mp4");
 
@@ -89,20 +98,21 @@ export default function PremierePage() {
               </div>
             </Reveal>
 
-            {propertyFilm && (
-              <Reveal>
-                <div>
-                  <Step n="02" title="Filmed landscape property film">
-                    <p className="mt-3 text-re-stone leading-relaxed">
-                      Filmed on camera through the property rather than built from
-                      stills, so the house moves the way a buyer walks it. Aerial is
-                      cut into it, and is included at this price.
-                    </p>
-                  </Step>
-                  <MediaVideo item={propertyFilm} className="w-full aspect-video" />
-                </div>
-              </Reveal>
-            )}
+            <Reveal>
+              <div>
+                <Step n="02" title="Filmed landscape property film">
+                  <p className="mt-3 text-re-stone leading-relaxed">
+                    Filmed on camera through the property rather than built from
+                    stills, so the house moves the way a buyer walks it. Aerial is
+                    cut into it, and is included at this price.
+                  </p>
+                </Step>
+                <YouTubeEmbed
+                  id={PROPERTY_FILM_YOUTUBE_ID}
+                  title="Filmed landscape property film"
+                />
+              </div>
+            </Reveal>
 
             {/* Both portrait, so they pair into one row rather than taking a
                 full-width band each. */}

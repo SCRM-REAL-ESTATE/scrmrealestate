@@ -127,17 +127,16 @@ export function ExampleExtrasNote({ price }: { price: string }) {
 }
 
 /**
- * The finished listing video, unlisted on YouTube.
+ * A finished video, unlisted on YouTube.
  *
- * Served from there rather than our own storage because the master is 4K and
+ * Served from there rather than our own storage because the masters are 4K and
  * too large to publish through the media pipeline from here. YouTube also
  * streams adaptively, so a phone is sent a 720p rendition rather than the full
  * file, and it carries the load an ad campaign puts on it.
  *
- * Replace with an entry in media.json once `npm run media` has published a
- * web-sized encode, and this becomes a <video>. Until then the video must stay
- * Unlisted, not Private, and keep "Allow embedding" ticked: either would blank
- * the player.
+ * The default is the listing video the $349 and $499 pages show. Pass an `id`
+ * for any other one. Whichever video it is must stay Unlisted, not Private,
+ * and keep "Allow embedding" ticked: either would blank the player.
  *
  * nocookie serves the player without setting tracking cookies until someone
  * actually plays it, which is what removes the consent prompt. rel=0 keeps the
@@ -146,12 +145,19 @@ export function ExampleExtrasNote({ price }: { price: string }) {
  */
 export const LISTING_VIDEO_YOUTUBE_ID = "QALPUZWiHBw";
 
-export function ListingVideoEmbed() {
+export function YouTubeEmbed({
+  id = LISTING_VIDEO_YOUTUBE_ID,
+  title = "Landscape listing video",
+}: {
+  /** The eleven characters after `v=` or `youtu.be/`, not the whole URL. */
+  id?: string;
+  title?: string;
+}) {
   return (
     <div className="relative mt-6 w-full aspect-video overflow-hidden rounded-2xl bg-re-ink">
       <iframe
-        src={`https://www.youtube-nocookie.com/embed/${LISTING_VIDEO_YOUTUBE_ID}?rel=0&modestbranding=1&playsinline=1`}
-        title="Landscape listing video"
+        src={`https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1`}
+        title={title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
         loading="lazy"
