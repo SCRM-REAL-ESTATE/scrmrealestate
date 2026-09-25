@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Container, H2, CTAButton, Section } from "./ui";
 import { Reveal } from "./Reveal";
+import { mediaUrl, type MediaItem } from "@/lib/media";
 import { SITE } from "@/lib/site";
 
 /**
@@ -155,6 +156,28 @@ export function ListingVideoEmbed() {
         allowFullScreen
         loading="lazy"
         className="absolute inset-0 h-full w-full border-0"
+      />
+    </div>
+  );
+}
+
+/**
+ * A video we host ourselves, rather than the YouTube example above.
+ *
+ * The caller supplies the shape: a vertical agent video and a landscape
+ * property film sit in the same page but nothing else about them matches, and
+ * a component that guessed would get one of them wrong.
+ */
+export function MediaVideo({ item, className }: { item: MediaItem; className: string }) {
+  return (
+    <div className={`relative mt-6 overflow-hidden rounded-2xl bg-re-stone-light ${className}`}>
+      <video
+        src={mediaUrl(item.src)}
+        poster={item.poster ? mediaUrl(item.poster) : undefined}
+        className="absolute inset-0 h-full w-full object-cover"
+        controls
+        playsInline
+        preload="metadata"
       />
     </div>
   );

@@ -8,13 +8,14 @@ import {
   ExampleExtrasNote,
   FloorPlanExample,
   ListingVideoEmbed,
+  MediaVideo,
   PackageHero,
   Step,
   StepBlurb,
 } from "@/components/PackageLanding";
 import { LISTING_PACKAGES } from "@/lib/pricing";
 import { listingPhotos } from "@/lib/examples";
-import { MEDIA_ITEMS, mediaUrl } from "@/lib/media";
+import { MEDIA_ITEMS } from "@/lib/media";
 
 /**
  * Paid-traffic landing page for the Signature package.
@@ -115,18 +116,10 @@ export default function SignaturePage() {
                         you.
                       </StepBlurb>
                     </Step>
-                    <div className="relative mt-6 mx-auto w-full max-w-[420px] aspect-[9/16] overflow-hidden rounded-2xl bg-re-stone-light">
-                      <video
-                        src={mediaUrl(verticalVideo.src)}
-                        poster={
-                          verticalVideo.poster ? mediaUrl(verticalVideo.poster) : undefined
-                        }
-                        className="absolute inset-0 h-full w-full object-cover"
-                        controls
-                        playsInline
-                        preload="metadata"
-                      />
-                    </div>
+                    <MediaVideo
+                      item={verticalVideo}
+                      className="mx-auto w-full max-w-[420px] aspect-[9/16]"
+                    />
                   </div>
                 )}
               </div>
