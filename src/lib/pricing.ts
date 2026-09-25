@@ -12,10 +12,28 @@
 
 const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
+/** The photo line every package opens with, built from the count so the number
+ *  is authored once. */
+const photoLine = (n: number) => `${n} professionally edited DSLR photos`;
+
 type Priced<T> = T & { price: string };
 
 const priced = <T extends { amount: number }>(items: T[]): Priced<T>[] =>
   items.map((item) => ({ ...item, price: money(item.amount) }));
+
+/**
+ * Packages, with the photo line written for them.
+ *
+ * `photos` is the one place the count is authored: the line the customer reads
+ * and the number of example photographs a landing page shows both come from
+ * it, so they cannot end up disagreeing.
+ */
+const packages = (items: PackageInput[]): ListingPackage[] =>
+  priced(
+    items.map((item) =>
+      item.photos ? { ...item, includes: [photoLine(item.photos), ...item.includes] } : item,
+    ),
+  );
 
 export { money };
 
@@ -25,6 +43,10 @@ type PackageInput = {
   /** Whole AUD. `price` is derived from this. */
   amount: number;
   products: string;
+  /** How many edited photographs the package delivers. Stated separately from
+   *  `includes` so a landing page can show exactly that many examples and
+   *  never a different number to the line the customer read. */
+  photos?: number;
   includes: string[];
   note: string;
   /** What this tier adds over the one below it, so the ladder reads at a glance. */
@@ -39,14 +61,14 @@ type PackageInput = {
 
 export type ListingPackage = Priced<PackageInput>;
 
-export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
+export const LISTING_PACKAGES: ListingPackage[] = packages([
   {
     id: "pkg-listing",
     name: "Listing",
     amount: 349,
+    photos: 15,
     products: "3 products included",
     includes: [
-      "15 professionally edited DSLR photos",
       "2D floor plan",
       "Landscape listing video",
     ],
@@ -57,9 +79,9 @@ export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
     id: "pkg-signature",
     name: "Signature",
     amount: 499,
+    photos: 18,
     products: "4 products included",
     includes: [
-      "18 professionally edited DSLR photos",
       "2D floor plan",
       "Landscape listing video",
       "Vertical agent-led video at the property. You on camera, branded to you, cut for Reels and TikTok",
@@ -72,9 +94,9 @@ export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
     id: "pkg-premiere",
     name: "Premiere",
     amount: 899,
+    photos: 25,
     products: "5 products included",
     includes: [
-      "25 professionally edited DSLR photos",
       "2D floor plan",
       "Filmed landscape property film, shot on camera rather than built from stills",
       "Vertical agent-led video",
@@ -91,14 +113,14 @@ export const LISTING_PACKAGES: ListingPackage[] = priced<PackageInput>([
  * project is quoted instead. Priced $50 over the residential equivalents, and
  * aerial is in the top tier because commercial sells on site context.
  */
-export const COMMERCIAL_PACKAGES: ListingPackage[] = priced<PackageInput>([
+export const COMMERCIAL_PACKAGES: ListingPackage[] = packages([
   {
     id: "pkg-asset",
     name: "Asset",
     amount: 399,
+    photos: 15,
     products: "3 products included",
     includes: [
-      "15 professionally edited DSLR photos",
       "2D floor plan",
       "Landscape property video",
     ],
@@ -111,9 +133,9 @@ export const COMMERCIAL_PACKAGES: ListingPackage[] = priced<PackageInput>([
     id: "pkg-campaign",
     name: "Campaign",
     amount: 549,
+    photos: 18,
     products: "4 products included",
     includes: [
-      "18 professionally edited DSLR photos",
       "2D floor plan",
       "Landscape property video",
       "Vertical agent-led video at the asset, cut for LinkedIn",

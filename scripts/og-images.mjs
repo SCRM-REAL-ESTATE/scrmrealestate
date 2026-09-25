@@ -150,6 +150,7 @@ await Promise.all([
   photo("home", L("01")),
   photo("services", L("03")),
   photo("signature", E("05")),
+  photo("listing", E("06")),
   photo("agents", L("04")),
   photo("about", L("02")),
   photo("contact", L("13")),

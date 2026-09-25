@@ -9,10 +9,13 @@ import Lightbox, { type LightboxState } from "./VideoLightbox";
  * The delivered photo set, openable.
  *
  * Two presentations of the same thing. On a wide screen every photograph is a
- * tile, because eighteen of them at once is the proof. On a phone that grid
- * becomes eighteen postage stamps, so it collapses to a single fanned stack
+ * tile, because the whole set at once is the proof. On a phone that grid
+ * becomes a page of postage stamps, so it collapses to a single fanned stack
  * that reads as a pile of photographs and opens the same lightbox — where
  * arrows, keys and a swipe step through the set.
+ *
+ * The count comes from the caller: each package landing page passes as many
+ * photographs as that package delivers.
  */
 export default function ListingPhotoGrid({ photos }: { photos: string[] }) {
   const [lightbox, setLightbox] = useState<LightboxState>(null);
@@ -30,6 +33,12 @@ export default function ListingPhotoGrid({ photos }: { photos: string[] }) {
   /* The three on top of the pile. Any three would do; these are the first
      three so the stack opens on the same frame the lightbox does. */
   const [top, second, third] = photos;
+
+  /* Enough columns to come out even. Eighteen photographs in sixes and fifteen
+     in fives both end on a full row; either count in the other grid leaves a
+     short row that reads as a set with pieces missing. Both class names are
+     written out because Tailwind reads the source, not the expression. */
+  const columns = photos.length % 6 === 0 ? "lg:grid-cols-6" : "lg:grid-cols-5";
 
   return (
     <>
@@ -68,7 +77,7 @@ export default function ListingPhotoGrid({ photos }: { photos: string[] }) {
 
       {/* Wide: every photograph at once */}
       <Stagger
-        className="mt-8 hidden gap-2.5 md:grid md:grid-cols-3 lg:grid-cols-6 md:gap-3"
+        className={`mt-8 hidden gap-2.5 md:grid md:grid-cols-3 ${columns} md:gap-3`}
         staggerChildren={0.03}
       >
         {photos.map((src, i) => (
@@ -84,7 +93,7 @@ export default function ListingPhotoGrid({ photos }: { photos: string[] }) {
                 alt={`Listing photograph ${i + 1} of ${photos.length}`}
                 width={1600}
                 height={1068}
-                sizes="(max-width: 1024px) 33vw, 17vw"
+                sizes="(max-width: 1024px) 33vw, 20vw"
                 quality={85}
                 className="block w-full h-full object-cover aspect-[3/2] transition-transform duration-500 group-hover:scale-[1.04]"
               />
