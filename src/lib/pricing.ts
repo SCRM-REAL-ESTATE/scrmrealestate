@@ -242,14 +242,11 @@ export type AddOn = Priced<AddOnInput>;
 export const ADD_ONS: AddOn[] = priced<AddOnInput>([
   { id: "add-twilight", name: "Twilight & dusk images", amount: 40 },
   { id: "add-3d-tour", name: "3D virtual tour", amount: 179 },
-  { id: "add-aerial-photo", name: "Aerial photography", amount: 150 },
-  { id: "add-aerial-video", name: "Aerial video", amount: 150 },
   {
-    id: "add-aerial-pack",
-    name: "Aerial pack",
-    amount: 200,
-    detail:
-      "Aerial photography and aerial video. Individually $300. Included in the Premiere package",
+    id: "add-drone",
+    name: "Drone",
+    amount: 150,
+    detail: "3 aerial photos and aerial video. Included in the Premiere package",
   },
   {
     id: "add-virtual-staging",
@@ -275,18 +272,13 @@ const byId = (id: string): AddOn => {
 
 /**
  * Add-ons offered against a commercial campaign. Picked from ADD_ONS rather
- * than restated: the five that carry across are the same price, and twilight,
- * room staging and open homes have no meaning on an industrial estate. Aerial
- * carries a commercial tier note rather than the residential one.
+ * than restated: the three that carry across are the same price, and twilight,
+ * room staging and open homes have no meaning on an industrial estate. Drone
+ * drops the Premiere line, which is a residential package.
  */
 export const COMMERCIAL_ADD_ONS: AddOn[] = [
   byId("add-3d-tour"),
-  byId("add-aerial-photo"),
-  byId("add-aerial-video"),
-  {
-    ...byId("add-aerial-pack"),
-    detail: "Aerial photography and aerial video. Individually $300",
-  },
+  { ...byId("add-drone"), detail: "3 aerial photos and aerial video" },
   byId("add-extra-images"),
 ];
 

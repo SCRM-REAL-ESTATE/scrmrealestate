@@ -80,7 +80,7 @@ export type BookableOffer = {
 
 /** Every package includes a listing or property video of some kind. */
 const VIDEO = "add-listing-video";
-const AERIAL = ["add-aerial-pack", "add-aerial-photo", "add-aerial-video"];
+const DRONE = "add-drone";
 
 const fromPackage = (
   pkg: (typeof LISTING_PACKAGES)[number],
@@ -133,7 +133,7 @@ export const OFFERS: BookableOffer[] = [
       "Drone photo and video",
       "25 photos instead of 18",
     ],
-    contains: [VIDEO, ...AERIAL],
+    contains: [VIDEO, DRONE],
   }),
   fromPackage(pkg("pkg-asset"), {
     stream: "commercial",
@@ -243,21 +243,18 @@ const BOTH: Stream[] = ["residential", "commercial"];
 const RES: Stream[] = ["residential"];
 
 /**
- * Ordered the way they're offered, not by price: the aerial pack leads because
- * it's the one most campaigns should take and the saving is the clearest, the
- * cheap yeses sit under it, and the two aerial singles go last so nobody buys
- * them separately without having seen the pack first.
+ * Ordered the way they're offered, not by price: drone leads because it's the
+ * one most campaigns should take, and the cheap yeses sit under it.
  *
- * `group` puts them on three short shelves rather than one list of ten. Nobody
+ * `group` puts them on three short shelves rather than one long list. Nobody
  * studies ten options; everybody scans three headings and stops at the one that
  * matches what the property needs.
  */
 export const BOOKABLE_ADD_ONS: BookableAddOn[] = [
   {
-    ...addOn("add-aerial-pack"),
+    ...addOn("add-drone"),
     group: "aerial",
     streams: BOTH,
-    bundleOf: ["add-aerial-photo", "add-aerial-video"],
     pitch: "Where the property sits, what it backs onto, how the block reads. Both formats.",
   },
   {
@@ -290,18 +287,6 @@ export const BOOKABLE_ADD_ONS: BookableAddOn[] = [
     streams: BOTH,
     quantity: { step: 5, unit: "images", max: 6 },
     pitch: "Bigger homes need more frames than the package carries. Five at a time.",
-  },
-  {
-    ...addOn("add-aerial-photo"),
-    group: "aerial",
-    streams: BOTH,
-    pitch: "Stills only. The pack above is $100 cheaper than taking this and the video.",
-  },
-  {
-    ...addOn("add-aerial-video"),
-    group: "aerial",
-    streams: BOTH,
-    pitch: "Footage only. The pack above is $100 cheaper than taking this and the stills.",
   },
   {
     ...addOn("add-listing-video"),

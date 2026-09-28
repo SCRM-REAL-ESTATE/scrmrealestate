@@ -86,10 +86,10 @@ export type Upgrade = {
 /**
  * The upgrade worth offering, priced against what's actually in the cart.
  *
- * Signature is $499 and Premiere is $899, so the headline gap is $400 — but
- * someone who has already added the $200 aerial pack is $200 away, not $400,
- * because Premiere contains it. Quoting the headline number to that person is
- * both wrong and a worse offer than the truth.
+ * Signature is $499 and Premiere is $899, so the headline gap is $400. Someone
+ * who has already added the $150 drone is $250 away, not $400, because Premiere
+ * contains it. Quoting the headline number to that person is both wrong and a
+ * worse offer than the truth.
  *
  * Only two things earn a banner: the step towards the tier marked most popular,
  * and any higher tier that costs less than its sticker gap because it absorbs
@@ -139,9 +139,15 @@ export type Resolved = {
 /**
  * Collapses parts into the bundle that contains them.
  *
- * Aerial photography and aerial video are $150 each and $200 together, so
- * anyone who ticks both should be charged $200 and told they saved $100 —
- * not quietly charged $300 for a thing we sell for less.
+ * Anyone who ticks every part of something we also sell as one cheaper item
+ * should be charged the bundle price and told what they saved, not quietly
+ * charged the sum of the parts for a thing we sell for less.
+ *
+ * Nothing sets `bundleOf` at the moment. Aerial photography and aerial video
+ * used to be $150 each and $200 together; they are now one $150 drone item
+ * with no parts to collapse. Kept because the next bundle we price will need
+ * it, and because a booking taken before the change can still carry the old
+ * ids.
  */
 export function resolveSelection(offerId: string | undefined, selected: string[]): Resolved {
   const offer = getOffer(offerId);
