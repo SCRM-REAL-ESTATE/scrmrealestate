@@ -12,6 +12,11 @@
  */
 
 import type { Stream } from "./catalogue";
+import { ADD_ONS } from "./pricing";
+
+/** Quoted from the price list rather than typed into the sentence, so an
+ *  upsell line cannot go on quoting a price we no longer charge. */
+const priceOf = (id: string) => ADD_ONS.find((a) => a.id === id)!.price;
 
 export type Question = {
   id: string;
@@ -40,7 +45,9 @@ export const DETAIL_QUESTIONS: Record<Stream, Question[]> = {
       triggers: {
         when: ["Vacant"],
         addOnId: "add-virtual-staging",
-        line: "Empty rooms photograph cold and sell slower. Five virtually staged rooms is $200, and the staged frames go into your listing video at no extra cost.",
+        line: `Empty rooms photograph cold and sell slower. Five virtually staged rooms is ${priceOf(
+          "add-virtual-staging",
+        )}, and the staged frames go into your listing video at no extra cost.`,
       },
     },
     {
@@ -51,7 +58,9 @@ export const DETAIL_QUESTIONS: Record<Stream, Question[]> = {
       triggers: {
         when: ["House, 4+ bed", "Acreage or estate"],
         addOnId: "add-extra-images",
-        line: "A home that size usually runs past the photo count in the package. Extra images are $49 per 5.",
+        line: `A home that size usually runs past the photo count in the package. Extra images are ${priceOf(
+          "add-extra-images",
+        )} per 5.`,
       },
     },
   ],
